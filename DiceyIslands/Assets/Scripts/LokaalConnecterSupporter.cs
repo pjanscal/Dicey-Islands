@@ -37,8 +37,17 @@ public class LokaalConnecterSupporter : MonoBehaviour
             //check if it press join button
             if (!keyboard[Key.P].wasPressedThisFrame) return;
 
+            //loop until having a avible keyboardId
+            int keyboardId = 1;
+            for (; keyboardId <= LokaalConnecter.maxKeyboardTester; keyboardId++)
+            {
+                if (!LokaalConnecter.alrUsedKeyboardId.Contains(keyboardId)) break;
+            }
+
+            if (keyboardId > LokaalConnecter.maxKeyboardTester) return;
+
             //connect it
-            LokaalConnecter.ConnectKeyboard(keyboard);
+            LokaalConnecter.ConnectKeyboard(keyboard, keyboardId);
         #endif
     }
 
