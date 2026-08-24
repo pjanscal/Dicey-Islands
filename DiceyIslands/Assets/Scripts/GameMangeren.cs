@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public static class GameMangeren
 {
@@ -15,5 +16,11 @@ public static class GameMangeren
     static void Init()
     {
         
+    }
+
+    static public void SwitchScene(string sceneName)
+    {
+        //here can it switch to loading screen
+        SceneManager.LoadScene(sceneName);
     }
 }

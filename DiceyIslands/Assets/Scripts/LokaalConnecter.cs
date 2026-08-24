@@ -12,6 +12,7 @@ public static class LokaalConnecter
     to get the plrData of it u can ask for plrsControllers[plrId] to get the id
     input is plrdata like plrdata.GetButtonDown(type) the type is in InputType
     to test with keyboard press P*
+    *waring plrId begin by 1 and end with 4
     *u can use occupied to see if it already but it won't bug if u ask input it just return false or vector2.zero
     */
 
