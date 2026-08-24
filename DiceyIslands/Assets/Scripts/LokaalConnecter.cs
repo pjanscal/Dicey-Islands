@@ -20,6 +20,7 @@ public static class LokaalConnecter
     public enum InputType //so u can ask for jump or movement and it return the thing
     {
         jump,
+        x,
         left,
         right,
         up,
@@ -40,6 +41,7 @@ public static class LokaalConnecter
         private Dictionary<InputType, GamepadButton> gamePadButtons = new()
         {
             {InputType.jump, GamepadButton.South},
+            {InputType.x, GamepadButton.West},
         };
         private Dictionary<int, Dictionary<InputType, Key>> keyboardButtons = new()
         {
