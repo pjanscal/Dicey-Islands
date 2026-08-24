@@ -11,7 +11,9 @@ public static class LokaalConnecter
     /*Tutorail on how to use
     to get the plrData of it u can ask for plrsControllers[plrId] to get the id
     input is plrdata like plrdata.GetButtonDown(type) the type is in InputType
+    in PlrControllTesting is a example on how to use
     to test with keyboard press P*
+    to cconnect everywhere use [*
     *waring plrId begin by 1 and end with 4
     *u can use occupied to see if it already but it won't bug if u ask input it just return false or vector2.zero
     */
@@ -53,6 +55,7 @@ public static class LokaalConnecter
                     {InputType.up, Key.W},
                     {InputType.right, Key.D},
                     {InputType.down, Key.S},
+                    {InputType.x, Key.Q},
                 }
             },
             {2, new()
@@ -62,6 +65,7 @@ public static class LokaalConnecter
                     {InputType.up, Key.I},
                     {InputType.right, Key.L},
                     {InputType.down, Key.K},
+                    {InputType.x, Key.U},
                 }
             }
         };
@@ -154,10 +158,13 @@ public static class LokaalConnecter
     static public List<int> alrUsedControllers = new(); //remeber all controll that alr being used
     static public List<int> alrUsedKeyboardId = new(); //remeber all keyboard id that beind used
     static public int maxKeyboardTester = 2; //don't change it *it not a config
-    static public int currentPlr = 0;
+    static public bool canConnect = true; //make it so u can't join midgame
+    static public int currentPlr = 0; //how many plr there are sing in
     static public Dictionary<int, PlayerController> plrsController = new(); //all slot of hte party
+    static public Dictionary<int, LokaalMatchSlot> allMatchingSlots = new(); //all slot of LokaalmatchSlots
 
     static private GameObject lokaalConnecterSupporter = Resources.Load<GameObject>("LokaalConnecter/LokaalConnecterSupporter"); //get the gameobject with the support in so it can use update
+    static private GameObject lokaalMatchingUi = Resources.Load<GameObject>("LokaalConnecter/LokaalConnectUi"); //get the ui of the connetionMatch
     static private int maxPlr = 4; //how many plr there can go in a game
 
 
@@ -173,6 +180,7 @@ public static class LokaalConnecter
         
         //setup gameobject in scenes
         GameObject.Instantiate(lokaalConnecterSupporter);
+        GameObject.Instantiate(lokaalMatchingUi);
 
         //setup connections
         InputSystem.onDeviceChange += OnDeviceStateChanged;
@@ -195,14 +203,16 @@ public static class LokaalConnecter
     {
         //get first free spot
         PlayerController plrData = GetFirstFreeSlot();
+        int plrId = GetPlrIdFromPlrData(plrData);
 
         plrData.occuplied = true;
         alrUsedControllers.Add(gamepad.deviceId);
         plrData.gamepad = gamepad;
 
+        LokaalMatchingUi.instance.ChangeOutputUi(plrId, LokaalMatchingUi.ConnectionTypes.Join);
         currentPlr += 1;
 
-        Debug.LogWarning($"Plr{GetPlrIdFromPlrData(plrData)} joined");
+        Debug.LogWarning($"Plr{plrId} joined");
     }
 
     //dissconnect the controller from the party
@@ -211,31 +221,48 @@ public static class LokaalConnecter
         PlayerController plrData = FindControllerSlot(gamepad);
         if (plrData == null) return;
 
+        int plrId = GetPlrIdFromPlrData(plrData);
+
         plrData.occuplied = false;
         alrUsedControllers.Remove(gamepad.deviceId);
         plrData.gamepad = null;
 
+        LokaalMatchingUi.instance.ChangeOutputUi(plrId, LokaalMatchingUi.ConnectionTypes.Dissconnect);
         currentPlr -= 1;
 
         //here for the logic wa happend if they leave
 
-        Debug.LogWarning($"plr{GetPlrIdFromPlrData(plrData)} left the game");
+        Debug.LogWarning($"plr{plrId} left the game");
     }
 
     //testing control so we don't need a control :3
+    #if UNITY_EDITOR
     static public void ConnectKeyboard(Keyboard keyboard, int keyboardId)
     {
         //get first free spot
         PlayerController plrData = GetFirstFreeSlot();
+        int plrId = GetPlrIdFromPlrData(plrData);
 
         plrData.occuplied = true;
         plrData.keyboard = keyboard;
         plrData.keyboardId = keyboardId;
         alrUsedKeyboardId.Add(keyboardId);
 
+        LokaalMatchingUi.instance.ChangeOutputUi(plrId, LokaalMatchingUi.ConnectionTypes.JoinDev);
         currentPlr += 1;
 
-        Debug.LogWarning($"Plr{GetPlrIdFromPlrData(plrData)} joined *with keyboard*");
+        Debug.LogWarning($"Plr{plrId} joined *with keyboard*");
+    }
+    #endif
+
+    //enable thing that it work
+    //DDD for u in the furture make it soon switch
+    static public void StartMatchMaking()
+    {
+        
+        Time.timeScale = 0; //if a minigame that play with timescale get old one like make a var to remeber;
+        LokaalMatchingUi.instance.SwitchVisible(true);
+        canConnect = true;
     }
 
     //find the first free plr slot to concent to

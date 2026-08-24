@@ -14,7 +14,12 @@ public class LokaalConnecterSupporter : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //here the rule when he can't join
+        #if UNITY_EDITOR
+            TryForceLoadingLokaalMatch();
+        #endif
+
+        //here the rule when they can't join
+        if (!LokaalConnecter.canConnect) return;
 
         //connectcontrolls
         TryConnectingControllers();
@@ -25,6 +30,7 @@ public class LokaalConnecterSupporter : MonoBehaviour
         #endif
     }
 
+    #if UNITY_EDITOR
     void TryConnectingKeyboard()
     {
         #if UNITY_EDITOR
@@ -50,6 +56,18 @@ public class LokaalConnecterSupporter : MonoBehaviour
             LokaalConnecter.ConnectKeyboard(keyboard, keyboardId);
         #endif
     }
+
+    void TryForceLoadingLokaalMatch()
+    {  
+        if (LokaalConnecter.canConnect) return;
+
+        if (Keyboard.current[Key.LeftBracket].wasPressedThisFrame)
+        {
+            LokaalConnecter.StartMatchMaking();
+        }
+    }
+
+    #endif
 
     void TryConnectingControllers()
     {
