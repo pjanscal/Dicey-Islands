@@ -51,6 +51,7 @@ public class LokaalMatchingUi : MonoBehaviour
     //when smth happend where the ui need to be fix it is the function for it
     public void ChangeOutputUi(int plrId, ConnectionTypes connectionType)
     {
+        print($"plr{plrId} connected: {connectionType}");
         LokaalMatchSlot slot = LokaalConnecter.allMatchingSlots[plrId];
 
         //connect it to the right function *ik why not public void all of them
