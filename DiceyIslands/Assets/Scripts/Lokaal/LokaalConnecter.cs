@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -12,8 +13,11 @@ public static class LokaalConnecter
     to get the plrData of it u can ask for plrsControllers[plrId] to get the id
     input is plrdata like plrdata.GetButtonDown(type) the type is in InputType
     in PlrControllTesting is a example on how to use
+    
+    *to join press A, to ready up press X
+    *if it don't connect because u testing before u come to me click "[" first
     to test with keyboard press P*
-    to cconnect everywhere use [*
+    to cconnect anywhere use [*
     *waring plrId begin by 1 and end with 4
     *u can use occupied to see if it already but it won't bug if u ask input it just return false or vector2.zero
     */
@@ -32,6 +36,14 @@ public static class LokaalConnecter
         down
     }
 
+    //so ik if u can't connect, canconnect or need to reconnect
+    public enum ConnectionTypes
+    {
+        nothing,
+        matchConnect,
+        reConnecting
+    }
+    
     public class PlayerController
     {
         public bool occuplied = false; //is this is true this is being use *ngl i wanted to check id but then i thought it is better
@@ -61,7 +73,7 @@ public static class LokaalConnecter
                     {InputType.down, Key.S},
                     {InputType.x, Key.Q},
                     {InputType.secondAction, Key.R},
-                    {InputType.y, Key.R},
+                    {InputType.y, Key.F},
                 }
             },
             {2, new()
@@ -73,7 +85,7 @@ public static class LokaalConnecter
                     {InputType.down, Key.K},
                     {InputType.x, Key.U},
                     {InputType.secondAction, Key.Digit0},
-                    {InputType.y, Key.Y},
+                    {InputType.y, Key.H},
                 }
             }
         };
@@ -165,13 +177,16 @@ public static class LokaalConnecter
     
     static public List<int> alrUsedControllers = new(); //remeber all controll that alr being used
     static public List<int> alrUsedKeyboardId = new(); //remeber all keyboard id that beind used
+    //static private List<int> plrsDissconnected = new();
     static public int maxKeyboardTester = 2; //don't change it *it not a config
-    static public bool canConnect = true; //make it so u can't join midgame
+    static public ConnectionTypes connectionType = ConnectionTypes.nothing; //make it so u can't join midgame
     static public int currentPlr = 0; //how many plr there are sing in
     static public Dictionary<int, PlayerController> plrsController = new(); //all slot of hte party
     static public Dictionary<int, LokaalMatchSlot> allMatchingSlots = new(); //all slot of LokaalmatchSlots
 
-    static private GameObject lokaalConnecterSupporter = Resources.Load<GameObject>("LokaalConnecter/LokaalConnecterSupporter"); //get the gameobject with the support in so it can use update
+    //actions
+    static public Action<bool> outOfMatchMaking; //the bool for if it go back to main menu or if this is succes into the main game
+
     static private GameObject lokaalMatchingUi = Resources.Load<GameObject>("LokaalConnecter/LokaalConnectUi"); //get the ui of the connetionMatch
     static private int maxPlr = 4; //how many plr there can go in a game
 
@@ -187,11 +202,19 @@ public static class LokaalConnecter
         }
         
         //setup gameobject in scenes
-        GameObject.Instantiate(lokaalConnecterSupporter);
         GameObject.Instantiate(lokaalMatchingUi);
 
         //setup connections
         InputSystem.onDeviceChange += OnDeviceStateChanged;
+    }
+
+    //ResetLokaal
+    static public void ResetLokaal()
+    {
+        for (int plrId = 1; plrId <= maxPlr; plrId++)
+        {
+            DissConnectController(plrId); //disconnect from the slotData
+        }
     }
 
     // Init when a device stateChanged use for leaving
@@ -203,6 +226,7 @@ public static class LokaalConnecter
         //check or this is a valid device
         if (device is Gamepad gamepad)
         {
+            Debug.LogError("plz say to daniel if it work AUB so ik if this a bug");
             ControllerDissConnected(gamepad);
         }
     }
@@ -219,9 +243,12 @@ public static class LokaalConnecter
         Debug.LogWarning($"plr{plrId} have dissconnected");
 
         //check or it was in game or not
-        if (canConnect)
+        if (connectionType == ConnectionTypes.matchConnect) LokaalMatchingUi.instance.ChangeOutputUi(plrId, LokaalMatchingUi.ConnectionTypes.Leave);
+        else if (GameMangeren.inGame)
         {
-            LokaalMatchingUi.instance.ChangeOutputUi(plrId, LokaalMatchingUi.ConnectionTypes.Leave);
+            LokaalMatchingUi.instance.ChangeOutputUi(plrId, LokaalMatchingUi.ConnectionTypes.Dissconnect);
+            //plrsDissconnected.Add(plrId);
+            if (connectionType == ConnectionTypes.nothing) SwitchMatchMaking(true);
         }
     }
 
@@ -292,13 +319,37 @@ public static class LokaalConnecter
     #endif
 
     //enable thing that it work
-    //DDD for u in the furture make it soon switch
-    static public void StartMatchMaking()
+    static public void SwitchMatchMaking(bool state)
     {
-        
-        Time.timeScale = 0; //if a minigame that play with timescale get old one like make a var to remeber;
-        LokaalMatchingUi.instance.SwitchVisible(true);
-        canConnect = true;
+        if (state)
+        {
+            Time.timeScale = 0; //if a minigame that play with timescale get old one like make a var to remeber;
+            LokaalMatchingUi.instance.SwitchVisible(true);
+            if (!GameMangeren.inGame) connectionType = ConnectionTypes.matchConnect; //make sure it not doing it when it should not
+            else connectionType = ConnectionTypes.reConnecting;
+        }
+        else
+        {
+            Time.timeScale = 1; //if a minigame that play with timescale get old one like make a var to remeber;
+            LokaalMatchingUi.instance.SwitchVisible(false);
+            connectionType = ConnectionTypes.nothing;
+        }
+    }
+
+    static public void FinishMatchMaking()
+    {
+        SwitchMatchMaking(false);
+        outOfMatchMaking?.Invoke(true);
+        GameMangeren.inGame = true; //it would be a prob to make true = true :3* if this is found
+        GameMangeren.plrInGame = currentPlr;
+
+        //same here
+        //plrsDissconnected.Clear();
+
+        foreach (LokaalMatchSlot slotData in allMatchingSlots.Values)
+        {
+            slotData.ClearSlot(false);
+        }
     }
 
     //find the first free plr slot to concent to
@@ -333,7 +384,7 @@ public static class LokaalConnecter
         return null;
     }
 
-    static int GetPlrIdFromPlrData(PlayerController plrData)
+    static public int GetPlrIdFromPlrData(PlayerController plrData)
     {
         int plrId = plrsController.First(x => x.Value == plrData).Key; //look for the thing with same value
         return plrId;
