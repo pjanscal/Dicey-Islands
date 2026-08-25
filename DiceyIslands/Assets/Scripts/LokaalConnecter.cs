@@ -187,14 +187,12 @@ public static class LokaalConnecter
         GameObject.Instantiate(lokaalMatchingUi);
 
         //setup connections
-        Debug.Log("yo");
         InputSystem.onDeviceChange += OnDeviceStateChanged;
     }
 
     // Init when a device stateChanged use for leaving
     static void OnDeviceStateChanged(InputDevice device, InputDeviceChange state)
     {
-        Debug.Log(state);
         //check if it left
         if (state != InputDeviceChange.Disconnected && state != InputDeviceChange.Removed) return;
 
@@ -223,7 +221,7 @@ public static class LokaalConnecter
     }
 
     //dissconnect the controller from the party
-    static void DissConnectController(Gamepad gamepad)
+    static public void DissConnectController(Gamepad gamepad)
     {
         PlayerController plrData = FindControllerSlot(gamepad);
         if (plrData == null) return;
