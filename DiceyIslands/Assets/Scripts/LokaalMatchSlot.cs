@@ -6,15 +6,17 @@ public class LokaalMatchSlot : MonoBehaviour
 {
     [SerializeField] private Image outputUi;
     [SerializeField] private TextMeshProUGUI nameDisplay;
+    [SerializeField] private Image readyUpMark;
 
     private LokaalConnecter.PlayerController plrController;
     private float currentDissconnectTimer = 0f;
+    public bool isReadyUp = false; //so the server can see when all 4 is readyUP
 
     //config
     [SerializeField] private int plrId;
     [SerializeField] private Color slotColor;
 
-    private float timeBeforeDissconnect = 1f;
+    private float timeBeforeDissconnect = 1f; //time before corfirming it is dissconnected 
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -33,9 +35,24 @@ public class LokaalMatchSlot : MonoBehaviour
         if (!plrController.occuplied) return;
 
         //check or it is dissconnected
-        CheckOrItIsDissconnected();
+        //CheckOrItIsDissconnected();
 
         //note make the thing after one sec because if it not then u can leave immedally 
+        if (!LokaalConnecter.canConnect) return;
+
+        //CheckOrItWantToLeave();
+        //ReadyUp();
+        Ping();
+    }
+
+    void CheckOrItWantToLeave()
+    {
+        //on left press go dissconnect
+        if (plrController.GetButtonDown(LokaalConnecter.InputType.secondAction))
+        {
+            LokaalConnecter.DissConnectController(plrId);
+            LokaalMatchingUi.instance.ChangeOutputUi(plrId, LokaalMatchingUi.ConnectionTypes.Leave);
+        }
     }
 
     void CheckOrItIsDissconnected()
@@ -45,11 +62,10 @@ public class LokaalMatchSlot : MonoBehaviour
         if (!plrController.gamepad.wasUpdatedThisFrame)
         {
             currentDissconnectTimer += Time.unscaledDeltaTime; //add it to timer
-            print(currentDissconnectTimer);
 
             if (currentDissconnectTimer >= timeBeforeDissconnect)
             {
-                LokaalConnecter.DissConnectController(plrController.gamepad);
+                LokaalConnecter.ControllerDissConnected(plrController.gamepad);
                 currentDissconnectTimer = 0;
             }
         }
@@ -59,10 +75,37 @@ public class LokaalMatchSlot : MonoBehaviour
         }
     }
 
+    void ReadyUp()
+    {
+        //on press toggle ready up so when everyone is ready up it will start
+        if (plrController.GetButtonDown(LokaalConnecter.InputType.x))
+        {
+            SwitchReadyUpMark(!isReadyUp);
+
+            //foreach (PlayerCont)
+        }
+    }
+
+    void Ping()
+    {
+        //on press ping urself so u can see who is who
+        if (plrController.GetButtonDown(LokaalConnecter.InputType.jump))
+        {
+            
+        }
+    }
+
     //set the color on/off
     public void SwitchColor(bool state)
     {
         outputUi.color = state? slotColor : Color.white;
+    }
+
+    //set the ready up mark on/off
+    public void SwitchReadyUpMark(bool state)
+    {
+        readyUpMark.enabled = state;
+        isReadyUp = state;
     }
 
     //switch the image of that slot
