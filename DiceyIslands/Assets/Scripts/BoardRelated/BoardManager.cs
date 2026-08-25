@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class BoardManager : MonoBehaviour
 {
@@ -23,6 +24,16 @@ public class BoardManager : MonoBehaviour
 
     [Header("UI")]
     [SerializeField] private Button rollButton;
+    [SerializeField] private TMP_Text tilesLeftText;
+
+    [Header("Round System")]
+    [SerializeField] private Transform topDownCameraPosition;
+
+    [SerializeField] private TMP_Text roundText;
+
+    [SerializeField] private float roundTransitionDuration = 2f;
+
+    private int currentRound = 1;
 
     [Header("Camera")]
     [SerializeField] private PlayerCamera playerCamera;
@@ -53,7 +64,8 @@ public class BoardManager : MonoBehaviour
     private void Start()
     {
         PlacePlayersOnStartingWaypoint();
-        StartCurrentTurn();
+
+        StartCoroutine(ShowRoundTransition());
     }
 
     // -------------------------------------------------------
@@ -122,7 +134,7 @@ public class BoardManager : MonoBehaviour
     {
         if (turnOrder.Count == 0)
         {
-            Debug.LogWarning("There are no players!!");
+            Debug.LogWarning("There are no players!");
             return;
         }
 
@@ -137,24 +149,72 @@ public class BoardManager : MonoBehaviour
             playerCamera.SetTarget(player.transform);
         }
 
+        UpdateTilesLeftText();
+
         if (rollButton != null)
         {
             rollButton.interactable = true;
         }
     }
 
+
     private void FinishCurrentTurn()
     {
         currentTurnIndex++;
 
-        // Reached the end of the turn order.
         if (currentTurnIndex >= turnOrder.Count)
         {
             currentTurnIndex = 0;
 
-            Debug.Log("New round started.");
+            currentRound++;
+
+            StartCoroutine(ShowRoundTransition());
+
+            return;
         }
 
+        StartCurrentTurn();
+    }
+    private IEnumerator ShowRoundTransition()
+    {
+        Debug.Log("Round " + currentRound + " started.");
+
+        // disables roll
+        if (rollButton != null)
+        {
+            rollButton.interactable = false;
+        }
+
+        // camera switch to top down
+        if (playerCamera != null &&
+            topDownCameraPosition != null)
+        {
+            playerCamera.SetFixedPosition(
+                topDownCameraPosition
+            );
+        }
+
+        // Shows the fcurrent round
+        if (roundText != null)
+        {
+            roundText.gameObject.SetActive(true);
+
+            roundText.text =
+                "Round " + currentRound;
+        }
+
+        // Leaves it for a few seconds
+        yield return new WaitForSeconds(
+            roundTransitionDuration
+        );
+
+        // hides roubd text
+        if (roundText != null)
+        {
+            roundText.gameObject.SetActive(false);
+        }
+
+        // begin player 
         StartCurrentTurn();
     }
 
@@ -169,7 +229,20 @@ public class BoardManager : MonoBehaviour
     // -------------------------------------------------------
     // DDICE SYSTEM OF DOOM AND DESPAIR
     // -------------------------------------------------------
+    private void UpdateTilesLeftText()
+    {
+        if (CurrentPlayer == null || waypoints.Count == 0)
+        {
+            tilesLeftText.text = "";
+            return;
+        }
 
+        int tilesLeft =
+            (waypoints.Count - 1) -
+            CurrentPlayer.currentWaypointIndex;
+
+        tilesLeftText.text = "Tiles Left: " + tilesLeft;
+    }
     public void RollDice()
     {
         if (turnInProgress)
@@ -218,6 +291,7 @@ public class BoardManager : MonoBehaviour
 
         FinishCurrentTurn();
     }
+
 
     // -------------------------------------------------------
     // PROTOTYPE ANIMATIONS (GARBAGE LATER ON!!!)
