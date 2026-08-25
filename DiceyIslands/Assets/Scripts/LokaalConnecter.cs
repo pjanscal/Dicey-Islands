@@ -158,7 +158,7 @@ public static class LokaalConnecter
     static public List<int> alrUsedControllers = new(); //remeber all controll that alr being used
     static public List<int> alrUsedKeyboardId = new(); //remeber all keyboard id that beind used
     static public int maxKeyboardTester = 2; //don't change it *it not a config
-    static public bool canConnect = false; //make it so u can't join midgame
+    static public bool canConnect = true; //make it so u can't join midgame
     static public int currentPlr = 0; //how many plr there are sing in
     static public Dictionary<int, PlayerController> plrsController = new(); //all slot of hte party
     static public Dictionary<int, LokaalMatchSlot> allMatchingSlots = new(); //all slot of LokaalmatchSlots
