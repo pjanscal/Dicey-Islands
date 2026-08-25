@@ -25,6 +25,7 @@ public static class LokaalConnecter
         jump,
         x,
         secondAction, // o on ps5 idk the name
+        y,
         left,
         right,
         up,
@@ -47,6 +48,7 @@ public static class LokaalConnecter
             {InputType.jump, GamepadButton.South},
             {InputType.x, GamepadButton.West},
             {InputType.secondAction, GamepadButton.East},
+            {InputType.y, GamepadButton.North},
         };
         private Dictionary<int, Dictionary<InputType, Key>> keyboardButtons = new()
         {
@@ -59,6 +61,7 @@ public static class LokaalConnecter
                     {InputType.down, Key.S},
                     {InputType.x, Key.Q},
                     {InputType.secondAction, Key.R},
+                    {InputType.y, Key.R},
                 }
             },
             {2, new()
@@ -70,6 +73,7 @@ public static class LokaalConnecter
                     {InputType.down, Key.K},
                     {InputType.x, Key.U},
                     {InputType.secondAction, Key.Digit0},
+                    {InputType.y, Key.Y},
                 }
             }
         };
