@@ -24,6 +24,8 @@ public static class LokaalConnecter
     {
         jump,
         x,
+        secondAction, // o on ps5 idk the name
+        y,
         left,
         right,
         up,
@@ -45,6 +47,8 @@ public static class LokaalConnecter
         {
             {InputType.jump, GamepadButton.South},
             {InputType.x, GamepadButton.West},
+            {InputType.secondAction, GamepadButton.East},
+            {InputType.y, GamepadButton.North},
         };
         private Dictionary<int, Dictionary<InputType, Key>> keyboardButtons = new()
         {
@@ -56,6 +60,8 @@ public static class LokaalConnecter
                     {InputType.right, Key.D},
                     {InputType.down, Key.S},
                     {InputType.x, Key.Q},
+                    {InputType.secondAction, Key.R},
+                    {InputType.y, Key.R},
                 }
             },
             {2, new()
@@ -66,6 +72,8 @@ public static class LokaalConnecter
                     {InputType.right, Key.L},
                     {InputType.down, Key.K},
                     {InputType.x, Key.U},
+                    {InputType.secondAction, Key.Digit0},
+                    {InputType.y, Key.Y},
                 }
             }
         };
@@ -183,25 +191,41 @@ public static class LokaalConnecter
         GameObject.Instantiate(lokaalMatchingUi);
 
         //setup connections
-        Debug.Log("yo");
         InputSystem.onDeviceChange += OnDeviceStateChanged;
     }
 
     // Init when a device stateChanged use for leaving
     static void OnDeviceStateChanged(InputDevice device, InputDeviceChange state)
     {
-        Debug.Log(state);
         //check if it left
         if (state != InputDeviceChange.Disconnected && state != InputDeviceChange.Removed) return;
 
         //check or this is a valid device
         if (device is Gamepad gamepad)
         {
-            Debug.Log(gamepad);
-            DissConnectController(gamepad);
+            ControllerDissConnected(gamepad);
         }
     }
 
+    //init when a controller disconnect
+    static public void ControllerDissConnected(Gamepad gamepad)
+    {
+        //get the vars
+        PlayerController plrData = FindControllerSlot(gamepad); 
+        if (plrData == null) return;
+        int plrId = GetPlrIdFromPlrData(plrData);
+
+        DissConnectController(plrId); //dissconnect it from the slots
+        Debug.LogWarning($"plr{plrId} have dissconnected");
+
+        //check or it was in game or not
+        if (canConnect)
+        {
+            LokaalMatchingUi.instance.ChangeOutputUi(plrId, LokaalMatchingUi.ConnectionTypes.Leave);
+        }
+    }
+
+    //koppel de controller aan de slots
     static public void ConnectController(Gamepad gamepad)
     {
         //get first free spot
@@ -218,19 +242,28 @@ public static class LokaalConnecter
         Debug.LogWarning($"Plr{plrId} joined");
     }
 
-    //dissconnect the controller from the party
-    static void DissConnectController(Gamepad gamepad)
+    //dissconnect the controller/keyboard from the party
+    static public void DissConnectController(int plrId)
     {
-        PlayerController plrData = FindControllerSlot(gamepad);
-        if (plrData == null) return;
-
-        int plrId = GetPlrIdFromPlrData(plrData);
+        PlayerController plrData = plrsController[plrId];
+        //if it not check here then remeber
 
         plrData.occuplied = false;
-        alrUsedControllers.Remove(gamepad.deviceId);
-        plrData.gamepad = null;
 
-        LokaalMatchingUi.instance.ChangeOutputUi(plrId, LokaalMatchingUi.ConnectionTypes.Dissconnect);
+        if (plrData.gamepad != null) //check wich device it is to remove
+        {
+            alrUsedControllers.Remove(plrData.gamepad.deviceId);
+            plrData.gamepad = null;
+        }
+        else
+        {
+            #if UNITY_EDITOR
+                plrData.keyboard = null;
+                alrUsedKeyboardId.Remove(plrData.keyboardId);
+                plrData.keyboardId = 0;
+            #endif
+        }
+
         currentPlr -= 1;
 
         //here for the logic wa happend if they leave
@@ -283,12 +316,17 @@ public static class LokaalConnecter
     }
 
     //find the one that have same device
-    static PlayerController FindControllerSlot(Gamepad gamepad)
+    static PlayerController FindControllerSlot(InputDevice device)
     {
         //loop through everyone form 1-4 until finding it
         foreach (PlayerController plrData in plrsController.Values)
         {
-            if (plrData.gamepad == gamepad) return plrData;
+            if (plrData.gamepad == device) return plrData;
+
+            //check keyboard
+            #if UNITY_EDITOR
+                if (plrData.keyboard == device) return plrData;
+            #endif
         }
 
         //useless left

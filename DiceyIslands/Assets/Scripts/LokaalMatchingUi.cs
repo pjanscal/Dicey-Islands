@@ -13,6 +13,7 @@ public class LokaalMatchingUi : MonoBehaviour
     public Sprite nothingEnabledUi;
     public Sprite controllerUi;
     public Sprite devUi;
+    public Sprite dissconnectedControl;
 
     private Canvas canvas;
 
@@ -82,10 +83,6 @@ public class LokaalMatchingUi : MonoBehaviour
 
     void DissConnect(LokaalMatchSlot slot)
     {
-        if (LokaalConnecter.canConnect)
-        {
-            Leave(slot);
-            return;
-        }
+
     }
 }
