@@ -24,6 +24,7 @@ public static class LokaalConnecter
     {
         jump,
         x,
+        y,
         left,
         right,
         up,
@@ -45,6 +46,7 @@ public static class LokaalConnecter
         {
             {InputType.jump, GamepadButton.South},
             {InputType.x, GamepadButton.West},
+            {InputType.y, GamepadButton.North},
         };
         private Dictionary<int, Dictionary<InputType, Key>> keyboardButtons = new()
         {
@@ -56,6 +58,7 @@ public static class LokaalConnecter
                     {InputType.right, Key.D},
                     {InputType.down, Key.S},
                     {InputType.x, Key.Q},
+                    {InputType.y, Key.R},
                 }
             },
             {2, new()
@@ -66,6 +69,7 @@ public static class LokaalConnecter
                     {InputType.right, Key.L},
                     {InputType.down, Key.K},
                     {InputType.x, Key.U},
+                    {InputType.y, Key.Y},
                 }
             }
         };
