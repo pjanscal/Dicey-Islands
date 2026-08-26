@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using SceneManager = UnityEngine.SceneManagement.SceneManager;
 
-public class Test : MonoBehaviour
+public class MainGameScript : MonoBehaviour
 {
     LokaalConnecter.PlayerController playerController;
     [SerializeField] int plrId;
@@ -33,7 +33,7 @@ public class Test : MonoBehaviour
             firstTime = false;
             indicator.color = Color.green;
 
-            foreach (var t in Object.FindObjectsByType<Test>(FindObjectsSortMode.None))
+            foreach (var t in Object.FindObjectsByType<MainGameScript>(FindObjectsSortMode.None))
             {
                 if (t.playerController != null && t.playerController.occuplied && t.firstTime) return;
             }
@@ -52,7 +52,7 @@ public class Test : MonoBehaviour
 
         if (playerController.GetButtonDown(LokaalConnecter.InputType.y))
         {
-            SceneManager.LoadScene("MinigameTest");
+            SceneManager.LoadScene("Minigame1");
         }
 
     }
@@ -79,7 +79,7 @@ public class Test : MonoBehaviour
         countdown.text = "1";
         yield return new WaitForSeconds(1f);
         countdown.text = "0";
-        foreach (var t in Object.FindObjectsByType<Test>(FindObjectsSortMode.None))
+        foreach (var t in Object.FindObjectsByType<MainGameScript>(FindObjectsSortMode.None))
         {
             if (t.playerController != null && t.playerController.occuplied)
             {
@@ -95,7 +95,7 @@ public class Test : MonoBehaviour
     void Winner()
     {
 
-        var all = Object.FindObjectsByType<Test>(FindObjectsSortMode.None);
+        var all = Object.FindObjectsByType<MainGameScript>(FindObjectsSortMode.None);
 
         foreach (var t in all)
         {
