@@ -1,4 +1,5 @@
 using UnityEngine;
+using System.Collections.Generic;
 
 public class PlayerPiece : MonoBehaviour
 {
@@ -14,6 +15,28 @@ public class PlayerPiece : MonoBehaviour
     [Range(0f, 1f)]
     [SerializeField] private float inactiveAlpha = 0.35f;
 
+    [Header("Player Info")]
+    [SerializeField] private int playerNumber = 1;
+
+    [Header("Match History")]
+    public List<int> roundWaypointHistory = new List<int>();
+
+    public int PlayerNumber
+    {
+        get { return playerNumber; }
+    }
+
+    public void RecordRoundPosition()
+    {
+        int waypointNumber = currentWaypointIndex + 1;
+
+        roundWaypointHistory.Add(waypointNumber);
+    }
+
+    public void ClearMatchHistory()
+    {
+        roundWaypointHistory.Clear();
+    }
     private void Awake()
     {
         // finds render if unassigned
