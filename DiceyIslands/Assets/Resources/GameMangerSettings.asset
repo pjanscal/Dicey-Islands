@@ -14,3 +14,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::GameMangerSettings
   pauseSchrem: {fileID: 7203629526249164721, guid: 4968c78d27b6655408e35a09417adf8e, type: 3}
   eventSystemUi: {fileID: 4849947190045337723, guid: 302ce49c9f113cc49bcbf1db9ef40951, type: 3}
+  loadingScreen: {fileID: 5102757817660810055, guid: c1a2cc8a3ddd8cd44bf34e34a0291807, type: 3}
