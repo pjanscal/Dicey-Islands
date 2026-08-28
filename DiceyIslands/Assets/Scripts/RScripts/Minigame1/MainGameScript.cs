@@ -26,35 +26,38 @@ public class MainGameScript : MonoBehaviour
 
     void Update()
     {
-        if (playerController == null || !playerController.occuplied) return;
 
-        if (!ready && firstTime && playerController.GetButtonDown(LokaalConnecter.InputType.x))
+        if (LokaalConnecter.connectionType == LokaalConnecter.ConnectionTypes.nothing)
         {
-            firstTime = false;
-            indicator.color = Color.green;
+                if (playerController == null || !playerController.occuplied) return;
 
-            foreach (var t in Object.FindObjectsByType<MainGameScript>(FindObjectsSortMode.None))
+            if (!ready && firstTime && playerController.GetButtonDown(LokaalConnecter.InputType.x))
             {
-                if (t.playerController != null && t.playerController.occuplied && t.firstTime) return;
+                firstTime = false;
+                indicator.color = Color.green;
+
+                foreach (var t in Object.FindObjectsByType<MainGameScript>(FindObjectsSortMode.None))
+                {
+                    if (t.playerController != null && t.playerController.occuplied && t.firstTime) return;
+                }
+
+                StartCoroutine(StartTimer());
             }
 
-            StartCoroutine(StartTimer());
+            if (ready && isRunning && playerController.GetButtonDown(LokaalConnecter.InputType.x))
+            {
+                isRunning = false;
+                indicator.color = Color.green;
+                Winner();
+            }
+
+            if (isRunning) UpdateTimer();
+
+            if (playerController.GetButtonDown(LokaalConnecter.InputType.y))
+            {
+                SceneManager.LoadScene("Minigame1");
+            }  
         }
-
-        if (ready && isRunning && playerController.GetButtonDown(LokaalConnecter.InputType.x))
-        {
-            isRunning = false;
-            indicator.color = Color.green;
-            Winner();
-        }
-
-        if (isRunning) UpdateTimer();
-
-        if (playerController.GetButtonDown(LokaalConnecter.InputType.y))
-        {
-            SceneManager.LoadScene("Minigame1");
-        }
-
     }
 
     void UpdateTimer()
