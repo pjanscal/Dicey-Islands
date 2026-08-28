@@ -13,6 +13,7 @@ public static class GameMangeren
     //load info
     static public CharacterData[] charsData = Resources.LoadAll<CharacterData>("CharactersData");
     static private GameMangerSettings gameMangerSettings = Resources.Load<GameMangerSettings>("GameMangerSettings");
+    static public LoadingScreen loadingScreen;
 
     static public Dictionary<int, PlrData> plrsData = new();
 
@@ -38,6 +39,7 @@ public static class GameMangeren
 
         //set in objects
         GameObject.Instantiate(gameMangerSettings.pauseSchrem);
+        GameObject.Instantiate(gameMangerSettings.loadingScreen);
         SetInEventSystem();
 
         //setup Connection
@@ -46,8 +48,8 @@ public static class GameMangeren
 
     static public void SwitchScene(string sceneName)
     {
-        //here can it switch to loading screen
-        SceneManager.LoadScene(sceneName);
+        //soon if there come a supporter for the gamemanger i change it 
+        LokaalMatchingUi.instance.StartCoroutine(loadingScreen.LoadScene(sceneName));
     }
 
     static public void Exit()

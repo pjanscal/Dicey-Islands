@@ -28,7 +28,6 @@ public class LokaalMatchSlot : MonoBehaviour
     {
         plrController = LokaalConnecter.plrsController[plrId];
         LokaalConnecter.allMatchingSlots.Add(plrId, this);
-        print("yo");
 
         nameDisplay.text = $"player {plrId}";
 
