@@ -35,6 +35,7 @@ public class LokaalCharSelectSlot : MonoBehaviour
     const float colorSwitchDur = .5f;
     const float charSwitchDur = .9f;
     private Color charDisableColor = new Color(.15f, .15f, .15f);
+    private Color CharReadyUpBetaColor = new Color(.4f, .5f, 0);
     //private float timeBoforeSwitchingChar = .5f;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -307,5 +308,7 @@ public class LokaalCharSelectSlot : MonoBehaviour
     void ToggleReadyUp(bool state)
     {
         isReadyUp = state;
+
+        ToggleColor(previewPrimeSelected? previewUi : secondaryPreviewUi, state? CharReadyUpBetaColor : Color.white);
     }
 }
