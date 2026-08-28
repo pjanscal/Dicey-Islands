@@ -238,6 +238,17 @@ public static class LokaalConnecter
         {
             LokaalConnecter.charLeft.Add(charId);
         }
+
+        //reset the slots
+        foreach (LokaalMatchSlot slotData in allMatchingSlots.Values)
+        {
+            slotData.ClearSlot(true);
+        }
+
+        foreach (LokaalCharSelectSlot slotData in allCharacterSlots.Values)
+        {
+            slotData.ResetSlot();
+        }
     }
 
     // Init when a device stateChanged use for leaving

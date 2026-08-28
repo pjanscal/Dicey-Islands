@@ -1,0 +1,16 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b20a64c32b9ea074bb597950c8bac36d, type: 3}
+  m_Name: GameMangerSettings
+  m_EditorClassIdentifier: Assembly-CSharp::GameMangerSettings
+  pauseSchrem: {fileID: 7203629526249164721, guid: 4968c78d27b6655408e35a09417adf8e, type: 3}
+  eventSystemUi: {fileID: 4849947190045337723, guid: 302ce49c9f113cc49bcbf1db9ef40951, type: 3}

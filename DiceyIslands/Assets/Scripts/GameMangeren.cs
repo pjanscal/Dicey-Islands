@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
 
 public static class GameMangeren
@@ -11,6 +12,8 @@ public static class GameMangeren
 
     //load info
     static public CharacterData[] charsData = Resources.LoadAll<CharacterData>("CharactersData");
+    static private GameMangerSettings gameMangerSettings = Resources.Load<GameMangerSettings>("GameMangerSettings");
+
     static public Dictionary<int, PlrData> plrsData = new();
 
     //plrInfo's //soon for characterSelect
@@ -19,6 +22,9 @@ public static class GameMangeren
         public bool occupied = false; //help testing the things else it might bug
         public CharacterData charData;
     }
+
+    //configs
+    static private string startSceneName = "SampleScene";
 
     //when the game start it go once
     [RuntimeInitializeOnLoadMethod]
@@ -29,12 +35,50 @@ public static class GameMangeren
         {
             plrsData.Add(plrId, new());
         }
+
+        //set in objects
+        GameObject.Instantiate(gameMangerSettings.pauseSchrem);
+        SetInEventSystem();
+
+        //setup Connection
+        SceneManager.sceneLoaded += OnSceneChanged;
     }
 
     static public void SwitchScene(string sceneName)
     {
         //here can it switch to loading screen
         SceneManager.LoadScene(sceneName);
+    }
+
+    static public void Exit()
+    {
+        SwitchScene(startSceneName);
+        ResetAll();
+    }
+
+    static void ResetAll()
+    {
+        //reset value's
+        inGame = false;
+        isPaused = false; //pause
+        Time.timeScale = 1; //pause or minigame or dissconnecter
+        
+        LokaalConnecter.ResetLokaal();
+    }
+
+    //init when it change from scene
+    static void OnSceneChanged(Scene scene, LoadSceneMode sceneMode)
+    {
+        SetInEventSystem();
+    }
+
+    static void SetInEventSystem()
+    {
+        //check if there not alr one
+        EventSystem currentEventSystem = GameObject.FindFirstObjectByType<EventSystem>();
+        if (currentEventSystem != null) return;
+
+        GameObject.Instantiate(gameMangerSettings.eventSystemUi);
     }
 
     //help funtion

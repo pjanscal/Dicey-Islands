@@ -109,17 +109,6 @@ public class LokaalMatchingUi : MonoBehaviour
             LokaalConnecter.SwitchMatchMaking(false);
             LokaalConnecter.outOfMatchMaking(false);
 
-            //reset the slots
-            foreach (LokaalMatchSlot slotData in LokaalConnecter.allMatchingSlots.Values)
-            {
-                slotData.ClearSlot(true);
-            }
-
-            foreach (LokaalCharSelectSlot slotData in LokaalConnecter.allCharacterSlots.Values)
-            {
-                slotData.ResetSlot();
-            }
-
             LokaalConnecter.ResetLokaal();
         }
     }

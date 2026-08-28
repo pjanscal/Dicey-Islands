@@ -3,9 +3,9 @@ using UnityEngine.InputSystem;
 
 public class PlrControllTesting : MonoBehaviour
 {
-    [SerializeField] private int plrId;
+    [SerializeField] private int plrId; //the id of the player
 
-    private LokaalConnecter.PlayerController playerController;
+    private LokaalConnecter.PlayerController playerController; //the controller that have all data
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
