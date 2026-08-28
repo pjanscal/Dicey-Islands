@@ -12,7 +12,6 @@ public class LokaalMatchSlot : MonoBehaviour
     [SerializeField] private GameObject pingEffect;
 
     private LokaalConnecter.PlayerController plrController;
-    private float currentDissconnectTimer = 0f;
     private float currentPingTimer = 0f;
     [HideInInspector] public bool isReadyUp = false; //so the server can see when all 4 is readyUP
 
@@ -21,7 +20,6 @@ public class LokaalMatchSlot : MonoBehaviour
     [SerializeField] private int plrId;
     [SerializeField] private Color slotColor;
 
-    private float timeBeforeDissconnect = 1f; //time before corfirming it is dissconnected
     private float timeBetweenPing = .15f;
     private float durPing = .4f;
 
@@ -30,6 +28,7 @@ public class LokaalMatchSlot : MonoBehaviour
     {
         plrController = LokaalConnecter.plrsController[plrId];
         LokaalConnecter.allMatchingSlots.Add(plrId, this);
+        print("yo");
 
         nameDisplay.text = $"player {plrId}";
 
@@ -46,9 +45,9 @@ public class LokaalMatchSlot : MonoBehaviour
         if (!plrController.occuplied) return;
 
         //note make the thing after one sec because if it not then u can leave immedally 
-        if (LokaalConnecter.connectionType == LokaalConnecter.ConnectionTypes.nothing) return;
+        if (LokaalConnecter.connectionType != LokaalConnecter.ConnectionTypes.reConnecting) return; //it to make sure it only do if it is reconnecting
 
-        CheckOrItWantToLeave();
+        //CheckOrItWantToLeave();
         ReadyUp();
         Ping();
     }
@@ -63,20 +62,6 @@ public class LokaalMatchSlot : MonoBehaviour
 
         SwitchColor(false);
         SwitchImage(LokaalMatchingUi.instance.nothingEnabledUi);
-    }
-
-    void CheckOrItWantToLeave()
-    {
-        if (LokaalConnecter.connectionType == LokaalConnecter.ConnectionTypes.reConnecting) return;
-
-        //on left press go dissconnect
-        if (plrController.GetButtonDown(LokaalConnecter.InputType.secondAction))
-        {
-            LokaalConnecter.DissConnectController(plrId);
-            LokaalMatchingUi.instance.ChangeOutputUi(plrId, LokaalMatchingUi.ConnectionTypes.Leave);
-            ClearSlot(false);
-            CheckOfEveryoneIsReady();
-        }
     }
 
     void ReadyUp()
@@ -110,10 +95,6 @@ public class LokaalMatchSlot : MonoBehaviour
         if (LokaalConnecter.connectionType == LokaalConnecter.ConnectionTypes.reConnecting && LokaalConnecter.currentPlr != GameMangeren.plrInGame)
         {
             Debug.LogError("should give a waring for contine without everyone joining");
-            LokaalConnecter.FinishMatchMaking();
-        }
-        else
-        {
             LokaalConnecter.FinishMatchMaking();
         }
     }

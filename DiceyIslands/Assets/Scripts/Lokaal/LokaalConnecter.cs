@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -16,6 +17,7 @@ public static class LokaalConnecter
     
     *to join press A, to ready up press X
     *if it don't connect because u testing before u come to me click "[" first
+
     to test with keyboard press P*
     to cconnect anywhere use [*
     *waring plrId begin by 1 and end with 4
@@ -44,6 +46,14 @@ public static class LokaalConnecter
         reConnecting
     }
     
+    //say wich state the char select is
+    public enum characterSelectState
+    {
+        Connecting,
+        Choosing,
+        Finish
+    }
+
     public class PlayerController
     {
         public bool occuplied = false; //is this is true this is being use *ngl i wanted to check id but then i thought it is better
@@ -178,17 +188,20 @@ public static class LokaalConnecter
     static public List<int> alrUsedControllers = new(); //remeber all controll that alr being used
     static public List<int> alrUsedKeyboardId = new(); //remeber all keyboard id that beind used
     //static private List<int> plrsDissconnected = new();
+    static public List<int> charLeft = new(); //wich char are left for visuale things so it find faster
+    static public List<(int plrId, int charId)> characterDataToAdd = new(); //things in it make it automatic a char in plrData
     static public int maxKeyboardTester = 2; //don't change it *it not a config
     static public ConnectionTypes connectionType = ConnectionTypes.nothing; //make it so u can't join midgame
-    static public int currentPlr = 0; //how many plr there are sing in
+    static public int currentPlr = 0; //how many plr there are sign in
     static public Dictionary<int, PlayerController> plrsController = new(); //all slot of hte party
     static public Dictionary<int, LokaalMatchSlot> allMatchingSlots = new(); //all slot of LokaalmatchSlots
+    static public Dictionary<int, LokaalCharSelectSlot> allCharacterSlots = new(); //all slot of character
 
     //actions
     static public Action<bool> outOfMatchMaking; //the bool for if it go back to main menu or if this is succes into the main game
 
     static private GameObject lokaalMatchingUi = Resources.Load<GameObject>("LokaalConnecter/LokaalConnectUi"); //get the ui of the connetionMatch
-    static private int maxPlr = 4; //how many plr there can go in a game
+    static public int maxPlr = 4; //how many plr there can go in a game
 
 
     //when the game start it go once
@@ -206,6 +219,7 @@ public static class LokaalConnecter
 
         //setup connections
         InputSystem.onDeviceChange += OnDeviceStateChanged;
+        LokaalMatchingUi.instance.StartCoroutine(CharacterDataAddingWaitList());
     }
 
     //ResetLokaal
@@ -214,6 +228,15 @@ public static class LokaalConnecter
         for (int plrId = 1; plrId <= maxPlr; plrId++)
         {
             DissConnectController(plrId); //disconnect from the slotData
+            GameMangeren.PlrData plrData = GameMangeren.GetPlrDataFromId(plrId);
+            plrData.occupied = false;
+            plrData.charData = null;
+        }
+
+        charLeft.Clear();
+        for (int charId = 0; charId < GameMangeren.charsData.Length; charId++)
+        {
+            LokaalConnecter.charLeft.Add(charId);
         }
     }
 
@@ -226,7 +249,6 @@ public static class LokaalConnecter
         //check or this is a valid device
         if (device is Gamepad gamepad)
         {
-            Debug.LogError("plz say to daniel if it work AUB so ik if this a bug");
             ControllerDissConnected(gamepad);
         }
     }
@@ -324,20 +346,70 @@ public static class LokaalConnecter
         if (state)
         {
             Time.timeScale = 0; //if a minigame that play with timescale get old one like make a var to remeber;
-            LokaalMatchingUi.instance.SwitchVisible(true);
+
             if (!GameMangeren.inGame) connectionType = ConnectionTypes.matchConnect; //make sure it not doing it when it should not
             else connectionType = ConnectionTypes.reConnecting;
+
+            LokaalMatchingUi.instance.SwitchVisible(true, connectionType == ConnectionTypes.matchConnect);
         }
         else
         {
             Time.timeScale = 1; //if a minigame that play with timescale get old one like make a var to remeber;
-            LokaalMatchingUi.instance.SwitchVisible(false);
+            LokaalMatchingUi.instance.SwitchVisible(false, connectionType == ConnectionTypes.matchConnect);
             connectionType = ConnectionTypes.nothing;
         }
     }
 
+    //wait for a item added to the list
+    //fixes that u can't press at the exact same time but there is no add event in list...
+    static IEnumerator CharacterDataAddingWaitList()
+    {
+        while (true)
+        {
+            //when contine of going again it is gone
+            if (characterDataToAdd.Count >= 1) characterDataToAdd.RemoveAt(0);
+
+            yield return new WaitUntil(() => characterDataToAdd.Count >= 1);
+
+            var (plrId, charId) = characterDataToAdd[0];
+            CharacterData charData = GameMangeren.GetCharacterDataFromId(charId);
+            GameMangeren.PlrData plrData = GameMangeren.GetPlrDataFromId(plrId);
+
+            //soon updating the speed with the new one
+            if (plrData.occupied || CharacterAlrBeingUse(charData)) continue;
+
+            plrData.occupied = true;
+            plrData.charData = charData;
+            allCharacterSlots[plrId].SwitchState(characterSelectState.Finish);
+            charLeft.Remove(charId);
+
+            Debug.LogWarning($"plr{plrId} chosed: {charData.charName}");
+        }
+    }
+
+    static bool CharacterAlrBeingUse(CharacterData charData)
+    {
+        foreach (GameMangeren.PlrData plrData in GameMangeren.plrsData.Values)
+        {
+            if (plrData.charData == charData) return true;
+        }
+
+        return false;
+    }
+
     static public void FinishMatchMaking()
     {
+        if (currentPlr == 0) return;
+
+        //check if it is valid
+        foreach (LokaalConnecter.PlayerController plrData in LokaalConnecter.plrsController.Values)
+        {
+            if (!plrData.occuplied) continue;
+            if (!LokaalConnecter.allCharacterSlots[LokaalConnecter.GetPlrIdFromPlrData(plrData)].isReadyUp) return;
+        }
+
+        Debug.LogWarning("EveryoneIsReadyUp");
+
         SwitchMatchMaking(false);
         outOfMatchMaking?.Invoke(true);
         GameMangeren.inGame = true; //it would be a prob to make true = true :3* if this is found
