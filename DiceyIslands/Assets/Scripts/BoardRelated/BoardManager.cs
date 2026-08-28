@@ -143,6 +143,10 @@ public class BoardManager : MonoBehaviour
     // UNITY
     // =========================================================
 
+    // =========================================================
+    // UNITY
+    // =========================================================
+
     private void Awake()
     {
         SetupWaypoints();
@@ -182,7 +186,6 @@ public class BoardManager : MonoBehaviour
 
         PlacePlayersOnStartingWaypoint();
 
-        // Hide UI that shouldn't initially be visible.
         if (rollNumberText != null)
         {
             rollNumberText.gameObject.SetActive(false);
@@ -198,8 +201,55 @@ public class BoardManager : MonoBehaviour
             rollButton.interactable = false;
         }
 
-        // Show ROUND 1 before the first turn.
         StartCoroutine(ShowRoundTransition());
+    }
+
+    private void Update()
+    {
+        CheckCurrentPlayerRollInput();
+    }
+
+    private void CheckCurrentPlayerRollInput()
+    {
+        if (gameOver)
+            return;
+
+        if (turnInProgress)
+            return;
+
+        if (CurrentPlayer == null)
+            return;
+
+        int playerId =
+            CurrentPlayer.ControllerPlayerId;
+
+        if (playerId < 1 || playerId > 4)
+        {
+            Debug.LogWarning(
+                "Invalid Controller Player ID: " +
+                playerId
+            );
+
+            return;
+        }
+
+        if (!LokaalConnecter.plrsController.ContainsKey(playerId))
+            return;
+
+        LokaalConnecter.PlayerController controller =
+            LokaalConnecter.plrsController[playerId];
+
+        if (controller == null)
+            return;
+
+        if (!controller.occuplied)
+            return;
+
+        if (controller.GetButtonDown(
+            LokaalConnecter.InputType.jump))
+        {
+            RollDice();
+        }
     }
 
 
@@ -251,12 +301,37 @@ public class BoardManager : MonoBehaviour
     {
         turnOrder.Clear();
 
+        // First try to find players who actually
+        // joined through matchmaking.
         foreach (PlayerPiece player in playerSlots)
         {
             if (player == null)
                 continue;
 
-            if (!player.gameObject.activeInHierarchy)
+            int playerId =
+                player.ControllerPlayerId;
+
+            if (playerId < 1 || playerId > 4)
+            {
+                Debug.LogWarning(
+                    player.name +
+                    " has an invalid Controller Player ID: " +
+                    playerId
+                );
+
+                continue;
+            }
+
+            if (!LokaalConnecter.plrsController.ContainsKey(playerId))
+                continue;
+
+            LokaalConnecter.PlayerController controller =
+                LokaalConnecter.plrsController[playerId];
+
+            if (controller == null)
+                continue;
+
+            if (!controller.occuplied)
                 continue;
 
             if (!turnOrder.Contains(player))
@@ -265,14 +340,48 @@ public class BoardManager : MonoBehaviour
             }
         }
 
-        // Clear statistics from any previous match.
+        /*
+         * When testing the board scene directly
+         * in the Unity Editor, matchmaking may
+         * not have happened yet.
+         *
+         * In that case, use the Player Slots
+         * from the Inspector instead.
+         */
+#if UNITY_EDITOR
+
+        if (turnOrder.Count == 0)
+        {
+            Debug.LogWarning(
+                "No matchmaking players found. " +
+                "Using Player Slots for Editor testing."
+            );
+
+            foreach (PlayerPiece player in playerSlots)
+            {
+                if (player == null)
+                    continue;
+
+                if (!player.gameObject.activeInHierarchy)
+                    continue;
+
+                if (!turnOrder.Contains(player))
+                {
+                    turnOrder.Add(player);
+                }
+            }
+        }
+
+#endif
+
+        // Clear statistics from an old match.
         foreach (PlayerPiece player in turnOrder)
         {
             player.ClearMatchHistory();
         }
 
         Debug.Log(
-            "Game started with " +
+            "Board game started with " +
             turnOrder.Count +
             " players."
         );
@@ -800,7 +909,10 @@ public class BoardManager : MonoBehaviour
             " started."
         );
 
-        yield return new WaitForSeconds(
+        // IMPORTANT:
+        // Realtime means matchmaking's Time.timeScale = 0
+        // cannot freeze the round screen.
+        yield return new WaitForSecondsRealtime(
             roundTransitionDuration
         );
 
@@ -811,7 +923,6 @@ public class BoardManager : MonoBehaviour
 
         turnInProgress = false;
 
-        // Start first player of this round.
         StartCurrentTurn();
     }
 
