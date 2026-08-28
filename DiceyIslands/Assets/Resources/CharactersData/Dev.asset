@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: Dev
   m_EditorClassIdentifier: Assembly-CSharp::CharacterData
   character: {fileID: 0}
-  preview: {fileID: 21300000, guid: 686f6474337ec4c44ac3c00e8d5f1c62, type: 3}
-  charName: Mario
+  preview: {fileID: 21300000, guid: be8cca89b30ee834892a8c8d66061971, type: 3}
+  charName: Dev
