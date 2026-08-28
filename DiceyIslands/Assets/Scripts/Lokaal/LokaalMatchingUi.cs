@@ -10,7 +10,13 @@ public class LokaalMatchingUi : MonoBehaviour
 
     public static LokaalMatchingUi instance; //let other scripts use this
 
+    //All Gui
+    [Header("GUI")]
+    [SerializeField] private CanvasGroup dissconnectGui;
+    [SerializeField] private CanvasGroup charSelectGui;
+
     //ui image that can be used
+    [Header("Image's")]
     public Sprite nothingEnabledUi;
     public Sprite controllerUi;
     public Sprite devUi;
@@ -36,6 +42,12 @@ public class LokaalMatchingUi : MonoBehaviour
     {
         DontDestroyOnLoad(gameObject); //let it switch scene's
         canvas = GetComponent<Canvas>();
+
+        //beta
+        for (int charId = 0; charId < GameMangeren.charsData.Length; charId++)
+        {
+            LokaalConnecter.charLeft.Add(charId);
+        }
     }
 
     // Update is called once per frame
@@ -61,9 +73,27 @@ public class LokaalMatchingUi : MonoBehaviour
     }
 
     //enable or disable the ui
-    public void SwitchVisible(bool state)
+    public void SwitchVisible(bool state, bool isCharSelect)
     {
+        if (state)
+        {
+            if (isCharSelect) EnableGui(charSelectGui, true);
+            else EnableGui(dissconnectGui, true);
+        }
+        else
+        {
+            EnableGui(charSelectGui, false);
+            EnableGui(dissconnectGui, false);
+        }
+
         canvas.enabled = state; //so the script can stil run if u turn of canvas
+    }
+
+    void EnableGui(CanvasGroup Gui, bool state)
+    {
+        Gui.alpha = state? 1 : 0;
+        Gui.blocksRaycasts = state;
+        Gui.interactable = state;
     }
 
     //go exit it
@@ -85,6 +115,11 @@ public class LokaalMatchingUi : MonoBehaviour
                 slotData.ClearSlot(true);
             }
 
+            foreach (LokaalCharSelectSlot slotData in LokaalConnecter.allCharacterSlots.Values)
+            {
+                slotData.ResetSlot();
+            }
+
             LokaalConnecter.ResetLokaal();
         }
     }
@@ -92,39 +127,55 @@ public class LokaalMatchingUi : MonoBehaviour
     //when smth happend where the ui need to be fix it is the function for it
     public void ChangeOutputUi(int plrId, ConnectionTypes connectionType)
     {
-        print($"plr{plrId} connected: {connectionType}");
-        LokaalMatchSlot slot = LokaalConnecter.allMatchingSlots[plrId];
+        //Debug.LogWarning($"plr{plrId} connected: {connectionType}");
+        LokaalMatchSlot disConnectSlot = LokaalConnecter.allMatchingSlots[plrId];
+        LokaalCharSelectSlot charSelectSlot = LokaalConnecter.allCharacterSlots[plrId];
 
         //connect it to the right function *ik why not public void all of them
-        if (connectionType == ConnectionTypes.Join) Join(slot);
-        else if (connectionType == ConnectionTypes.JoinDev) JoinDev(slot);
-        else if (connectionType == ConnectionTypes.Leave) Leave(slot);
-        else if (connectionType == ConnectionTypes.Dissconnect) DissConnect(slot);
+        if (connectionType == ConnectionTypes.Join) Join(charSelectSlot, disConnectSlot);
+        else if (connectionType == ConnectionTypes.JoinDev) JoinDev(charSelectSlot, disConnectSlot);
+        else if (connectionType == ConnectionTypes.Leave) Leave(charSelectSlot, disConnectSlot);
+        else if (connectionType == ConnectionTypes.Dissconnect) DissConnect(disConnectSlot);
 
     }
 
-    void Join(LokaalMatchSlot slot)
+    void Join(LokaalCharSelectSlot charSelectSlot, LokaalMatchSlot disConnectSlot)
     {
-        slot.SwitchImage(controllerUi);
-        slot.SwitchColor(true);
+        //Ready up the Dissconnect screen so fix it when but i alr make it so it is for testing
+        disConnectSlot.SwitchImage(controllerUi);
+        disConnectSlot.SwitchColor(true);
+
+        if (LokaalConnecter.connectionType != LokaalConnecter.ConnectionTypes.matchConnect) return;
+
+        charSelectSlot.SwitchState(LokaalConnecter.characterSelectState.Choosing);
     }
 
-    void JoinDev(LokaalMatchSlot slot)
+    void JoinDev(LokaalCharSelectSlot charSelectSlot, LokaalMatchSlot disConnectSlot)
     {
-        slot.SwitchImage(devUi);
-        slot.SwitchColor(true);
+        //Ready up the Dissconnect screen so fix it when but i alr make it so it is for testing
+        disConnectSlot.SwitchImage(devUi);
+        disConnectSlot.SwitchColor(true);
+
+        if (LokaalConnecter.connectionType != LokaalConnecter.ConnectionTypes.matchConnect) return;
+
+        charSelectSlot.SwitchState(LokaalConnecter.characterSelectState.Choosing);
     }
 
-    void Leave(LokaalMatchSlot slot)
+    void Leave(LokaalCharSelectSlot charSelectSlot, LokaalMatchSlot disConnectSlot)
     {
-        slot.SwitchImage(nothingEnabledUi);
-        slot.SwitchColor(false);
-        slot.SwitchReadyUpMark(false);
+        //Ready up the Dissconnect screen so fix it when but i alr make it so it is for testing
+        disConnectSlot.SwitchImage(nothingEnabledUi);
+        disConnectSlot.SwitchColor(false);
+        disConnectSlot.SwitchReadyUpMark(false);
+
+        if (LokaalConnecter.connectionType != LokaalConnecter.ConnectionTypes.matchConnect) return;
+
+        charSelectSlot.SwitchState(LokaalConnecter.characterSelectState.Connecting);
     }
 
-    void DissConnect(LokaalMatchSlot slot)
+    void DissConnect(LokaalMatchSlot disConnectSlot)
     {
-        slot.SwitchImage(dissconnectedControl);
+        disConnectSlot.SwitchImage(dissconnectedControl);
     }
 
     #if UNITY_EDITOR
