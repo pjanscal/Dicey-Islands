@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b74f98639e2da37459ee0f2ae460a601, type: 3}
-  m_Name: Bob
+  m_Name: "Cap\u2019n Dice"
   m_EditorClassIdentifier: Assembly-CSharp::CharacterData
   character: {fileID: 0}
   preview: {fileID: 21300000, guid: d1cad5ea2123246438b1bd9412487141, type: 3}
