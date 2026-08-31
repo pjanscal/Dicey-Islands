@@ -57,6 +57,16 @@ public class LokaalMatchingUi : MonoBehaviour
             TryForceLoadingLokaalMatch();
         #endif
 
+        if (Input.GetKeyDown(KeyCode.RightBracket))
+        {
+            Debug.Log($"Gamepads: {Gamepad.all.Count}");
+
+            foreach (Gamepad gamepad in Gamepad.all)
+            {
+                Debug.Log($"Gamepad: {gamepad.name} | ID: {gamepad.deviceId} | Enabled: {gamepad.enabled}");
+            }
+        }
+
         //here the rule when they can't join
         if (LokaalConnecter.connectionType == LokaalConnecter.ConnectionTypes.nothing) return;
         

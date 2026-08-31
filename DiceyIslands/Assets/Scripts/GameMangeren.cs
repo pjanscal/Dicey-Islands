@@ -6,9 +6,17 @@ using UnityEngine.SceneManagement;
 
 public static class GameMangeren
 {
+    public enum CPUDifficulty
+    {
+        Easy,
+        normal,
+        hard,
+    }
+
     static public bool inGame = false; //tell if it is in game or not
     static public bool isPaused = false; //tell if it pause
     static public int plrInGame = 0; //help the lokaal script to see what it should be when someone disconnect
+    static public CPUDifficulty cPUDifficulty; //the difficulty of the cpu
 
     //load info
     static public CharacterData[] charsData = Resources.LoadAll<CharacterData>("CharactersData");
@@ -16,6 +24,7 @@ public static class GameMangeren
     static public LoadingScreen loadingScreen;
 
     static public Dictionary<int, PlrData> plrsData = new();
+    static public HashSet<int> allCPU = new(); //a list of plrid about who is cpu
 
     //plrInfo's //soon for characterSelect
     public class PlrData

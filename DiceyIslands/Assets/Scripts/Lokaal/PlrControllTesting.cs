@@ -10,7 +10,7 @@ public class PlrControllTesting : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        playerController = LokaalConnecter.plrsController[plrId];
+        playerController = LokaalConnecter.plrsController[plrId]; //connect the player controller to the real controller;
     }
 
     // Update is called once per frame

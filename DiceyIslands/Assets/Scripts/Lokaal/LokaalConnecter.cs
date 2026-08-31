@@ -24,6 +24,7 @@ public static class LokaalConnecter
     *u can use occupied to see if it already but it won't bug if u ask input it just return false or vector2.zero
     */
 
+    //yo DDD it is me DDD check soon what happend if u getbuttondown after a frame and before that it is asked can it be used?
 
     //must be outside here so the script can use it and the other one don't need to look inside playercontoller
     public enum InputType //so u can ask for jump or movement and it return the thing
@@ -60,8 +61,14 @@ public static class LokaalConnecter
         
         //controls// one of those controll it so we can play with laptop/pc
         public Gamepad gamepad; //gamepad that control it :3
+        public bool isCPU = false; //if there is no controll and it is cpu
         public Keyboard keyboard; //keyboard that controll it
         public int keyboardId; //id that help to make it 2 plrs testing
+
+        //CPU input thingy
+        public Vector2 cpuMoveDir = Vector2.zero; //for get movedir
+        public HashSet<InputType> cpuButtonDown = new(); //for getButtonDown
+        public HashSet<InputType> cpuButtonStateChanged = new();//for button up/down
 
         //input Registest
         //keybinds
@@ -113,6 +120,11 @@ public static class LokaalConnecter
             {
                 return keyboard[keyboardButtons[keyboardId][action]].wasPressedThisFrame || false; //if failed
             }
+
+            if (isCPU)
+            {
+                return cpuButtonDown.Contains(action);
+            }
             
             //a error happend
             Debug.LogError("no gamepad or keyboard found");
@@ -131,6 +143,11 @@ public static class LokaalConnecter
             {
                 return keyboard[keyboardButtons[keyboardId][action]].isPressed;
             }
+
+            if (isCPU)
+            {
+                return cpuButtonStateChanged.Contains(action) && !cpuButtonDown.Contains(action);
+            }
             
             //a error happend
             Debug.LogError("no gamepad or keyboard found");
@@ -148,6 +165,11 @@ public static class LokaalConnecter
             if (keyboard != null)
             {
                 return keyboard[keyboardButtons[keyboardId][action]].wasReleasedThisFrame;
+            }
+
+            if (isCPU)
+            {
+                return cpuButtonStateChanged.Contains(action) && cpuButtonDown.Contains(action);
             }
             
             //a error happend
@@ -178,10 +200,30 @@ public static class LokaalConnecter
                 //normalize it so it won't be faster with W/D
                 return moveDir.normalized;
             }
+
+            if (isCPU)
+            {
+                return cpuMoveDir.normalized;
+            }
             
             //a error happend
             Debug.LogError("no gamepad or keyboard found");
             return Vector2.zero;
+        }
+    
+        public void CPUSetButton(InputType action, bool state)
+        {
+            if (state) cpuButtonDown.Add(action);
+            else cpuButtonDown.Remove(action);
+
+            CPUButtonDownOrUp(action);
+        }
+
+        IEnumerator CPUButtonDownOrUp(InputType action)
+        {
+            cpuButtonStateChanged.Add(action);
+            yield return null; //wait one frame or 2 and make it so that the thing deleted it
+            cpuButtonStateChanged.Remove(action);
         }
     }
     
@@ -315,6 +357,13 @@ public static class LokaalConnecter
             alrUsedControllers.Remove(plrData.gamepad.deviceId);
             plrData.gamepad = null;
         }
+        else if (plrData.isCPU)
+        {
+            plrData.isCPU = false;
+            plrData.cpuButtonDown.Clear();
+            plrData.cpuButtonStateChanged.Clear();
+            plrData.cpuMoveDir = Vector2.zero;
+        }
         else
         {
             #if UNITY_EDITOR
@@ -413,26 +462,36 @@ public static class LokaalConnecter
         if (currentPlr == 0) return;
 
         //check if it is valid
-        foreach (LokaalConnecter.PlayerController plrData in LokaalConnecter.plrsController.Values)
+        foreach (PlayerController plrData in plrsController.Values)
         {
             if (!plrData.occuplied) continue;
-            if (!LokaalConnecter.allCharacterSlots[LokaalConnecter.GetPlrIdFromPlrData(plrData)].isReadyUp) return;
+            if (!allCharacterSlots[GetPlrIdFromPlrData(plrData)].isReadyUp) return;
         }
 
         Debug.LogWarning("EveryoneIsReadyUp");
+
+        foreach (PlayerController plrData in plrsController.Values)
+        {
+            if (!plrData.occuplied) SetCPU(plrData);
+        }
 
         SwitchMatchMaking(false);
         outOfMatchMaking?.Invoke(true);
         GameMangeren.inGame = true; //it would be a prob to make true = true :3* if this is found
         GameMangeren.plrInGame = currentPlr;
 
-        //same here
-        //plrsDissconnected.Clear();
-
         foreach (LokaalMatchSlot slotData in allMatchingSlots.Values)
         {
             slotData.ClearSlot(false);
         }
+    }
+
+    static void SetCPU(PlayerController plrData)
+    {
+        plrData.isCPU = true;
+        plrData.occuplied = true;
+
+        GameMangeren.allCPU.Add(GetPlrIdFromPlrData(plrData));
     }
 
     //find the first free plr slot to concent to
