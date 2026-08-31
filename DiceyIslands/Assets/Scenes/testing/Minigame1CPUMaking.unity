@@ -833,6 +833,7 @@ MonoBehaviour:
   timeText: {fileID: 2038577728}
   countdown: {fileID: 0}
   indicator: {fileID: 1752867213}
+  elapsed: 0
   isRunning: 0
   firstTime: 0
   ready: 0
@@ -965,6 +966,7 @@ MonoBehaviour:
   timeText: {fileID: 1537390781}
   countdown: {fileID: 0}
   indicator: {fileID: 1292766093}
+  elapsed: 0
   isRunning: 0
   firstTime: 0
   ready: 0
@@ -1296,6 +1298,7 @@ MonoBehaviour:
   timeText: {fileID: 1904216514}
   countdown: {fileID: 0}
   indicator: {fileID: 2097519387}
+  elapsed: 0
   isRunning: 0
   firstTime: 0
   ready: 0
@@ -1427,6 +1430,67 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!1 &1523812677
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1523812679}
+  - component: {fileID: 1523812678}
+  m_Layer: 0
+  m_Name: CPUmangeren
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1523812678
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1523812677}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 840a6dce418652545bfc549dadb8b4b9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CPUMinigame1
+  cpuCharacters:
+  - plrId: 1
+    character: {fileID: 1974497211}
+  - plrId: 2
+    character: {fileID: 1303991679}
+  - plrId: 3
+    character: {fileID: 880264596}
+  - plrId: 4
+    character: {fileID: 939397604}
+  timeNeeded: {fileID: 308417356}
+  difficultiesConfigsEdit:
+  - offSet: {x: 1.5, y: 2.8}
+    difficulty: 0
+  - offSet: {x: 1, y: 1.8}
+    difficulty: 1
+  - offSet: {x: 0.5, y: 1}
+    difficulty: 2
+--- !u!4 &1523812679
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1523812677}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 815.687, y: 562.9146, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1533404022
 GameObject:
   m_ObjectHideFlags: 0
@@ -2200,6 +2264,7 @@ MonoBehaviour:
   timeText: {fileID: 822746547}
   countdown: {fileID: 0}
   indicator: {fileID: 355427022}
+  elapsed: 0
   isRunning: 0
   firstTime: 0
   ready: 0
@@ -2558,3 +2623,4 @@ SceneRoots:
   - {fileID: 217760104}
   - {fileID: 1971428862}
   - {fileID: 308417357}
+  - {fileID: 1523812679}

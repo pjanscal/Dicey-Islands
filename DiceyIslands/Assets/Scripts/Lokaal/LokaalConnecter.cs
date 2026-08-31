@@ -123,7 +123,7 @@ public static class LokaalConnecter
 
             if (isCPU)
             {
-                return cpuButtonDown.Contains(action);
+                return cpuButtonStateChanged.Contains(action) && cpuButtonDown.Contains(action);
             }
             
             //a error happend
@@ -146,7 +146,7 @@ public static class LokaalConnecter
 
             if (isCPU)
             {
-                return cpuButtonStateChanged.Contains(action) && !cpuButtonDown.Contains(action);
+                return cpuButtonDown.Contains(action);
             }
             
             //a error happend
@@ -169,7 +169,7 @@ public static class LokaalConnecter
 
             if (isCPU)
             {
-                return cpuButtonStateChanged.Contains(action) && cpuButtonDown.Contains(action);
+                return cpuButtonStateChanged.Contains(action) && !cpuButtonDown.Contains(action);
             }
             
             //a error happend
@@ -216,7 +216,7 @@ public static class LokaalConnecter
             if (state) cpuButtonDown.Add(action);
             else cpuButtonDown.Remove(action);
 
-            CPUButtonDownOrUp(action);
+            LokaalMatchingUi.instance.StartCoroutine(CPUButtonDownOrUp(action));
         }
 
         IEnumerator CPUButtonDownOrUp(InputType action)

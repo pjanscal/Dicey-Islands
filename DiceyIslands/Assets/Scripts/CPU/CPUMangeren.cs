@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -22,7 +23,25 @@ public class CPUMangeren : MonoBehaviour
             plrsChar.Add(cpuCharacter.plrId, cpuCharacter.character);
         }
 
+        //setup the first time
+        StartCoroutine(GetAllGpuStart());
+
         //if (plrsChar.Count != 4) Debug.LogWarning("make sure that there is 4 plrid inside the cpucharacters the gameobject can just be empty :3");
+    }
+
+    protected IEnumerator GetAllGpuStart()
+    {
+        yield return new WaitUntil(() => GameMangeren.inGame && LokaalConnecter.connectionType == LokaalConnecter.ConnectionTypes.nothing);
+
+        foreach (int plrId in GameMangeren.allCPU)
+        {
+            StartCoroutine(CPUStart(plrId));
+        }
+    }
+
+    protected virtual IEnumerator CPUStart(int plrId)
+    {
+        yield return null;
     }
 
     // Update is called once per frame
