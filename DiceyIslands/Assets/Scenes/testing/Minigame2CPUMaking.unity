@@ -2182,10 +2182,37 @@ MonoBehaviour:
   difficultiesConfigsEdit:
   - offSet: {x: 0.8, y: 1}
     difficulty: 0
+    pointChanceToSelects:
+    - pointGain: -3
+      chanceToSelect: 0.2
+    - pointGain: -1
+      chanceToSelect: 0.34
+    - pointGain: 1
+      chanceToSelect: 1
+    - pointGain: 3
+      chanceToSelect: 0.95
   - offSet: {x: 0.4, y: 0.8}
     difficulty: 1
+    pointChanceToSelects:
+    - pointGain: -3
+      chanceToSelect: 0.13
+    - pointGain: -1
+      chanceToSelect: 0.24
+    - pointGain: 1
+      chanceToSelect: 1
+    - pointGain: 3
+      chanceToSelect: 1
   - offSet: {x: 0.3, y: 0.5}
     difficulty: 2
+    pointChanceToSelects:
+    - pointGain: -3
+      chanceToSelect: 0
+    - pointGain: -1
+      chanceToSelect: 0.05
+    - pointGain: 1
+      chanceToSelect: 1
+    - pointGain: 3
+      chanceToSelect: 1
 --- !u!1 &2020571933
 GameObject:
   m_ObjectHideFlags: 0
