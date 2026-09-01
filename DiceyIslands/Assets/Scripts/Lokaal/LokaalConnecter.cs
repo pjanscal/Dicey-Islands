@@ -302,7 +302,7 @@ public static class LokaalConnecter
         //check or this is a valid device
         if (device is Gamepad gamepad)
         {
-            ControllerDissConnected(gamepad);
+            //ControllerDissConnected(gamepad);
         }
     }
 
@@ -468,6 +468,8 @@ public static class LokaalConnecter
             if (!allCharacterSlots[GetPlrIdFromPlrData(plrData)].isReadyUp) return;
         }
 
+        connectionType = ConnectionTypes.nothing; //so it won't lett anyone connect when they shouldn't
+
         Debug.LogWarning("EveryoneIsReadyUp");
 
         foreach (PlayerController plrData in plrsController.Values)
@@ -491,7 +493,20 @@ public static class LokaalConnecter
         plrData.isCPU = true;
         plrData.occuplied = true;
 
-        GameMangeren.allCPU.Add(GetPlrIdFromPlrData(plrData));
+        int plrId = GetPlrIdFromPlrData(plrData);
+        GameMangeren.allCPU.Add(plrId);
+
+        //set in the rng char
+        int charId = charLeft[0];
+        charLeft.RemoveAt(0); //remove the old one immedaly
+        CharacterData charData = GameMangeren.GetCharacterDataFromId(charId);
+
+        //show it in the charselect
+        LokaalCharSelectSlot charSelectSlot = allCharacterSlots[plrId];
+        charSelectSlot.currentCharSelected = charId;
+        //charSelectSlot.SwitchState(characterSelectState.Choosing);
+
+        GameMangeren.GetPlrDataFromId(plrId).charData = charData;
     }
 
     //find the first free plr slot to concent to
