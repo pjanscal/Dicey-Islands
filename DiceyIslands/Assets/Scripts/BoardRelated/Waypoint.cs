@@ -4,12 +4,7 @@ public enum TileType
 {
     Normal,
     MoveBack,
-    MoveForward,
-    SwapWithRandomPlayer,
-    RollAgain,
-    SkipNextTurn
-
-
+    MoveForward
 }
 
 public class Waypoint : MonoBehaviour
