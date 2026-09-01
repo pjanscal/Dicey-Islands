@@ -14,6 +14,7 @@ public class CPUMangeren : MonoBehaviour
 
     [SerializeField] List<CPUCharacter> cpuCharacters = new(4);
     protected Dictionary<int, GameObject> plrsChar = new();
+    protected float secBeforeReadyUp = .2f;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     protected virtual void Start()

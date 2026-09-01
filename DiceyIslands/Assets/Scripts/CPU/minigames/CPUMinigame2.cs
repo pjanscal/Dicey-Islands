@@ -3,16 +3,20 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CPUMinigame1 : CPUMangeren
+public class CPUMinigame2: CPUMangeren
 {
+    //if hardcoded robert fault :3
+
     [Serializable]
     private class DifficultyCPUConfigs
     {
         public Vector2 offSet;
+        //wa happend if it is that point
         public GameMangeren.CPUDifficulty difficulty;
     }
 
-    [SerializeField] private TimeNeeded timeNeeded;
+    //objects needed
+    [SerializeField] private SpawnObject spawnObject;
     
     //configs
     [Header("Configs")]
@@ -32,29 +36,28 @@ public class CPUMinigame1 : CPUMangeren
 
     protected override IEnumerator CPUStart(int plrId)
     {
-        MainGameScript mainGameScript = plrsChar[plrId].GetComponent<MainGameScript>();
         LokaalConnecter.PlayerController playerController = LokaalConnecter.plrsController[plrId];
         DifficultyCPUConfigs configs = difficultiesConfigs[GameMangeren.cPUDifficulty];
 
-        yield return new WaitForSeconds(secBeforeReadyUp); //so it load the new timeReqeument
-
         //ready up
-        playerController.CPUSetButton(LokaalConnecter.InputType.x, true);
-
-        float timeBeforeItEnds = timeNeeded.timeNeededSeconds;
-        float timeOffset = UnityEngine.Random.Range(configs.offSet.x, configs.offSet.y); //get rng number
-        timeOffset *= UnityEngine.Random.Range(0, 2) == 0? -1f : 1f; //make it - or +
-        float pressTime = timeBeforeItEnds + timeOffset;
-
-        print($"timeneeded: {timeBeforeItEnds}, timeoffset: {timeOffset}, pressTime: {pressTime}");
-
-        //press it when it reach that time
-        yield return null;
-
-        playerController.CPUSetButton(LokaalConnecter.InputType.x, false);
-
-        yield return new WaitUntil(() => mainGameScript.elapsed >= pressTime);
+        yield return new WaitForSeconds(secBeforeReadyUp);
 
         playerController.CPUSetButton(LokaalConnecter.InputType.x, true);
+
+        //soon unitl it is finish :3
+        while (true)
+        {
+            //caculate so we have less time between the real offset
+            float offset = UnityEngine.Random.Range(configs.offSet.x, configs.offSet.y);
+
+            yield return new WaitUntil(() => spawnObject.isActiveAndEnabled);
+
+            //now it spawned in and it wait for the offset while caculating if it want it
+            yield return new WaitForSeconds(offset);
+
+            playerController.CPUSetButton(LokaalConnecter.InputType.x, true);
+        }
+
+        //yield return null;
     }
 }
