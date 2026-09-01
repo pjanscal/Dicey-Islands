@@ -2202,7 +2202,7 @@ MonoBehaviour:
       chanceToSelect: 1
     - pointGain: 3
       chanceToSelect: 1
-  - offSet: {x: 0.3, y: 0.5}
+  - offSet: {x: 0.35, y: 0.55}
     difficulty: 2
     pointChanceToSelects:
     - pointGain: -3

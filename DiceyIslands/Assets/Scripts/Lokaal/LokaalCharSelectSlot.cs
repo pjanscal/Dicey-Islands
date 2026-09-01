@@ -21,7 +21,8 @@ public class LokaalCharSelectSlot : MonoBehaviour
     private LokaalConnecter.characterSelectState currentState = LokaalConnecter.characterSelectState.Connecting;
     private bool canSwitchChar = true; //debounce when doing the an
     [HideInInspector] public bool isReadyUp = false;
-    private int currentCharSelected = 0;
+    [HideInInspector] public int currentCharSelected;
+    private int defaultCharSelected = 1;
     private int? oldCharId;
     private bool previewPrimeSelected = true;
     //private float currentTimerBetweenChar;
@@ -44,6 +45,7 @@ public class LokaalCharSelectSlot : MonoBehaviour
         LokaalConnecter.allCharacterSlots.Add(plrId, this);
         plrController = LokaalConnecter.plrsController[plrId];
         bgImage = GetComponent<Image>();
+        currentCharSelected = defaultCharSelected;
 
         bgImage.color = bgDisableColor;
         nameDisplay.text = $"player {plrId}";
@@ -53,6 +55,13 @@ public class LokaalCharSelectSlot : MonoBehaviour
         RectTransform rectTransform = newPreview.GetComponent<RectTransform>();
         rectTransform.localPosition = Vector2.up * previewUi.rectTransform.rect.height;
         secondaryPreviewUi = newPreview.GetComponent<Image>();
+
+        //set all invisble
+        foreach (Image arrow in arrows)
+        {
+            arrow.enabled = false;
+        }
+        downTutorial.enabled = false;
     }
 
     // Update is called once per frame
@@ -162,14 +171,13 @@ public class LokaalCharSelectSlot : MonoBehaviour
 
         CharacterData charData = GameMangeren.GetCharacterDataFromId(charId);
         //set the color alright so i don't tween when it happend
-        if (CharAlrBeenUsed(charId) &&
+        if (CharAlrBeenUsed(charId) && LokaalConnecter.connectionType == LokaalConnecter.ConnectionTypes.matchConnect && //it help with when assign cpu so it won't turn disable
          currentState != LokaalConnecter.characterSelectState.Finish) target.color = charDisableColor;
         else target.color = Color.white;
+        
         target.sprite = charData.preview;
         oldCharId = currentCharSelected;
         currentCharSelected = charId;
-
-        //tween
     }
 
     //set the color alright when it happend
@@ -228,8 +236,10 @@ public class LokaalCharSelectSlot : MonoBehaviour
         Image target = !previewPrimeSelected? previewUi : secondaryPreviewUi;
         target.sprite = pressAToJoinImage;
         target.color = Color.white;
+        canSwitchChar = false; //else it can go bug
         SwitchPreviewUi(Vector2.up);
         oldCharId = null;
+        currentCharSelected = defaultCharSelected;
 
         foreach (Image arrow in arrows)
         {
@@ -246,7 +256,8 @@ public class LokaalCharSelectSlot : MonoBehaviour
         if (currentState == LokaalConnecter.characterSelectState.Connecting)
         {
             ToggleColor(bgImage, slotColor);
-            SetCharacter(1);
+            SetCharacter(currentCharSelected);
+            canSwitchChar = false; //else it can go bug
             SwitchPreviewUi(Vector2.down);
         }
 
