@@ -33,6 +33,23 @@ public class PlayerPiece : MonoBehaviour
     [Header("Match History")]
     public List<int> roundWaypointHistory = new List<int>();
 
+    [Header("Turn Effects")]
+    [SerializeField] private bool skipNextTurn = false;
+
+    public void GiveSkipNextTurn()
+    {
+        skipNextTurn = true;
+    }
+
+    public bool ConsumeSkipNextTurn()
+    {
+        if (!skipNextTurn)
+            return false;
+
+        skipNextTurn = false;
+        return true;
+    }
+
 
     public void RecordRoundPosition()
     {
