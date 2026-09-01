@@ -2196,11 +2196,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4095696881315194838, guid: 6a46df69a8367c140af71345b356429a, type: 3}
       propertyPath: slotColor.g
-      value: 1
+      value: 0.9583559
       objectReference: {fileID: 0}
     - target: {fileID: 4095696881315194838, guid: 6a46df69a8367c140af71345b356429a, type: 3}
       propertyPath: slotColor.r
-      value: 0.008660436
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4887809324472902757, guid: 6a46df69a8367c140af71345b356429a, type: 3}
       propertyPath: m_Pivot.x
