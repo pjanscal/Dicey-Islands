@@ -33,7 +33,12 @@ public class BoardManager : MonoBehaviour
         new List<PlayerPiece>();
 
     private int currentTurnIndex = 0;
+    private bool extraRollGranted = false;
 
+    [Header("Swap Tile")]
+    [SerializeField] private float swapAnimationDuration = 1.2f;
+    [SerializeField] private float swapNumberChangeSpeed = 0.1f;
+    [SerializeField] private float swapResultDisplayTime = 0.8f;
 
     // =========================================================
     // MOVEMENT
@@ -71,6 +76,15 @@ public class BoardManager : MonoBehaviour
     [SerializeField] private TMP_Text rollNumberText;
 
     [SerializeField] private TMP_Text roundText;
+
+    [SerializeField] private TMP_Text swapText;
+
+    [SerializeField] private TMP_Text skippedText;
+
+    [Header("Skip Turn")]
+    [SerializeField] private float skippedDisplayDuration = 1.2f;
+
+
 
 
     // =========================================================
@@ -143,9 +157,6 @@ public class BoardManager : MonoBehaviour
     // UNITY
     // =========================================================
 
-    // =========================================================
-    // UNITY
-    // =========================================================
 
     private void Awake()
     {
@@ -202,6 +213,9 @@ public class BoardManager : MonoBehaviour
         }
 
         StartCoroutine(ShowRoundTransition());
+
+        if (skippedText != null)
+            skippedText.gameObject.SetActive(false);
     }
 
     private void Update()
@@ -637,8 +651,22 @@ public class BoardManager : MonoBehaviour
         // -----------------------------------------------------
         // TURN COMPLETE
         // -----------------------------------------------------
-
         turnInProgress = false;
+
+        if (extraRollGranted)
+        {
+            extraRollGranted = false;
+
+            Debug.Log(
+                "Player " +
+                player.PlayerNumber +
+                " gets to roll again!"
+            );
+
+            StartCurrentTurn();
+
+            yield break;
+        }
 
         FinishCurrentTurn();
     }
@@ -736,36 +764,19 @@ public class BoardManager : MonoBehaviour
     // =========================================================
 
     private IEnumerator ResolveTileEffects(
-        PlayerPiece player
-    )
+    PlayerPiece player
+)
     {
-        /*
-         * Prevents an infinite loop like:
-         *
-         * Tile 5 -> Move Forward 2
-         * Tile 7 -> Move Back 2
-         *
-         * forever.
-         */
         const int effectSafetyLimit = 20;
-
         int effectsResolved = 0;
 
-        while (
-            effectsResolved <
-            effectSafetyLimit
-        )
+        while (effectsResolved < effectSafetyLimit)
         {
-            // Winning always takes priority.
             if (HasPlayerReachedEnd(player))
-            {
                 yield break;
-            }
 
             Waypoint landedWaypoint =
-                waypoints[
-                    player.currentWaypointIndex
-                ];
+                waypoints[player.currentWaypointIndex];
 
             Debug.Log(
                 "Player " +
@@ -777,15 +788,59 @@ public class BoardManager : MonoBehaviour
                 ")"
             );
 
+            // =========================================
+            // ROLL AGAIN
+            // =========================================
+
+            if (landedWaypoint.tileType ==
+                TileType.RollAgain)
+            {
+                Debug.Log(
+                    "Player " +
+                    player.PlayerNumber +
+                    " earned another roll!"
+                );
+
+                extraRollGranted = true;
+
+                yield break;
+            }
+
+            // =========================================
+            // SWAP WITH RANDOM PLAYER
+            // =========================================
+
+            if (landedWaypoint.tileType ==
+                TileType.SwapWithRandomPlayer)
+            {
+                yield return SwapWithRandomPlayer(player);
+
+                effectsResolved++;
+                continue;
+            }
+
+            // =========================================
+            // SKIP NEXT PLAYER
+            // =========================================
+
+            if (landedWaypoint.tileType ==
+                TileType.SkipNextTurn)
+            {
+                GiveSkipToNextPlayer(player);
+
+                yield break;
+            }
+
+            // =========================================
+            // MOVE FORWARD / MOVE BACK
+            // =========================================
+
             int movement =
-                landedWaypoint
-                .GetMovementEffect();
+                landedWaypoint.GetMovementEffect();
 
             // Normal tile.
             if (movement == 0)
-            {
                 yield break;
-            }
 
             int targetIndex =
                 player.currentWaypointIndex +
@@ -797,37 +852,275 @@ public class BoardManager : MonoBehaviour
                 waypoints.Count - 1
             );
 
-            // Effect cannot actually move player.
             if (targetIndex ==
                 player.currentWaypointIndex)
             {
                 yield break;
             }
 
-            // Move through the tiles visually.
             yield return MovePlayerToWaypoint(
                 player,
                 targetIndex
             );
 
             effectsResolved++;
-
-            /*
-             * Loop runs again.
-             *
-             * This means if one special tile
-             * MOVES you onto another special tile,
-             * the new destination can trigger too.
-             *
-             * Tiles merely PASSED THROUGH still
-             * never trigger.
-             */
         }
 
         Debug.LogWarning(
             "Tile effect safety limit reached. " +
             "Check for tile effects that loop forever."
         );
+    }
+    private IEnumerator SwapWithRandomPlayer(
+     PlayerPiece currentPlayer
+ )
+    {
+        List<PlayerPiece> possiblePlayers =
+            new List<PlayerPiece>();
+
+        foreach (PlayerPiece player in turnOrder)
+        {
+            if (player == null)
+                continue;
+
+            if (player == currentPlayer)
+                continue;
+
+            if (!player.gameObject.activeInHierarchy)
+                continue;
+
+            possiblePlayers.Add(player);
+        }
+
+        // No other player exists.
+        if (possiblePlayers.Count == 0)
+        {
+            Debug.Log(
+                "No player available to swap with."
+            );
+
+            yield break;
+        }
+
+        // =========================================
+        // SWAP ANIMATER
+        // =========================================
+
+        if (swapText != null)
+        {
+            swapText.gameObject.SetActive(true);
+        }
+
+        float elapsed = 0f;
+
+        while (elapsed < swapAnimationDuration)
+        {
+            PlayerPiece fakePlayer =
+                possiblePlayers[
+                    Random.Range(
+                        0,
+                        possiblePlayers.Count
+                    )
+                ];
+
+            if (swapText != null)
+            {
+                swapText.text =
+                    "SWAPPING WITH...\n" +
+                    "PLAYER " +
+                    fakePlayer.PlayerNumber;
+            }
+            yield return new WaitForSecondsRealtime(
+                swapNumberChangeSpeed
+            );
+
+            elapsed +=
+                swapNumberChangeSpeed;
+        }
+
+        // =========================================
+        // PICKS REAL PLAYERS
+        // =========================================
+
+        PlayerPiece otherPlayer =
+            possiblePlayers[
+                Random.Range(
+                    0,
+                    possiblePlayers.Count
+                )
+            ];
+
+        if (swapText != null)
+        {
+            swapText.text =
+                "SWAP WITH\nPLAYER " +
+                otherPlayer.PlayerNumber +
+                "!";
+        }
+
+        Debug.Log(
+            "Player " +
+            currentPlayer.PlayerNumber +
+            " is swapping with Player " +
+            otherPlayer.PlayerNumber
+        );
+        yield return new WaitForSecondsRealtime(
+            swapResultDisplayTime
+        );
+
+        // =========================================
+        // SAVE OLD POSITIONS
+        // =========================================
+
+        int currentPlayerOldIndex =
+            currentPlayer.currentWaypointIndex;
+
+        int otherPlayerOldIndex =
+            otherPlayer.currentWaypointIndex;
+
+        // =========================================
+        // SWAP LOGICAL POSITIONS
+        // =========================================
+
+        currentPlayer.currentWaypointIndex =
+            otherPlayerOldIndex;
+
+        otherPlayer.currentWaypointIndex =
+            currentPlayerOldIndex;
+
+        // =========================================
+        // SWAP VISUAL POSITIONS
+        // =========================================
+
+        Vector3 currentDestination =
+            waypoints[
+                currentPlayer.currentWaypointIndex
+            ].transform.position +
+            currentPlayer.tileOffset;
+
+        Vector3 otherDestination =
+            waypoints[
+                otherPlayer.currentWaypointIndex
+            ].transform.position +
+            otherPlayer.tileOffset;
+
+        currentPlayer.transform.position =
+            currentDestination;
+
+        otherPlayer.transform.position =
+            otherDestination;
+
+        UpdateTilesLeftText();
+
+        if (swapText != null)
+        {
+            swapText.gameObject.SetActive(false);
+        }
+
+    }
+    // =========================================
+    // SKIP MANAGER
+    // =========================================
+    private void GiveSkipToNextPlayer(
+    PlayerPiece player
+)
+    {
+        if (player == null)
+            return;
+
+        int playerTurnIndex =
+            turnOrder.IndexOf(player);
+
+        if (playerTurnIndex < 0)
+            return;
+
+        if (playerTurnIndex >=
+            turnOrder.Count - 1)
+        {
+            Debug.Log(
+                "Player " +
+                player.PlayerNumber +
+                " landed on Skip Next Turn, " +
+                "but they are last in the turn order.. " +
+                "nothing happens."
+            );
+
+            return;
+        }
+
+        PlayerPiece playerToSkip =
+            turnOrder[playerTurnIndex + 1];
+
+        if (playerToSkip == null)
+            return;
+
+        playerToSkip.GiveSkipNextTurn();
+
+        Debug.Log(
+            "Player " +
+            player.PlayerNumber +
+            " caused Player " +
+            playerToSkip.PlayerNumber +
+            " to skip their next turn."
+        );
+    }
+    // =========================================
+    // SKIP UI ANIMATION (SUBJECT TO CHANGE/EVISCERATION)
+    // =========================================
+    private IEnumerator ShowSkippedTurn(
+    PlayerPiece skippedPlayer
+)
+    {
+        turnInProgress = true;
+
+        if (rollButton != null)
+        {
+            rollButton.interactable = false;
+        }
+
+        if (rollNumberText != null)
+        {
+            rollNumberText.gameObject
+                .SetActive(false);
+        }
+
+        // Make sure camera is looking at
+        // the skipped player.
+        if (playerCamera != null)
+        {
+            playerCamera.SetTarget(
+                skippedPlayer.transform
+            );
+        }
+
+        if (skippedText != null)
+        {
+            skippedText.text =
+                "SKIPPED";
+
+            skippedText.gameObject
+                .SetActive(true);
+        }
+
+        Debug.Log(
+            "Player " +
+            skippedPlayer.PlayerNumber +
+            " was skipped."
+        );
+
+        yield return new WaitForSecondsRealtime(
+            skippedDisplayDuration
+        );
+
+        if (skippedText != null)
+        {
+            skippedText.gameObject
+                .SetActive(false);
+        }
+
+        turnInProgress = false;
+
+        FinishCurrentTurn();
     }
 
 
@@ -1113,4 +1406,5 @@ public class BoardManager : MonoBehaviour
             "Turn order has been changed."
         );
     }
+
 }
