@@ -74,6 +74,7 @@ public class BoardManager : MonoBehaviour
     [SerializeField] private TMP_Text tilesLeftText;
 
     [SerializeField] private TMP_Text rollNumberText;
+    [SerializeField] private TMP_Text bonusRollNumberText;
 
     [SerializeField] private TMP_Text roundText;
 
@@ -459,6 +460,11 @@ public class BoardManager : MonoBehaviour
         {
             rollNumberText.gameObject
                 .SetActive(false);
+
+            if (bonusRollNumberText != null)
+            {
+                bonusRollNumberText.gameObject.SetActive(false);
+            }
         }
 
         // =========================================
@@ -563,70 +569,179 @@ public class BoardManager : MonoBehaviour
         );
     }
 
-    private IEnumerator RollAndPlayTurn(
-        PlayerPiece player
-    )
+    // ==============================================
+    // BONUSDICE
+    // ==============================================
+
+    private int GetBonusDiceMax(
+    PlayerPiece player
+)
     {
-        // -----------------------------------------------------
-        // DICE ANIMATION
-        // -----------------------------------------------------
+        if (player == null)
+            return 0;
+
+        int place =
+            turnOrder.IndexOf(player);
+
+        switch (place)
+        {
+            // 1st place
+            case 0:
+                return 6;
+
+            // 2nd place
+            case 1:
+                return 3;
+
+            // 3rd place
+            case 2:
+                return 2;
+
+            // 4th place
+            default:
+                return 0;
+        }
+    }
+
+    private IEnumerator RollAndPlayTurn(
+    PlayerPiece player
+)
+    {
+        // =========================================
+        // FIND THIS PLAYER'S BONUS DIE
+        // =========================================
+
+        int bonusDiceMax =
+            GetBonusDiceMax(player);
+
+        bool hasBonusDice =
+            bonusDiceMax > 0;
+
+        // =========================================
+        // SHOW DICE UI
+        // =========================================
 
         if (rollNumberText != null)
         {
-            rollNumberText.gameObject.SetActive(true);
+            rollNumberText.gameObject
+                .SetActive(true);
         }
+
+        if (bonusRollNumberText != null)
+        {
+            bonusRollNumberText.gameObject
+                .SetActive(hasBonusDice);
+        }
+
+        // =========================================
+        // DICE ANIMATION
+        // =========================================
 
         float elapsed = 0f;
 
         while (elapsed < diceAnimationDuration)
         {
-            int fakeRoll =
+            // Main die always rolls 1-6.
+            int fakeMainRoll =
                 Random.Range(1, 7);
 
             if (rollNumberText != null)
             {
                 rollNumberText.text =
-                    fakeRoll.ToString();
+                    fakeMainRoll.ToString();
             }
 
-            yield return new WaitForSeconds(
+            // Animate bonus die if this player has one.
+            if (hasBonusDice)
+            {
+                int fakeBonusRoll =
+                    Random.Range(
+                        1,
+                        bonusDiceMax + 1
+                    );
+
+                if (bonusRollNumberText != null)
+                {
+                    bonusRollNumberText.text =
+                        fakeBonusRoll.ToString();
+                }
+            }
+
+            yield return new WaitForSecondsRealtime(
                 diceNumberChangeSpeed
             );
 
-            elapsed += diceNumberChangeSpeed;
+            elapsed +=
+                diceNumberChangeSpeed;
         }
 
-        // The real roll.
-        int roll =
+        // =========================================
+        // FINAL MAIN DIE
+        // =========================================
+
+        int mainRoll =
             Random.Range(1, 7);
+
+        // =========================================
+        // FINAL BONUS DIE
+        // =========================================
+
+        int bonusRoll = 0;
+
+        if (hasBonusDice)
+        {
+            bonusRoll =
+                Random.Range(
+                    1,
+                    bonusDiceMax + 1
+                );
+        }
+
+        // =========================================
+        // DISPLAY FINAL RESULTS
+        // =========================================
 
         if (rollNumberText != null)
         {
             rollNumberText.text =
-                roll.ToString();
+                mainRoll.ToString();
         }
+
+        if (bonusRollNumberText != null &&
+            hasBonusDice)
+        {
+            bonusRollNumberText.text =
+                bonusRoll.ToString();
+        }
+
+        // Add both dice together
+        int totalRoll =
+            mainRoll + bonusRoll;
 
         Debug.Log(
             "Player " +
             player.PlayerNumber +
             " rolled " +
-            roll
+            mainRoll +
+            " + " +
+            bonusRoll +
+            " = " +
+            totalRoll
         );
 
-        yield return new WaitForSeconds(
+        // Let player see the final dice.
+        yield return new WaitForSecondsRealtime(
             finalRollDisplayTime
         );
 
-
-        // -----------------------------------------------------
-        // NORMAL DICE MOVEMENT
-        // -----------------------------------------------------
+        // =========================================
+        // MOVE PLAYER
+        // =========================================
 
         int targetIndex =
             player.currentWaypointIndex +
-            roll;
+            totalRoll;
 
-        // Player cannot move beyond EndWaypoint.
         targetIndex = Mathf.Clamp(
             targetIndex,
             0,
@@ -638,29 +753,25 @@ public class BoardManager : MonoBehaviour
             targetIndex
         );
 
-
-        // -----------------------------------------------------
+        // =========================================
         // CHECK FOR WIN
-        // -----------------------------------------------------
+        // =========================================
 
-        // Reaching the final waypoint immediately wins.
         if (HasPlayerReachedEnd(player))
         {
             EndGame(player);
             yield break;
         }
 
-
-        // -----------------------------------------------------
+        // =========================================
         // TILE EFFECTS
-        // -----------------------------------------------------
+        // =========================================
 
         yield return ResolveTileEffects(
             player
         );
 
-
-        // Tile effects may have moved the player
+        // Tile effect may have moved them
         // onto the final waypoint.
         if (HasPlayerReachedEnd(player))
         {
@@ -668,12 +779,13 @@ public class BoardManager : MonoBehaviour
             yield break;
         }
 
+        // =========================================
+        // FINISH TURN
+        // =========================================
 
-        // -----------------------------------------------------
-        // TURN COMPLETE
-        // -----------------------------------------------------
         turnInProgress = false;
 
+        // Roll Again tile support.
         if (extraRollGranted)
         {
             extraRollGranted = false;
@@ -1234,6 +1346,11 @@ public class BoardManager : MonoBehaviour
 
         turnInProgress = false;
 
+        if (bonusRollNumberText != null)
+        {
+            bonusRollNumberText.gameObject.SetActive(false);
+        }
+
         StartCurrentTurn();
     }
 
@@ -1332,17 +1449,13 @@ public class BoardManager : MonoBehaviour
             roundText.gameObject.SetActive(false);
         }
 
-        // Save board positions at the moment
-        // the match ended.
         RecordFinalPositions();
 
-        // Make everybody fully visible again.
         foreach (PlayerPiece player in turnOrder)
         {
             player.SetActiveTurnVisual(true);
         }
 
-        // Open winner/results/chart screen.
         if (matchResultsUI != null)
         {
             matchResultsUI.ShowResults(
@@ -1357,6 +1470,10 @@ public class BoardManager : MonoBehaviour
                 "No MatchResultsUI has been " +
                 "assigned to BoardManager."
             );
+        }
+        if (bonusRollNumberText != null)
+        {
+            bonusRollNumberText.gameObject.SetActive(false);
         }
     }
 
