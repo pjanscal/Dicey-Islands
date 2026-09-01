@@ -20,7 +20,8 @@ public class LokaalMatchingUi : MonoBehaviour
     public Sprite nothingEnabledUi;
     public Sprite controllerUi;
     public Sprite devUi;
-    public Sprite dissconnectedControl;
+    public Sprite cpuUi;
+    public Sprite dissconnectedControl; //it is for if it somehowDissconnected but i just have it while it useless :skull
 
     private Canvas canvas;
 

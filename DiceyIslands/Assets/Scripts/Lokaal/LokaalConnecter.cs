@@ -245,6 +245,9 @@ public static class LokaalConnecter
     static private GameObject lokaalMatchingUi = Resources.Load<GameObject>("LokaalConnecter/LokaalConnectUi"); //get the ui of the connetionMatch
     static public int maxPlr = 4; //how many plr there can go in a game
 
+    //configs
+    static public string bordGameScene = "BoardTestScene";
+
 
     //when the game start it go once
     [RuntimeInitializeOnLoadMethod]
@@ -302,6 +305,7 @@ public static class LokaalConnecter
         //check or this is a valid device
         if (device is Gamepad gamepad)
         {
+            Debug.Log("dissconnected");
             //ControllerDissConnected(gamepad);
         }
     }
@@ -507,6 +511,11 @@ public static class LokaalConnecter
         //charSelectSlot.SwitchState(characterSelectState.Choosing);
 
         GameMangeren.GetPlrDataFromId(plrId).charData = charData;
+
+        //setup the pause connection
+        LokaalMatchSlot matchSlot = allMatchingSlots[plrId];
+        matchSlot.SwitchImage(LokaalMatchingUi.instance.cpuUi);
+        matchSlot.SwitchColor(true);
     }
 
     //find the first free plr slot to concent to

@@ -797,7 +797,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 41a601fe90f72204faf1e90de4540019, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PauseSchrem
-  beginGui: {fileID: 8149179592966090083}
 --- !u!1 &7827102764023474819
 GameObject:
   m_ObjectHideFlags: 0
@@ -1169,7 +1168,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8839335396845757384, guid: ecd62d31d387f1846ba922e2e674a066, type: 3}
       propertyPath: slotColor.g
-      value: 0.03529412
+      value: 0.9559485
       objectReference: {fileID: 0}
     - target: {fileID: 8839335396845757384, guid: ecd62d31d387f1846ba922e2e674a066, type: 3}
       propertyPath: slotColor.r
@@ -1411,6 +1410,18 @@ PrefabInstance:
       propertyPath: m_Name
       value: LokaalConnectionSLot
       objectReference: {fileID: 0}
+    - target: {fileID: 8839335396845757384, guid: ecd62d31d387f1846ba922e2e674a066, type: 3}
+      propertyPath: slotColor.b
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8839335396845757384, guid: ecd62d31d387f1846ba922e2e674a066, type: 3}
+      propertyPath: slotColor.g
+      value: 0.074634075
+      objectReference: {fileID: 0}
+    - target: {fileID: 8839335396845757384, guid: ecd62d31d387f1846ba922e2e674a066, type: 3}
+      propertyPath: slotColor.r
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -1532,6 +1543,18 @@ PrefabInstance:
     - target: {fileID: 8839335396845757384, guid: ecd62d31d387f1846ba922e2e674a066, type: 3}
       propertyPath: plrId
       value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 8839335396845757384, guid: ecd62d31d387f1846ba922e2e674a066, type: 3}
+      propertyPath: slotColor.b
+      value: 0.048322916
+      objectReference: {fileID: 0}
+    - target: {fileID: 8839335396845757384, guid: ecd62d31d387f1846ba922e2e674a066, type: 3}
+      propertyPath: slotColor.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8839335396845757384, guid: ecd62d31d387f1846ba922e2e674a066, type: 3}
+      propertyPath: slotColor.r
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

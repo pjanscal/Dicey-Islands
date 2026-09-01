@@ -616,6 +616,7 @@ MonoBehaviour:
   nothingEnabledUi: {fileID: 21300000, guid: 78b4895f50808cf4187bfb7e8ecb0bb4, type: 3}
   controllerUi: {fileID: 21300000, guid: 7db15aa219e8ec34ba40917ad755fac8, type: 3}
   devUi: {fileID: 21300000, guid: be8cca89b30ee834892a8c8d66061971, type: 3}
+  cpuUi: {fileID: 21300000, guid: f4c5b3702844ec042aea6ac473ab6306, type: 3}
   dissconnectedControl: {fileID: 21300000, guid: bfaea8e77b9aedb48978eb6f0b552b0d, type: 3}
 --- !u!1 &7324703377173529661
 GameObject:
@@ -1040,7 +1041,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &2904095974808974096
 Transform:
   m_ObjectHideFlags: 0

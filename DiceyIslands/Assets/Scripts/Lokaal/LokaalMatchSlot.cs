@@ -40,6 +40,7 @@ public class LokaalMatchSlot : MonoBehaviour
     //leaving/ready up while in it
     void Update()
     {
+        /*it is useless for now /: it was beta vers where some thing got added but it was merge with the charselect
 
         if (!plrController.occuplied) return;
 
@@ -48,7 +49,7 @@ public class LokaalMatchSlot : MonoBehaviour
 
         //CheckOrItWantToLeave();
         ReadyUp();
-        Ping();
+        Ping();*/
     }
 
     //default some thing for the next time
