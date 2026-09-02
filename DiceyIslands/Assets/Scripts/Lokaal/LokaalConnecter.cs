@@ -24,7 +24,8 @@ public static class LokaalConnecter
     *u can use occupied to see if it already but it won't bug if u ask input it just return false or vector2.zero
     */
 
-    //yo DDD it is me DDD check soon what happend if u getbuttondown after a frame and before that it is asked can it be used?
+    //yo DDD it is me DDD check soon what happend if u getbuttondown after a frame and before that it is asked can it be used? 
+    //btw cpu need to reset on reset do it torrmorrow
 
     //must be outside here so the script can use it and the other one don't need to look inside playercontoller
     public enum InputType //so u can ask for jump or movement and it return the thing
@@ -44,6 +45,7 @@ public static class LokaalConnecter
     {
         nothing,
         matchConnect,
+        CPUDifficultySelect,
         reConnecting
     }
     
@@ -238,6 +240,7 @@ public static class LokaalConnecter
     static public Dictionary<int, PlayerController> plrsController = new(); //all slot of hte party
     static public Dictionary<int, LokaalMatchSlot> allMatchingSlots = new(); //all slot of LokaalmatchSlots
     static public Dictionary<int, LokaalCharSelectSlot> allCharacterSlots = new(); //all slot of character
+    static public CPUDifficultySelect cPUDifficultySelect; //help initing it
 
     //actions
     static public Action<bool> outOfMatchMaking; //the bool for if it go back to main menu or if this is succes into the main game
@@ -461,6 +464,7 @@ public static class LokaalConnecter
         return false;
     }
 
+    //check first or everyone is ready to finish the charselect and go to cpu difficulty select
     static public void FinishMatchMaking()
     {
         if (currentPlr == 0) return;
@@ -480,6 +484,27 @@ public static class LokaalConnecter
         {
             if (!plrData.occuplied) SetCPU(plrData);
         }
+
+        connectionType = ConnectionTypes.CPUDifficultySelect;
+        LokaalMatchingUi.instance.SwitchToCpuGui(true);
+        cPUDifficultySelect.Init(); //help active it
+    }
+
+    //return to the charselect
+    static public void CPUDifficultySelectQuit()
+    {
+        ResetLokaal();
+
+        //here smth to delay if it go instant *wich is
+
+        LokaalMatchingUi.instance.SwitchToCpuGui(false);
+        connectionType = ConnectionTypes.matchConnect;
+    }
+
+    //start the game
+    static public void FinishCpuDifficultySelect()
+    {
+        connectionType = ConnectionTypes.nothing;
 
         SwitchMatchMaking(false);
         outOfMatchMaking?.Invoke(true);

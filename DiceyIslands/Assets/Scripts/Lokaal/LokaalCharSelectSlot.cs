@@ -51,6 +51,7 @@ public class LokaalCharSelectSlot : MonoBehaviour
         nameDisplay.text = $"player {plrId}";
         previewUi.sprite = pressAToJoinImage;
 
+        //make the secondary charPreview so that can be tween
         GameObject newPreview = Instantiate(previewUi.gameObject, previewFrame);
         RectTransform rectTransform = newPreview.GetComponent<RectTransform>();
         rectTransform.localPosition = Vector2.up * previewUi.rectTransform.rect.height;
