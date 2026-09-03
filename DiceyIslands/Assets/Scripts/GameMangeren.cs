@@ -6,6 +6,7 @@ using UnityEngine.SceneManagement;
 
 public static class GameMangeren
 {
+    //all difficulty a cpu can have
     public enum CPUDifficulty
     {
         Easy,

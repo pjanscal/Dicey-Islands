@@ -116,6 +116,7 @@ public static class LokaalConnecter
         //i have 3 function so u won't also need to do action like up, down, realsease so it ez to use :3 else it was 2 function shorter
         public bool GetButtonDown(InputType action)
         {
+
             //get the key from the dictionary
             if (gamepad != null)
             {
