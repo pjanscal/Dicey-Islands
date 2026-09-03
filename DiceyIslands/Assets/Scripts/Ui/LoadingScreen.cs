@@ -9,7 +9,6 @@ public class LoadingScreen : MonoBehaviour
 
     private Canvas canvas;
     private string loadingBeginText = "Loading";
-    private bool isLoading = false; //so it can do things while loading
     private float currentTimerBetweenTextUpdate = 0f;
     private int amountOfDot = 0; //current
     private int maxAmountOfDot = 3; //can't have more now it reset by ...
@@ -31,7 +30,7 @@ public class LoadingScreen : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (!isLoading) return;
+        if (!GameMangeren.isLoading) return;
 
         UpdateText();
     }
@@ -61,7 +60,7 @@ public class LoadingScreen : MonoBehaviour
     public IEnumerator LoadScene(string sceneName)
     {
         canvas.enabled = true;
-        isLoading = true;
+        GameMangeren.isLoading = true;
 
         AsyncOperation operation = SceneManager.LoadSceneAsync(sceneName);
         operation.allowSceneActivation = false;
@@ -73,7 +72,7 @@ public class LoadingScreen : MonoBehaviour
         yield return new WaitUntil(() => operation.isDone);
 
         canvas.enabled = false;
-        isLoading = false;
+        GameMangeren.isLoading = false;
         amountOfDot = 0;
         loadingText.text = loadingBeginText + GetDotInString();
     }

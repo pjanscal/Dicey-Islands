@@ -34,7 +34,7 @@ public class LokaalCharSelectSlot : MonoBehaviour
 
     private Color bgDisableColor = new Color(215 / 255f, 215 / 255f, 215 / 255f, 220f / 255f);
     const float colorSwitchDur = .5f;
-    const float charSwitchDur = .9f;
+    [HideInInspector] public float charSwitchDur = .9f;
     private Color charDisableColor = new Color(.15f, .15f, .15f);
     private Color CharReadyUpBetaColor = new Color(.4f, .5f, 0);
     //private float timeBoforeSwitchingChar = .5f;
@@ -301,7 +301,7 @@ public class LokaalCharSelectSlot : MonoBehaviour
     {
         RectTransform selected = previewPrimeSelected? previewUi.rectTransform : secondaryPreviewUi.rectTransform;
         RectTransform newPreview = !previewPrimeSelected? previewUi.rectTransform : secondaryPreviewUi.rectTransform;
-        Vector2 targetPos = new Vector2(previewUi.rectTransform.rect.width, previewUi.rectTransform.rect.height) * dir;
+        Vector2 targetPos = new Vector2(previewUi.rectTransform.rect.width, previewUi.rectTransform.rect.height) * -dir;
         newPreview.localPosition = targetPos * -1; //get to the - side to start
 
         DOTween.Sequence() //so it can start all at the exact same time

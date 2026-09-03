@@ -198,7 +198,7 @@ public class CPUDifficultySelect : MonoBehaviour
     {
         RectTransform selected = primeDifficultyIsSelected? primeDifficultyText.rectTransform : secondaryDifficultyText.rectTransform;
         RectTransform newPreview = !primeDifficultyIsSelected? primeDifficultyText.rectTransform : secondaryDifficultyText.rectTransform;
-        Vector2 targetPos = new Vector2(primeDifficultyText.rectTransform.rect.width, primeDifficultyText.rectTransform.rect.height) * dir;
+        Vector2 targetPos = new Vector2(primeDifficultyText.rectTransform.rect.width, primeDifficultyText.rectTransform.rect.height) * -dir;
         newPreview.localPosition = targetPos * -1; //get to the - side to start
 
         DOTween.Sequence() //so it can start all at the exact same time

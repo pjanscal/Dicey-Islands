@@ -484,14 +484,22 @@ public static class LokaalConnecter
 
         Debug.LogWarning("EveryoneIsReadyUp");
 
+        //set in all cpu
         foreach (PlayerController plrData in plrsController.Values)
         {
             if (!plrData.occuplied) SetCPU(plrData);
         }
 
-        connectionType = ConnectionTypes.CPUDifficultySelect;
-        LokaalMatchingUi.instance.SwitchToCpuGui(true);
-        cPUDifficultySelect.Init(); //help active it
+        IEnumerator enumerator()
+        {
+            yield return new WaitForSecondsRealtime(allCharacterSlots[1].charSwitchDur + .2f);
+
+            connectionType = ConnectionTypes.CPUDifficultySelect;
+            LokaalMatchingUi.instance.SwitchToCpuGui(true);
+            cPUDifficultySelect.Init(); //help active it
+        }
+
+        LokaalMatchingUi.instance.StartCoroutine(enumerator());
     }
 
     //return to the charselect
@@ -537,7 +545,7 @@ public static class LokaalConnecter
         //show it in the charselect
         LokaalCharSelectSlot charSelectSlot = allCharacterSlots[plrId];
         charSelectSlot.currentCharSelected = charId;
-        //charSelectSlot.SwitchState(characterSelectState.Choosing);
+        charSelectSlot.SwitchState(characterSelectState.Choosing);
 
         GameMangeren.GetPlrDataFromId(plrId).charData = charData;
 

@@ -15,6 +15,7 @@ public static class GameMangeren
 
     static public bool inGame = false; //tell if it is in game or not
     static public bool isPaused = false; //tell if it pause
+    static public bool isLoading = false; //tell if it is loading
     static public int plrInGame = 0; //help the lokaal script to see what it should be when someone disconnect
     static public CPUDifficulty cPUDifficulty = CPUDifficulty.hard; //the difficulty of the cpu
 

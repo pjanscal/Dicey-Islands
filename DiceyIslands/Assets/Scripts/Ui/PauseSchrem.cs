@@ -32,6 +32,8 @@ public class PauseSchrem: UiBasic
     {
         base.Update();
 
+        if (GameMangeren.isLoading) return;
+
         //on pause button switch
         //mabye make it controller
         TryPausing();
