@@ -34,6 +34,7 @@ public static class LokaalConnecter
         x,
         secondAction, // o on ps5 idk the name
         y,
+        Pause,
         left,
         right,
         up,
@@ -80,10 +81,11 @@ public static class LokaalConnecter
             {InputType.x, GamepadButton.West},
             {InputType.secondAction, GamepadButton.East},
             {InputType.y, GamepadButton.North},
+            {InputType.Pause, GamepadButton.Start}
         };
         private Dictionary<int, Dictionary<InputType, Key>> keyboardButtons = new()
         {
-            {1, new()
+            {1, new() //KeyboardId 1
                 {
                     {InputType.jump, Key.E},
                     {InputType.left, Key.A},
@@ -93,9 +95,10 @@ public static class LokaalConnecter
                     {InputType.x, Key.Q},
                     {InputType.secondAction, Key.R},
                     {InputType.y, Key.F},
+                    {InputType.Pause, Key.Digit1}
                 }
             },
-            {2, new()
+            {2, new() //keyboardId 2
                 {
                     {InputType.jump, Key.O},
                     {InputType.left, Key.J},
@@ -105,6 +108,7 @@ public static class LokaalConnecter
                     {InputType.x, Key.U},
                     {InputType.secondAction, Key.Digit0},
                     {InputType.y, Key.H},
+                    {InputType.Pause, Key.Digit2}
                 }
             }
         };
@@ -212,7 +216,7 @@ public static class LokaalConnecter
             Debug.LogError("no gamepad or keyboard found");
             return Vector2.zero;
         }
-    
+        
         public void CPUSetButton(InputType action, bool state)
         {
             if (state) cpuButtonDown.Add(action);
