@@ -99,12 +99,13 @@ public class LokaalCharSelectSlot : MonoBehaviour
         SwitchPreviewUi(Vector2.right * dir);
     }
 
+    //get or u going left or right
     (bool succes, int dir) GetLeftRight(Vector2 moveDir)
     {
         //check of it not up or down
         if (math.abs(moveDir.y) > math.abs(moveDir.x)) return (false, 0);
 
-        int dir = (int)math.sign(moveDir.x);
+        int dir = (int)math.sign(moveDir.x); //sign help with if it is - then it is -1 if it is >0 then it is 1 else it is 0
         if (dir == 0) return (false, dir);
 
         return (true, dir);
@@ -134,6 +135,7 @@ public class LokaalCharSelectSlot : MonoBehaviour
         }
     }
 
+    //check or it wanna go leave
     void CheckOrItWantToLeave()
     {
         //on left press go dissconnect
@@ -142,6 +144,7 @@ public class LokaalCharSelectSlot : MonoBehaviour
             //can't leave while char are switching
             if (!canSwitchChar || DOTween.IsTweening(previewUi) || DOTween.IsTweening(secondaryPreviewUi)) return;
 
+            //look or it is quiting from ready up state
             if (currentState == LokaalConnecter.characterSelectState.Finish)
             {
                 SwitchState(LokaalConnecter.characterSelectState.Choosing);
@@ -154,6 +157,7 @@ public class LokaalCharSelectSlot : MonoBehaviour
         }
     }
     
+    //reset the value's
     public void ResetSlot()
     {
         currentState = LokaalConnecter.characterSelectState.Connecting;
@@ -164,7 +168,7 @@ public class LokaalCharSelectSlot : MonoBehaviour
     //set the char
     void SetCharacter(int charId)
     {
-        Image target = !previewPrimeSelected? previewUi : secondaryPreviewUi;
+        Image target = !previewPrimeSelected? previewUi : secondaryPreviewUi; //get the new preview
 
         //set the id in valid reach
         if (charId > GameMangeren.charsData.Length - 1) charId = 0; //1 is the beginning of a array
@@ -186,24 +190,26 @@ public class LokaalCharSelectSlot : MonoBehaviour
     {
         if (currentState != LokaalConnecter.characterSelectState.Choosing) return;
         
+        //check all preview or it is disable
         CheckPreviewDisable(previewUi, previewPrimeSelected);
         CheckPreviewDisable(secondaryPreviewUi, !previewPrimeSelected);
     }
 
+    //check or it should be disable
     void CheckPreviewDisable(Image target, bool isPrime)
     {
-        if (DOTween.IsTweening(target)) return;
+        if (DOTween.IsTweening(target)) return; //check or it is tweening so it won't have to tween again to that color or back
 
-        int? charId = isPrime? currentCharSelected : oldCharId;
+        int? charId = isPrime? currentCharSelected : oldCharId; //check the target preview
         if (charId == null) return;
 
-        if (CharAlrBeenUsed(charId.Value))
+        if (CharAlrBeenUsed(charId.Value)) //make it dissable color
         {
             if (target.color == charDisableColor) return;
 
             ToggleColor(target, charDisableColor);
         }
-        else
+        else //make it default color
         {
             if (target.color == Color.white) return;
 
@@ -290,20 +296,24 @@ public class LokaalCharSelectSlot : MonoBehaviour
     }
     //--ended--//
 
-    void ToggleColor(Image target, Color targetColor) //true = show red color
+    //change a image color to ur target color
+    void ToggleColor(Image target, Color targetColor)
     {
         //play the tween between color
         target.DOColor(targetColor, colorSwitchDur)
         .SetEase(Ease.OutSine).SetUpdate(true);
     }
 
+    //switch the preview base on the dir u want
     void SwitchPreviewUi(Vector2 dir)
     {
+        //get the info's
         RectTransform selected = previewPrimeSelected? previewUi.rectTransform : secondaryPreviewUi.rectTransform;
         RectTransform newPreview = !previewPrimeSelected? previewUi.rectTransform : secondaryPreviewUi.rectTransform;
         Vector2 targetPos = new Vector2(previewUi.rectTransform.rect.width, previewUi.rectTransform.rect.height) * -dir;
         newPreview.localPosition = targetPos * -1; //get to the - side to start
 
+        //make the tweens
         DOTween.Sequence() //so it can start all at the exact same time
         .Append(selected.DOLocalMove(targetPos, charSwitchDur))
         .Join(newPreview.DOLocalMove(Vector2.zero, charSwitchDur))
@@ -316,11 +326,12 @@ public class LokaalCharSelectSlot : MonoBehaviour
         previewPrimeSelected = !previewPrimeSelected;
     }
 
-    //later
+    //init when going ready up
+    //beta
     void ToggleReadyUp(bool state)
     {
         isReadyUp = state;
 
-        ToggleColor(previewPrimeSelected? previewUi : secondaryPreviewUi, state? CharReadyUpBetaColor : Color.white);
+        ToggleColor(previewPrimeSelected? previewUi : secondaryPreviewUi, state? CharReadyUpBetaColor : Color.white); //give a  beta color
     }
 }

@@ -439,16 +439,17 @@ public static class LokaalConnecter
         while (true)
         {
             //when contine of going again it is gone
-            if (characterDataToAdd.Count >= 1) characterDataToAdd.RemoveAt(0);
+            if (characterDataToAdd.Count >= 1) characterDataToAdd.RemoveAt(0); //delete the first one
 
-            yield return new WaitUntil(() => characterDataToAdd.Count >= 1);
+            yield return new WaitUntil(() => characterDataToAdd.Count >= 1); //wait until one is added
 
-            var (plrId, charId) = characterDataToAdd[0];
-            CharacterData charData = GameMangeren.GetCharacterDataFromId(charId);
+            var (plrId, charId) = characterDataToAdd[0]; //get the info of the one who want wich char
             GameMangeren.PlrData plrData = GameMangeren.GetPlrDataFromId(plrId);
 
-            //soon updating the speed with the new one
-            if (plrData.occupied || CharacterAlrBeingUse(charData)) continue;
+            //check if it not being use
+            if (plrData.occupied || !charLeft.Contains(charId)) continue;
+
+            CharacterData charData = GameMangeren.GetCharacterDataFromId(charId);
 
             plrData.occupied = true;
             plrData.charData = charData;
@@ -457,16 +458,6 @@ public static class LokaalConnecter
 
             Debug.LogWarning($"plr{plrId} chosed: {charData.charName}");
         }
-    }
-
-    static bool CharacterAlrBeingUse(CharacterData charData)
-    {
-        foreach (GameMangeren.PlrData plrData in GameMangeren.plrsData.Values)
-        {
-            if (plrData.charData == charData) return true;
-        }
-
-        return false;
     }
 
     //check first or everyone is ready to finish the charselect and go to cpu difficulty select
@@ -491,6 +482,7 @@ public static class LokaalConnecter
             if (!plrData.occuplied) SetCPU(plrData);
         }
 
+        //wait some second so the tween can finish
         IEnumerator enumerator()
         {
             yield return new WaitForSecondsRealtime(allCharacterSlots[1].charSwitchDur + .2f);
@@ -519,17 +511,13 @@ public static class LokaalConnecter
     {
         connectionType = ConnectionTypes.nothing;
 
-        SwitchMatchMaking(false);
-        outOfMatchMaking?.Invoke(true);
+        SwitchMatchMaking(false); //turn of the ui
+        outOfMatchMaking?.Invoke(true); //send the event to sartschrem to load scene if it is not there then it won't switch scene
         GameMangeren.inGame = true; //it would be a prob to make true = true :3* if this is found
         GameMangeren.plrInGame = currentPlr;
-
-        foreach (LokaalMatchSlot slotData in allMatchingSlots.Values)
-        {
-            slotData.ClearSlot(false);
-        }
     }
 
+    //make the cpu on
     static void SetCPU(PlayerController plrData)
     {
         plrData.isCPU = true;
@@ -588,6 +576,7 @@ public static class LokaalConnecter
         return null;
     }
 
+    //get the PlrId from the PlayerController
     static public int GetPlrIdFromPlrData(PlayerController plrData)
     {
         int plrId = plrsController.First(x => x.Value == plrData).Key; //look for the thing with same value

@@ -181,7 +181,7 @@ public class LokaalMatchingUi : MonoBehaviour
         //Ready up the Dissconnect screen so fix it when but i alr make it so it is for testing
         disConnectSlot.SwitchImage(nothingEnabledUi);
         disConnectSlot.SwitchColor(false);
-        disConnectSlot.SwitchReadyUpMark(false);
+        //disConnectSlot.SwitchReadyUpMark(false);
 
         if (LokaalConnecter.connectionType != LokaalConnecter.ConnectionTypes.matchConnect) return;
 

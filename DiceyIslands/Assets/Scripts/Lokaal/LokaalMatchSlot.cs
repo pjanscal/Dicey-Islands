@@ -5,23 +5,25 @@ using UnityEngine.UI;
 
 public class LokaalMatchSlot : MonoBehaviour
 {
+    //LokaalMatchUi in leave is there smth comment for the dissconnect system
+
     [Header("ui")]
     [SerializeField] private Image outputUi;
     [SerializeField] private TextMeshProUGUI nameDisplay;
-    [SerializeField] private Image readyUpMark;
-    [SerializeField] private GameObject pingEffect;
+    //[SerializeField] private Image readyUpMark;
+    //[SerializeField] private GameObject pingEffect;
 
     private LokaalConnecter.PlayerController plrController;
-    private float currentPingTimer = 0f;
-    [HideInInspector] public bool isReadyUp = false; //so the server can see when all 4 is readyUP
+    //private float currentPingTimer = 0f;
+    //[HideInInspector] public bool isReadyUp = false; //so the server can see when all 4 is readyUP
 
     //config
     [Header("configs")]
     [SerializeField] private int plrId;
     [SerializeField] private Color slotColor;
 
-    private float timeBetweenPing = .15f;
-    private float durPing = .4f;
+    //private float timeBetweenPing = .15f;
+    //private float durPing = .4f;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -31,16 +33,16 @@ public class LokaalMatchSlot : MonoBehaviour
 
         nameDisplay.text = $"player {plrId}";
 
-        //setup ping ui
+        /*setup ping ui
         pingEffect.transform.localScale = Vector3.zero;
-        pingEffect.GetComponent<Image>().color = slotColor;
+        pingEffect.GetComponent<Image>().color = slotColor; */
     }
 
     // Update is called once per frame
     //leaving/ready up while in it
+    /*it is useless for now /: it was beta vers where some thing got added but it was merge with the charselect
     void Update()
     {
-        /*it is useless for now /: it was beta vers where some thing got added but it was merge with the charselect
 
         if (!plrController.occuplied) return;
 
@@ -49,21 +51,24 @@ public class LokaalMatchSlot : MonoBehaviour
 
         //CheckOrItWantToLeave();
         ReadyUp();
-        Ping();*/
+        Ping();
     }
+    */
 
     //default some thing for the next time
     public void ClearSlot(bool hardReset)
     {
-        isReadyUp = false;
-        SwitchReadyUpMark(false);
+        /*early vers
+        //isReadyUp = false;
+        //SwitchReadyUpMark(false);
 
-        if (!hardReset) return; //for if it just wanna reset the readyup
+        if (!hardReset) return; //for if it just wanna reset the readyup *early vers */
 
         SwitchColor(false);
         SwitchImage(LokaalMatchingUi.instance.nothingEnabledUi);
     }
 
+    /* early vers*
     void ReadyUp()
     {
         //on press toggle ready up so when everyone is ready up it will start
@@ -75,6 +80,13 @@ public class LokaalMatchSlot : MonoBehaviour
 
             CheckOfEveryoneIsReady();
         }
+    }
+
+    //set the ready up mark on/off
+    public void SwitchReadyUpMark(bool state)
+    {
+        readyUpMark.enabled = state;
+        isReadyUp = state;
     }
 
     void CheckOfEveryoneIsReady()
@@ -121,19 +133,12 @@ public class LokaalMatchSlot : MonoBehaviour
         }
 
         currentPingTimer += Time.unscaledDeltaTime;
-    }
+    } */
 
     //set the color on/off
     public void SwitchColor(bool state)
     {
         outputUi.color = state? slotColor : Color.white;
-    }
-
-    //set the ready up mark on/off
-    public void SwitchReadyUpMark(bool state)
-    {
-        readyUpMark.enabled = state;
-        isReadyUp = state;
     }
 
     //switch the image of that slot

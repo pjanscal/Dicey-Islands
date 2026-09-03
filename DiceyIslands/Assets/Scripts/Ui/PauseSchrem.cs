@@ -13,9 +13,9 @@ public class PauseSchrem: UiBasic
     [SerializeField] GameObject beginButton; //the button where the navigation begin on
 
     private Canvas canvas;
-    private GameObject currentSelected;
+    private GameObject currentSelected; //current selected navigation object so if it null i can pick this one
     private LokaalConnecter.PlayerController currentPlrController; // this controll who is navigating
-    private bool canMove = true;
+    private bool canMove = true; //can go navigate move again
 
     //configs
     private float navigationMoveDur = .3f;
@@ -32,15 +32,14 @@ public class PauseSchrem: UiBasic
     {
         base.Update();
 
-        if (GameMangeren.isLoading) return;
+        if (GameMangeren.isLoading) return; //stop it from pausing or doing things inside of loadingscreen
 
-        //on pause button switch
-        //mabye make it controller
         TryPausing();
         CheckIfNotDisSelected();
         TryNavigation();
     }
 
+    //help if u click on screen that it not dissconnet
     void CheckIfNotDisSelected()
     {
         if (!GameMangeren.isPaused) return;
@@ -77,10 +76,12 @@ public class PauseSchrem: UiBasic
         }
     }
     
+    //check or someone trying to pause
     void TryPausing()
     {
         if (LokaalConnecter.connectionType != LokaalConnecter.ConnectionTypes.nothing || !GameMangeren.inGame) return;
 
+        //loop through all input
         foreach (LokaalConnecter.PlayerController playerController in LokaalConnecter.plrsController.Values)
         {
             if (!playerController.GetButtonDown(LokaalConnecter.InputType.Pause)) continue;
@@ -91,6 +92,7 @@ public class PauseSchrem: UiBasic
         }
     }
 
+    //lokaal manaul eventSystem Support
     void TryNavigation()
     {
         if (!GameMangeren.isPaused) return;
@@ -103,6 +105,7 @@ public class PauseSchrem: UiBasic
         //ui movement
         if (!canMove) return;
 
+        //get the next object one
         Vector3? direction = GetMoveDir();
         if (direction == null) return;
 
@@ -116,31 +119,32 @@ public class PauseSchrem: UiBasic
         canMove = false;
         eventSystem.SetSelectedGameObject(next.gameObject);
 
+        //wait some sec to move again so it won't spam
+        IEnumerator WaitToMoveAgain()
+        {
+            yield return new WaitForSecondsRealtime(navigationMoveDur);
+            canMove = true;
+        }
+
         StartCoroutine(WaitToMoveAgain());
     }
 
-    IEnumerator WaitToMoveAgain()
-    {
-        yield return new WaitForSecondsRealtime(navigationMoveDur);
-        canMove = true;
-    }
-
+    //get the dir u are going
     Vector3? GetMoveDir()
     {
         Vector2 moveDir = currentPlrController.GetMoveDir();
 
+        //check or it is the x or the y
         if (math.abs(moveDir.y) > math.abs(moveDir.x))
         {
-            if (moveDir.y > .5f) return Vector3.up;
-            else if (moveDir.y < -.5f) return Vector3.down;
+            if (math.abs(moveDir.y) < .3f) return null; //make sure it is not a little
+            return new Vector3(0, math.sign(moveDir.y), 0);
         }
         else
         {
-            if (moveDir.x > .5f) return Vector3.right;
-            else if (moveDir.x < -.5f) return Vector3.left;
+            if (math.abs(moveDir.x) < .3f) return null; //make sure it is not a little
+            return new Vector3(math.sign(moveDir.x), 0, 0);
         }
-
-        return null;
     }
 
     //reset all value
