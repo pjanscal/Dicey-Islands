@@ -127,6 +127,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1478037271591001095, guid: 4a070339aee93d044900dd08365e1b5d, type: 3}
+      propertyPath: controllerPlayerId
+      value: 4
+      objectReference: {fileID: 0}
     - target: {fileID: 2964307200960516339, guid: 4a070339aee93d044900dd08365e1b5d, type: 3}
       propertyPath: m_Name
       value: Player4
@@ -841,6 +845,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 4607901578983449537, guid: 7e429399089239e46b1bd539e26a6e0a, type: 3}
+      propertyPath: controllerPlayerId
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 4611577346226952243, guid: 7e429399089239e46b1bd539e26a6e0a, type: 3}
       propertyPath: m_Name
       value: Player3
@@ -1074,6 +1082,7 @@ MonoBehaviour:
   topDownCameraPosition: {fileID: 1863486274}
   roundTransitionDuration: 2
   matchResultsUI: {fileID: 1258697578}
+  turnInProgress: 0
 --- !u!4 &418901947
 Transform:
   m_ObjectHideFlags: 0

@@ -24,7 +24,8 @@ public static class LokaalConnecter
     *u can use occupied to see if it already but it won't bug if u ask input it just return false or vector2.zero
     */
 
-    //yo DDD it is me DDD check soon what happend if u getbuttondown after a frame and before that it is asked can it be used?
+    //yo DDD it is me DDD check soon what happend if u getbuttondown after a frame and before that it is asked can it be used? 
+    //btw cpu need to reset on reset do it torrmorrow
 
     //must be outside here so the script can use it and the other one don't need to look inside playercontoller
     public enum InputType //so u can ask for jump or movement and it return the thing
@@ -33,6 +34,7 @@ public static class LokaalConnecter
         x,
         secondAction, // o on ps5 idk the name
         y,
+        Pause,
         left,
         right,
         up,
@@ -44,6 +46,7 @@ public static class LokaalConnecter
     {
         nothing,
         matchConnect,
+        CPUDifficultySelect,
         reConnecting
     }
     
@@ -78,10 +81,11 @@ public static class LokaalConnecter
             {InputType.x, GamepadButton.West},
             {InputType.secondAction, GamepadButton.East},
             {InputType.y, GamepadButton.North},
+            {InputType.Pause, GamepadButton.Start}
         };
         private Dictionary<int, Dictionary<InputType, Key>> keyboardButtons = new()
         {
-            {1, new()
+            {1, new() //KeyboardId 1
                 {
                     {InputType.jump, Key.E},
                     {InputType.left, Key.A},
@@ -91,9 +95,10 @@ public static class LokaalConnecter
                     {InputType.x, Key.Q},
                     {InputType.secondAction, Key.R},
                     {InputType.y, Key.F},
+                    {InputType.Pause, Key.Digit1}
                 }
             },
-            {2, new()
+            {2, new() //keyboardId 2
                 {
                     {InputType.jump, Key.O},
                     {InputType.left, Key.J},
@@ -103,6 +108,7 @@ public static class LokaalConnecter
                     {InputType.x, Key.U},
                     {InputType.secondAction, Key.Digit0},
                     {InputType.y, Key.H},
+                    {InputType.Pause, Key.Digit2}
                 }
             }
         };
@@ -110,6 +116,7 @@ public static class LokaalConnecter
         //i have 3 function so u won't also need to do action like up, down, realsease so it ez to use :3 else it was 2 function shorter
         public bool GetButtonDown(InputType action)
         {
+
             //get the key from the dictionary
             if (gamepad != null)
             {
@@ -210,7 +217,7 @@ public static class LokaalConnecter
             Debug.LogError("no gamepad or keyboard found");
             return Vector2.zero;
         }
-    
+        
         public void CPUSetButton(InputType action, bool state)
         {
             if (state) cpuButtonDown.Add(action);
@@ -238,12 +245,16 @@ public static class LokaalConnecter
     static public Dictionary<int, PlayerController> plrsController = new(); //all slot of hte party
     static public Dictionary<int, LokaalMatchSlot> allMatchingSlots = new(); //all slot of LokaalmatchSlots
     static public Dictionary<int, LokaalCharSelectSlot> allCharacterSlots = new(); //all slot of character
+    static public CPUDifficultySelect cPUDifficultySelect; //help initing it
 
     //actions
     static public Action<bool> outOfMatchMaking; //the bool for if it go back to main menu or if this is succes into the main game
 
     static private GameObject lokaalMatchingUi = Resources.Load<GameObject>("LokaalConnecter/LokaalConnectUi"); //get the ui of the connetionMatch
     static public int maxPlr = 4; //how many plr there can go in a game
+
+    //configs
+    static public string bordGameScene = "BoardTestScene";
 
 
     //when the game start it go once
@@ -302,6 +313,7 @@ public static class LokaalConnecter
         //check or this is a valid device
         if (device is Gamepad gamepad)
         {
+            Debug.Log("dissconnected");
             //ControllerDissConnected(gamepad);
         }
     }
@@ -427,16 +439,17 @@ public static class LokaalConnecter
         while (true)
         {
             //when contine of going again it is gone
-            if (characterDataToAdd.Count >= 1) characterDataToAdd.RemoveAt(0);
+            if (characterDataToAdd.Count >= 1) characterDataToAdd.RemoveAt(0); //delete the first one
 
-            yield return new WaitUntil(() => characterDataToAdd.Count >= 1);
+            yield return new WaitUntil(() => characterDataToAdd.Count >= 1); //wait until one is added
 
-            var (plrId, charId) = characterDataToAdd[0];
-            CharacterData charData = GameMangeren.GetCharacterDataFromId(charId);
+            var (plrId, charId) = characterDataToAdd[0]; //get the info of the one who want wich char
             GameMangeren.PlrData plrData = GameMangeren.GetPlrDataFromId(plrId);
 
-            //soon updating the speed with the new one
-            if (plrData.occupied || CharacterAlrBeingUse(charData)) continue;
+            //check if it not being use
+            if (plrData.occupied || !charLeft.Contains(charId)) continue;
+
+            CharacterData charData = GameMangeren.GetCharacterDataFromId(charId);
 
             plrData.occupied = true;
             plrData.charData = charData;
@@ -447,16 +460,7 @@ public static class LokaalConnecter
         }
     }
 
-    static bool CharacterAlrBeingUse(CharacterData charData)
-    {
-        foreach (GameMangeren.PlrData plrData in GameMangeren.plrsData.Values)
-        {
-            if (plrData.charData == charData) return true;
-        }
-
-        return false;
-    }
-
+    //check first or everyone is ready to finish the charselect and go to cpu difficulty select
     static public void FinishMatchMaking()
     {
         if (currentPlr == 0) return;
@@ -472,22 +476,48 @@ public static class LokaalConnecter
 
         Debug.LogWarning("EveryoneIsReadyUp");
 
+        //set in all cpu
         foreach (PlayerController plrData in plrsController.Values)
         {
             if (!plrData.occuplied) SetCPU(plrData);
         }
 
-        SwitchMatchMaking(false);
-        outOfMatchMaking?.Invoke(true);
-        GameMangeren.inGame = true; //it would be a prob to make true = true :3* if this is found
-        GameMangeren.plrInGame = currentPlr;
-
-        foreach (LokaalMatchSlot slotData in allMatchingSlots.Values)
+        //wait some second so the tween can finish
+        IEnumerator enumerator()
         {
-            slotData.ClearSlot(false);
+            yield return new WaitForSecondsRealtime(allCharacterSlots[1].charSwitchDur + .2f);
+
+            connectionType = ConnectionTypes.CPUDifficultySelect;
+            LokaalMatchingUi.instance.SwitchToCpuGui(true);
+            cPUDifficultySelect.Init(); //help active it
         }
+
+        LokaalMatchingUi.instance.StartCoroutine(enumerator());
     }
 
+    //return to the charselect
+    static public void CPUDifficultySelectQuit()
+    {
+        ResetLokaal();
+
+        //here smth to delay if it go instant *wich is
+
+        LokaalMatchingUi.instance.SwitchToCpuGui(false);
+        connectionType = ConnectionTypes.matchConnect;
+    }
+
+    //start the game
+    static public void FinishCpuDifficultySelect()
+    {
+        connectionType = ConnectionTypes.nothing;
+
+        SwitchMatchMaking(false); //turn of the ui
+        outOfMatchMaking?.Invoke(true); //send the event to sartschrem to load scene if it is not there then it won't switch scene
+        GameMangeren.inGame = true; //it would be a prob to make true = true :3* if this is found
+        GameMangeren.plrInGame = currentPlr;
+    }
+
+    //make the cpu on
     static void SetCPU(PlayerController plrData)
     {
         plrData.isCPU = true;
@@ -504,9 +534,14 @@ public static class LokaalConnecter
         //show it in the charselect
         LokaalCharSelectSlot charSelectSlot = allCharacterSlots[plrId];
         charSelectSlot.currentCharSelected = charId;
-        //charSelectSlot.SwitchState(characterSelectState.Choosing);
+        charSelectSlot.SwitchState(characterSelectState.Choosing);
 
         GameMangeren.GetPlrDataFromId(plrId).charData = charData;
+
+        //setup the pause connection
+        LokaalMatchSlot matchSlot = allMatchingSlots[plrId];
+        matchSlot.SwitchImage(LokaalMatchingUi.instance.cpuUi);
+        matchSlot.SwitchColor(true);
     }
 
     //find the first free plr slot to concent to
@@ -541,6 +576,7 @@ public static class LokaalConnecter
         return null;
     }
 
+    //get the PlrId from the PlayerController
     static public int GetPlrIdFromPlrData(PlayerController plrData)
     {
         int plrId = plrsController.First(x => x.Value == plrData).Key; //look for the thing with same value

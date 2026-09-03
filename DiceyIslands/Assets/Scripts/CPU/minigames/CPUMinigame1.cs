@@ -43,7 +43,7 @@ public class CPUMinigame1 : CPUMangeren
 
         float timeBeforeItEnds = timeNeeded.timeNeededSeconds;
         float timeOffset = UnityEngine.Random.Range(configs.offSet.x, configs.offSet.y); //get rng number
-        timeOffset *= UnityEngine.Random.Range(0, 2) == 0? -1f : 1f; //make it - or +
+        //timeOffset *= UnityEngine.Random.Range(0, 2) == 0? -1f : 1f; //make it - or +
         float pressTime = timeBeforeItEnds + timeOffset;
 
         print($"timeneeded: {timeBeforeItEnds}, timeoffset: {timeOffset}, pressTime: {pressTime}");

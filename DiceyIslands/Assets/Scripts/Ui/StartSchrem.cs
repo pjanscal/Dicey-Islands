@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class StartSchrem: UiBasic
 {
-    [SerializeField] protected GameObject charSelect; //so if it succes with making it go there
+    //[SerializeField] protected GameObject charSelect; //so if it succes with making it go there
 
     protected override void Start()
     {
@@ -13,8 +13,8 @@ public class StartSchrem: UiBasic
 
     protected void OnMatchMakingFinished(bool state)
     {
-        if (state) SwitchGui(charSelect);
-        else SwitchGui(beginGui);
+        //deleted old vers it is for now so it can switch
+        if (state) SwitchScene(LokaalConnecter.bordGameScene); //need this so if it is not startscene then u won't change scene :3
     }
 
     //MatchButton

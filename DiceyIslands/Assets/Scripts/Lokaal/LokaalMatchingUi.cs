@@ -9,19 +9,21 @@ public class LokaalMatchingUi : MonoBehaviour
     //fixed i might do make the slots here
 
     public static LokaalMatchingUi instance; //let other scripts use this
-
+    
     //All Gui
     [Header("GUI")]
-    [SerializeField] private CanvasGroup dissconnectGui;
+    //[SerializeField] private CanvasGroup dissconnectGui;
     [SerializeField] private CanvasGroup charSelectGui;
+    [SerializeField] private CanvasGroup cpuSelectGui;
 
     //ui image that can be used
     [Header("Image's")]
     public Sprite nothingEnabledUi;
     public Sprite controllerUi;
     public Sprite devUi;
-    public Sprite dissconnectedControl;
-
+    public Sprite cpuUi;
+    public Sprite dissconnectedControl; //it is for if it somehowDissconnected but i just have it while it useless :skull
+    
     private Canvas canvas;
 
     public enum ConnectionTypes
@@ -88,15 +90,29 @@ public class LokaalMatchingUi : MonoBehaviour
         if (state)
         {
             if (isCharSelect) EnableGui(charSelectGui, true);
-            else EnableGui(dissconnectGui, true);
+            //else EnableGui(dissconnectGui, true);
         }
         else
         {
             EnableGui(charSelectGui, false);
-            EnableGui(dissconnectGui, false);
+            //EnableGui(dissconnectGui, false);
         }
 
         canvas.enabled = state; //so the script can stil run if u turn of canvas
+    }
+
+    public void SwitchToCpuGui(bool state)
+    {
+        if (state)
+        {
+            EnableGui(cpuSelectGui, true);
+            EnableGui(charSelectGui, false);
+        }
+        else
+        {
+            EnableGui(charSelectGui, true);
+            EnableGui(cpuSelectGui, false);
+        }
     }
 
     void EnableGui(CanvasGroup Gui, bool state)
@@ -165,7 +181,7 @@ public class LokaalMatchingUi : MonoBehaviour
         //Ready up the Dissconnect screen so fix it when but i alr make it so it is for testing
         disConnectSlot.SwitchImage(nothingEnabledUi);
         disConnectSlot.SwitchColor(false);
-        disConnectSlot.SwitchReadyUpMark(false);
+        //disConnectSlot.SwitchReadyUpMark(false);
 
         if (LokaalConnecter.connectionType != LokaalConnecter.ConnectionTypes.matchConnect) return;
 
