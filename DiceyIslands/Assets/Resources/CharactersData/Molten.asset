@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b74f98639e2da37459ee0f2ae460a601, type: 3}
   m_Name: Molten
   m_EditorClassIdentifier: Assembly-CSharp::CharacterData
-  character: {fileID: 0}
+  character: {fileID: 6643563707641169142, guid: 974e25755c62eb7479f3467077992b99, type: 3}
   preview: {fileID: 21300000, guid: 07a8fd9caea317a489553215f2c2277a, type: 3}
   charName: Dev

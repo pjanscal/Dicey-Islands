@@ -375,6 +375,7 @@ public static class LokaalConnecter
             plrData.cpuButtonDown.Clear();
             plrData.cpuButtonStateChanged.Clear();
             plrData.cpuMoveDir = Vector2.zero;
+            GameMangeren.allCPU.Remove(plrId);
         }
         else
         {
@@ -575,7 +576,7 @@ public static class LokaalConnecter
         //useless left
         return null;
     }
-
+    
     //get the PlrId from the PlayerController
     static public int GetPlrIdFromPlrData(PlayerController plrData)
     {
