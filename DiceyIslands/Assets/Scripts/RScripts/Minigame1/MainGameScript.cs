@@ -135,6 +135,28 @@ public class MainGameScript : MonoBehaviour
             Debug.Log("Winner: no players found");
         }
 
+        foreach (var player in all)
+        {
+            if (player.playerController == null || !player.playerController.occuplied) continue;
+
+            float playerDiff = Mathf.Abs(player.elapsed - timeNeeded.timeNeededSeconds);
+            int place = 1;
+
+            foreach (var otherPlayer in all)
+            {
+                if (otherPlayer.playerController == null || !otherPlayer.playerController.occuplied) continue;
+
+                float otherDiff = Mathf.Abs(otherPlayer.elapsed - timeNeeded.timeNeededSeconds);
+                if (otherDiff < playerDiff ||
+                    (Mathf.Approximately(otherDiff, playerDiff) && otherPlayer.plrId < player.plrId))
+                {
+                    place++;
+                }
+            }
+
+            Debug.Log($"Place {place}: Player {player.plrId}");
+        }
+
         foreach (var t in all)
         {
             if (t.playerController != null && t.playerController.occuplied)
