@@ -9,7 +9,7 @@ public class MainGameScript : MonoBehaviour
     [SerializeField] int plrId;
     [SerializeField] TMP_Text timeText, countdown;
     [SerializeField] RawImage indicator;
-    [HideInInspector] public float elapsed; //public so the cpu can check
+    public float elapsed; //public so the cpu can check
     [SerializeField] bool isRunning, firstTime, ready;
     int seconds, centiseconds;
     TimeNeeded timeNeeded;
@@ -29,7 +29,7 @@ public class MainGameScript : MonoBehaviour
 
         if (LokaalConnecter.connectionType == LokaalConnecter.ConnectionTypes.nothing)
         {
-                if (playerController == null || !playerController.occuplied) return;
+            if (playerController == null || !playerController.occuplied) return;
 
             if (!ready && firstTime && playerController.GetButtonDown(LokaalConnecter.InputType.x))
             {
@@ -56,7 +56,7 @@ public class MainGameScript : MonoBehaviour
             if (playerController.GetButtonDown(LokaalConnecter.InputType.y))
             {
                 SceneManager.LoadScene("Minigame1");
-            }  
+            }
         }
     }
 
