@@ -78,10 +78,26 @@ public class LokaalMatchingUi : MonoBehaviour
         //connectcontrolls
         TryConnectingControllers();
 
-        //keyboard Testing connector
         #if UNITY_EDITOR
+            //keyboard Testing connector
             TryConnectingKeyboard();
+
+            //delete cpu Testing
+            DeleteAllCpu();
         #endif
+    }
+
+    void DeleteAllCpu()
+    {
+        if (!Input.GetKeyDown(KeyCode.RightBracket)) return;
+
+        for (int plrId = 1; plrId <= LokaalConnecter.maxPlr; plrId++)
+        {
+            LokaalConnecter.PlayerController playerController = LokaalConnecter.plrsController[plrId];
+            if (!playerController.isCPU) continue;
+
+            LokaalConnecter.DissConnectController(plrId);
+        }
     }
 
     //enable or disable the ui
