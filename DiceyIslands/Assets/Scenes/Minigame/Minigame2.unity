@@ -256,6 +256,94 @@ MonoBehaviour:
     m_VarianceClampScale: 0.9
     m_ContrastAdaptiveSharpening: 0
   m_Version: 2
+--- !u!1 &146706693
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 146706695}
+  - component: {fileID: 146706694}
+  m_Layer: 0
+  m_Name: CPUMangeren
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &146706694
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 146706693}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 17bb55bf9bc6cb147bcd73b4e5a4f76a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CPUMinigame2
+  cpuCharacters:
+  - plrId: 1
+    character: {fileID: 1291651584}
+  - plrId: 2
+    character: {fileID: 1371368959}
+  - plrId: 3
+    character: {fileID: 277887356}
+  - plrId: 4
+    character: {fileID: 1758396693}
+  spawnObject: {fileID: 1556983771}
+  difficultiesConfigsEdit:
+  - offSet: {x: 0.8, y: 1}
+    difficulty: 0
+    pointChanceToSelects:
+    - pointGain: -3
+      chanceToSelect: 0.2
+    - pointGain: -1
+      chanceToSelect: 0.34
+    - pointGain: 1
+      chanceToSelect: 1
+    - pointGain: 3
+      chanceToSelect: 0.95
+  - offSet: {x: 0.4, y: 0.8}
+    difficulty: 1
+    pointChanceToSelects:
+    - pointGain: -3
+      chanceToSelect: 0.13
+    - pointGain: -1
+      chanceToSelect: 0.24
+    - pointGain: 1
+      chanceToSelect: 1
+    - pointGain: 3
+      chanceToSelect: 1
+  - offSet: {x: 0.35, y: 0.55}
+    difficulty: 2
+    pointChanceToSelects:
+    - pointGain: -3
+      chanceToSelect: 0
+    - pointGain: -1
+      chanceToSelect: 0.05
+    - pointGain: 1
+      chanceToSelect: 1
+    - pointGain: 3
+      chanceToSelect: 1
+--- !u!4 &146706695
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 146706693}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 1334.8318, y: 651.7136, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &277887356
 GameObject:
   m_ObjectHideFlags: 0
@@ -2356,3 +2444,4 @@ SceneRoots:
   - {fileID: 1556983772}
   - {fileID: 677355584}
   - {fileID: 1346121081}
+  - {fileID: 146706695}

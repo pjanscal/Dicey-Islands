@@ -120,7 +120,7 @@ public class BoardManager : MonoBehaviour
     // STATE
     // =========================================================
 
-    private bool turnInProgress = false;
+    [HideInInspector] public bool turnInProgress = false;
     private bool gameOver = false;
 
 

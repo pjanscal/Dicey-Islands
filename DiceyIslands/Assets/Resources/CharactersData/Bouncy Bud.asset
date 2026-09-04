@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b74f98639e2da37459ee0f2ae460a601, type: 3}
   m_Name: Bouncy Bud
   m_EditorClassIdentifier: Assembly-CSharp::CharacterData
-  character: {fileID: 0}
+  character: {fileID: 7955029001842557225, guid: bdfeeda31f25f5a42bf2bfb1d3d18cac, type: 3}
   preview: {fileID: 21300000, guid: 6c8460a075dd69f4e8ad2e4eccfcf61e, type: 3}
   charName: Dev

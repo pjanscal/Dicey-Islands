@@ -6,6 +6,7 @@ using UnityEngine.SceneManagement;
 
 public static class GameMangeren
 {
+    //all difficulty a cpu can have
     public enum CPUDifficulty
     {
         Easy,
@@ -15,8 +16,10 @@ public static class GameMangeren
 
     static public bool inGame = false; //tell if it is in game or not
     static public bool isPaused = false; //tell if it pause
+    static public bool isLoading = false; //tell if it is loading
     static public int plrInGame = 0; //help the lokaal script to see what it should be when someone disconnect
     static public CPUDifficulty cPUDifficulty = CPUDifficulty.hard; //the difficulty of the cpu
+    static public Dictionary<int, CharacterLoader> charLoaderScript = new(); //help with animations
 
     //load info
     static public CharacterData[] charsData = Resources.LoadAll<CharacterData>("CharactersData");
@@ -34,7 +37,7 @@ public static class GameMangeren
     }
 
     //configs
-    static private string startSceneName = "SampleScene";
+    static private string startSceneName = "StartScene";
 
     //when the game start it go once
     [RuntimeInitializeOnLoadMethod]
@@ -93,6 +96,16 @@ public static class GameMangeren
     }
 
     //help funtion
+    static public void AddCharLoader(int plrId, CharacterLoader loader)
+    {
+        charLoaderScript.Remove(plrId); //delete the old one
+        charLoaderScript.Add(plrId, loader);
+    }
+    
+    static public CharacterLoader GetCharacterLoaderFromId(int plrId)
+    {
+        return charLoaderScript[plrId];
+    }
 
     static public PlrData GetPlrDataFromId(int plrId)
     {
