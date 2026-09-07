@@ -59,16 +59,6 @@ public class LokaalMatchingUi : MonoBehaviour
             TryForceLoadingLokaalMatch();
         #endif
 
-        if (Input.GetKeyDown(KeyCode.RightBracket))
-        {
-            Debug.Log($"Gamepads: {Gamepad.all.Count}");
-
-            foreach (Gamepad gamepad in Gamepad.all)
-            {
-                Debug.Log($"Gamepad: {gamepad.name} | ID: {gamepad.deviceId} | Enabled: {gamepad.enabled}");
-            }
-        }
-
         //here the rule when they can't join
         if (LokaalConnecter.connectionType == LokaalConnecter.ConnectionTypes.nothing) return;
         
@@ -78,10 +68,61 @@ public class LokaalMatchingUi : MonoBehaviour
         //connectcontrolls
         TryConnectingControllers();
 
-        //keyboard Testing connector
         #if UNITY_EDITOR
+            //keyboard Testing connector
             TryConnectingKeyboard();
+
+            //cpu Testing
+            DeleteAllCpu();
+            OnlyCPU();
         #endif
+    }
+
+    //debug to delete all cpu if u wanna play alone to test one part
+    void DeleteAllCpu()
+    {
+        if (!Input.GetKeyDown(KeyCode.RightBracket)) return;
+        if (LokaalConnecter.connectionType != LokaalConnecter.ConnectionTypes.CPUDifficultySelect) {Debug.LogError("Can't use cheat no cpu try using it in the cpu select"); return;}
+
+        Debug.LogWarning("No Cpu");
+
+        for (int plrId = 1; plrId <= LokaalConnecter.maxPlr; plrId++)
+        {
+            LokaalConnecter.PlayerController playerController = LokaalConnecter.plrsController[plrId];
+            if (!playerController.isCPU) continue;
+
+            LokaalConnecter.DissConnectController(plrId);
+        }
+    }
+
+    //debug to test with only cpu
+    void OnlyCPU()
+    {
+        //hardcoded only cpudifficulty select so i am not changing smth for no reason
+        if (!Input.GetKeyDown(KeyCode.Equals)) return;
+        if (LokaalConnecter.connectionType != LokaalConnecter.ConnectionTypes.CPUDifficultySelect) {Debug.LogError("Can't use cheat only cpu try using it in the cpu select"); return;}
+
+        Debug.LogWarning("only Cpu");
+
+        foreach (LokaalConnecter.PlayerController playerController in LokaalConnecter.plrsController.Values)
+        {
+            if (playerController.isCPU) continue;
+
+            playerController.isCPU = true;
+            GameMangeren.allCPU.Add(LokaalConnecter.GetPlrIdFromPlrData(playerController));
+
+            if (playerController.gamepad != null)
+            {
+                LokaalConnecter.alrUsedControllers.Remove(playerController.gamepad.deviceId);
+                playerController.gamepad = null;
+            }
+            else if (playerController.keyboard != null)
+            {
+                LokaalConnecter.alrUsedKeyboardId.Remove(playerController.keyboardId);
+                playerController.keyboard = null;
+                playerController.keyboardId = 0;
+            }
+        }
     }
 
     //enable or disable the ui
@@ -95,6 +136,7 @@ public class LokaalMatchingUi : MonoBehaviour
         else
         {
             EnableGui(charSelectGui, false);
+            EnableGui(cpuSelectGui, false);
             //EnableGui(dissconnectGui, false);
         }
 
