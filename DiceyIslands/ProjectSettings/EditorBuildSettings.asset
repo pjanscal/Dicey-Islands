@@ -11,6 +11,12 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/BoardTestScene.unity
     guid: 78a74fcad6f99c3459cd37d3d23671f3
+  - enabled: 1
+    path: Assets/Scenes/testing/BoardTestSceneCPU.unity
+    guid: 555568e06e5cf27418d5d38e8f68ae8f
+  - enabled: 1
+    path: Assets/Scenes/Minigame/Minigame1.unity
+    guid: 7d3e23cbd62158249b200f6295301c78
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
   m_UseUCBPForAssetBundles: 0

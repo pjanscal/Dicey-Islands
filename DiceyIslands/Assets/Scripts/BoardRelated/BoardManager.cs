@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
@@ -13,8 +13,8 @@ public class BoardManager : MonoBehaviour
     [Header("Board")]
     [SerializeField] private Transform waypointParent;
 
-    private List<Waypoint> waypoints = new List<Waypoint>();
-
+    private readonly List<Waypoint> waypoints =
+        new List<Waypoint>();
 
     // =========================================================
     // PLAYERS
@@ -35,11 +35,6 @@ public class BoardManager : MonoBehaviour
     private int currentTurnIndex = 0;
     private bool extraRollGranted = false;
 
-    [Header("Swap Tile")]
-    [SerializeField] private float swapAnimationDuration = 1.2f;
-    [SerializeField] private float swapNumberChangeSpeed = 0.1f;
-    [SerializeField] private float swapResultDisplayTime = 0.8f;
-
     // =========================================================
     // MOVEMENT
     // =========================================================
@@ -50,19 +45,25 @@ public class BoardManager : MonoBehaviour
     [Tooltip("Tiny pause after reaching each waypoint.")]
     [SerializeField] private float pauseBetweenSpaces = 0.08f;
 
-
     // =========================================================
     // DICE
     // =========================================================
 
     [Header("Dice")]
     [SerializeField] private float diceAnimationDuration = 0.6f;
-
     [SerializeField] private float diceNumberChangeSpeed = 0.06f;
 
     [Tooltip("How long the final roll stays visible before movement begins.")]
     [SerializeField] private float finalRollDisplayTime = 0.5f;
 
+    // =========================================================
+    // SWAP TILE
+    // =========================================================
+
+    [Header("Swap Tile")]
+    [SerializeField] private float swapAnimationDuration = 1.2f;
+    [SerializeField] private float swapNumberChangeSpeed = 0.1f;
+    [SerializeField] private float swapResultDisplayTime = 0.8f;
 
     // =========================================================
     // UI
@@ -70,23 +71,29 @@ public class BoardManager : MonoBehaviour
 
     [Header("UI")]
     [SerializeField] private Button rollButton;
-
     [SerializeField] private TMP_Text tilesLeftText;
-
     [SerializeField] private TMP_Text rollNumberText;
     [SerializeField] private TMP_Text bonusRollNumberText;
-
     [SerializeField] private TMP_Text roundText;
-
     [SerializeField] private TMP_Text swapText;
-
     [SerializeField] private TMP_Text skippedText;
+    [SerializeField] private TMP_Text turnOrderText;
 
     [Header("Skip Turn")]
-    [SerializeField] private float skippedDisplayDuration = 1.2f;
+    [SerializeField] private float skippedDisplayDuration = 1.5f;
 
+    // =========================================================
+    // MINIGAME
+    // =========================================================
 
+    [Header("Minigame")]
+    [SerializeField] private TMP_Text minigameText;
+    [SerializeField] private float minigameNameChangeSpeed = 0.1f;
+    [SerializeField] private float minigameAnimationDuration = 1.5f;
+    [SerializeField] private float minigameSelectedDisplayTime = 1.5f;
 
+    private readonly List<string> availableMinigames =
+        new List<string>();
 
     // =========================================================
     // CAMERA
@@ -94,9 +101,7 @@ public class BoardManager : MonoBehaviour
 
     [Header("Camera")]
     [SerializeField] private PlayerCamera playerCamera;
-
     [SerializeField] private Transform topDownCameraPosition;
-
 
     // =========================================================
     // ROUND SYSTEM
@@ -107,7 +112,6 @@ public class BoardManager : MonoBehaviour
 
     private int currentRound = 1;
 
-
     // =========================================================
     // RESULTS
     // =========================================================
@@ -115,14 +119,12 @@ public class BoardManager : MonoBehaviour
     [Header("Match Results")]
     [SerializeField] private MatchResultsUI matchResultsUI;
 
-
     // =========================================================
     // STATE
     // =========================================================
 
     [HideInInspector] public bool turnInProgress = false;
     private bool gameOver = false;
-
 
     // =========================================================
     // PUBLIC PROPERTIES
@@ -137,7 +139,9 @@ public class BoardManager : MonoBehaviour
 
             if (currentTurnIndex < 0 ||
                 currentTurnIndex >= turnOrder.Count)
+            {
                 return null;
+            }
 
             return turnOrder[currentTurnIndex];
         }
@@ -153,14 +157,13 @@ public class BoardManager : MonoBehaviour
         get { return gameOver; }
     }
 
-
     // =========================================================
     // UNITY
     // =========================================================
 
-
     private void Awake()
     {
+        FindMinigameScenes();
         SetupWaypoints();
         SetupPlayers();
     }
@@ -193,36 +196,78 @@ public class BoardManager : MonoBehaviour
         }
 
         gameOver = false;
+
+        HideGameplayUI();
+
+        // Coming back from a minigame:
+        // restore positions/history/order and begin this round's board turns.
+        if (MatchData.Instance != null &&
+            MatchData.Instance.returningFromMinigame)
+        {
+            Debug.Log(
+                "Returning from minigame. Restoring board state."
+            );
+
+            RestoreBoardStateFromMinigame();
+
+            MatchData.Instance.returningFromMinigame = false;
+            MatchData.Instance.minigameTransitionStarted = false;
+
+            StartCurrentTurn();
+            return;
+        }
+
+        // Fresh match.
         currentRound = 1;
         currentTurnIndex = 0;
 
+        if (MatchData.Instance != null)
+        {
+            MatchData.Instance.currentRound =
+                currentRound;
+        }
+
         PlacePlayersOnStartingWaypoint();
 
-        if (rollNumberText != null)
-        {
-            rollNumberText.gameObject.SetActive(false);
-        }
-
-        if (roundText != null)
-        {
-            roundText.gameObject.SetActive(false);
-        }
-
         if (rollButton != null)
-        {
             rollButton.interactable = false;
-        }
 
-        StartCoroutine(ShowRoundTransition());
-
-        if (skippedText != null)
-            skippedText.gameObject.SetActive(false);
+        // Every round, including Round 1, announces the round
+        // and then launches a minigame before board turns begin.
+        StartCoroutine(
+            ShowRoundTransition()
+        );
     }
 
     private void Update()
     {
         CheckCurrentPlayerRollInput();
     }
+
+    private void HideGameplayUI()
+    {
+        if (rollNumberText != null)
+            rollNumberText.gameObject.SetActive(false);
+
+        if (bonusRollNumberText != null)
+            bonusRollNumberText.gameObject.SetActive(false);
+
+        if (roundText != null)
+            roundText.gameObject.SetActive(false);
+
+        if (minigameText != null)
+            minigameText.gameObject.SetActive(false);
+
+        if (swapText != null)
+            swapText.gameObject.SetActive(false);
+
+        if (skippedText != null)
+            skippedText.gameObject.SetActive(false);
+    }
+
+    // =========================================================
+    // CONTROLLER INPUT
+    // =========================================================
 
     private void CheckCurrentPlayerRollInput()
     {
@@ -267,7 +312,6 @@ public class BoardManager : MonoBehaviour
         }
     }
 
-
     // =========================================================
     // SETUP
     // =========================================================
@@ -298,7 +342,6 @@ public class BoardManager : MonoBehaviour
             if (waypoint == null)
                 continue;
 
-            // Child order determines waypoint number.
             waypoint.waypointNumber =
                 waypoints.Count + 1;
 
@@ -316,8 +359,7 @@ public class BoardManager : MonoBehaviour
     {
         turnOrder.Clear();
 
-        // First try to find players who actually
-        // joined through matchmaking.
+        // Normal matchmaking path.
         foreach (PlayerPiece player in playerSlots)
         {
             if (player == null)
@@ -350,21 +392,11 @@ public class BoardManager : MonoBehaviour
                 continue;
 
             if (!turnOrder.Contains(player))
-            {
                 turnOrder.Add(player);
-            }
         }
 
-        /*
-         * When testing the board scene directly
-         * in the Unity Editor, matchmaking may
-         * not have happened yet.
-         *
-         * In that case, use the Player Slots
-         * from the Inspector instead.
-         */
 #if UNITY_EDITOR
-
+        // Editor fallback when testing the board scene directly.
         if (turnOrder.Count == 0)
         {
             Debug.LogWarning(
@@ -381,19 +413,16 @@ public class BoardManager : MonoBehaviour
                     continue;
 
                 if (!turnOrder.Contains(player))
-                {
                     turnOrder.Add(player);
-                }
             }
         }
-
 #endif
 
-        // Clear statistics from an old match.
+        // New scene instance starts with empty history.
+        // If this is a minigame return, RestoreBoardStateFromMinigame()
+        // restores the saved history immediately afterward.
         foreach (PlayerPiece player in turnOrder)
-        {
             player.ClearMatchHistory();
-        }
 
         Debug.Log(
             "Board game started with " +
@@ -416,7 +445,6 @@ public class BoardManager : MonoBehaviour
                 player.tileOffset;
         }
     }
-
 
     // =========================================================
     // TURN SYSTEM
@@ -446,6 +474,7 @@ public class BoardManager : MonoBehaviour
         );
 
         UpdatePlayerVisuals();
+        UpdateTurnOrderText();
 
         if (playerCamera != null)
         {
@@ -457,19 +486,10 @@ public class BoardManager : MonoBehaviour
         UpdateTilesLeftText();
 
         if (rollNumberText != null)
-        {
-            rollNumberText.gameObject
-                .SetActive(false);
+            rollNumberText.gameObject.SetActive(false);
 
-            if (bonusRollNumberText != null)
-            {
-                bonusRollNumberText.gameObject.SetActive(false);
-            }
-        }
-
-        // =========================================
-        // CHECK IF THIS PLAYER MUST BE SKIPPED
-        // =========================================
+        if (bonusRollNumberText != null)
+            bonusRollNumberText.gameObject.SetActive(false);
 
         if (player.ConsumeSkipNextTurn())
         {
@@ -485,15 +505,9 @@ public class BoardManager : MonoBehaviour
             return;
         }
 
-        // =========================================
-        // NORMAL TURN
-        // =========================================
-
         if (rollButton != null)
         {
-            rollButton.gameObject
-                .SetActive(true);
-
+            rollButton.gameObject.SetActive(true);
             rollButton.interactable = true;
         }
     }
@@ -505,15 +519,20 @@ public class BoardManager : MonoBehaviour
 
         currentTurnIndex++;
 
-        // Everyone has now had their turn.
+        // Everyone has completed one board turn.
         if (currentTurnIndex >= turnOrder.Count)
         {
             currentTurnIndex = 0;
 
-            // Record where everybody ended this round.
             RecordRoundPositions();
 
             currentRound++;
+
+            if (MatchData.Instance != null)
+            {
+                MatchData.Instance.currentRound =
+                    currentRound;
+            }
 
             StartCoroutine(
                 ShowRoundTransition()
@@ -522,7 +541,6 @@ public class BoardManager : MonoBehaviour
             return;
         }
 
-        // Otherwise move immediately to next player.
         StartCurrentTurn();
     }
 
@@ -535,7 +553,6 @@ public class BoardManager : MonoBehaviour
             );
         }
     }
-
 
     // =========================================================
     // DICE
@@ -552,14 +569,10 @@ public class BoardManager : MonoBehaviour
         if (CurrentPlayer == null)
             return;
 
-        // Lock immediately so the button cannot
-        // be spammed before the coroutine starts.
         turnInProgress = true;
 
         if (rollButton != null)
-        {
             rollButton.interactable = false;
-        }
 
         PlayerPiece rollingPlayer =
             CurrentPlayer;
@@ -569,13 +582,9 @@ public class BoardManager : MonoBehaviour
         );
     }
 
-    // ==============================================
-    // BONUSDICE
-    // ==============================================
-
     private int GetBonusDiceMax(
-    PlayerPiece player
-)
+        PlayerPiece player
+    )
     {
         if (player == null)
             return 0;
@@ -585,63 +594,40 @@ public class BoardManager : MonoBehaviour
 
         switch (place)
         {
-            // 1st place
             case 0:
                 return 6;
 
-            // 2nd place
             case 1:
                 return 3;
 
-            // 3rd place
             case 2:
                 return 2;
 
-            // 4th place
             default:
                 return 0;
         }
     }
 
     private IEnumerator RollAndPlayTurn(
-    PlayerPiece player
-)
+        PlayerPiece player
+    )
     {
-        // =========================================
-        // FIND THIS PLAYER'S BONUS DIE
-        // =========================================
-
         int bonusDiceMax =
             GetBonusDiceMax(player);
 
         bool hasBonusDice =
             bonusDiceMax > 0;
 
-        // =========================================
-        // SHOW DICE UI
-        // =========================================
-
         if (rollNumberText != null)
-        {
-            rollNumberText.gameObject
-                .SetActive(true);
-        }
+            rollNumberText.gameObject.SetActive(true);
 
         if (bonusRollNumberText != null)
-        {
-            bonusRollNumberText.gameObject
-                .SetActive(hasBonusDice);
-        }
-
-        // =========================================
-        // DICE ANIMATION
-        // =========================================
+            bonusRollNumberText.gameObject.SetActive(hasBonusDice);
 
         float elapsed = 0f;
 
         while (elapsed < diceAnimationDuration)
         {
-            // Main die always rolls 1-6.
             int fakeMainRoll =
                 Random.Range(1, 7);
 
@@ -651,7 +637,6 @@ public class BoardManager : MonoBehaviour
                     fakeMainRoll.ToString();
             }
 
-            // Animate bonus die if this player has one.
             if (hasBonusDice)
             {
                 int fakeBonusRoll =
@@ -675,16 +660,8 @@ public class BoardManager : MonoBehaviour
                 diceNumberChangeSpeed;
         }
 
-        // =========================================
-        // FINAL MAIN DIE
-        // =========================================
-
         int mainRoll =
             Random.Range(1, 7);
-
-        // =========================================
-        // FINAL BONUS DIE
-        // =========================================
 
         int bonusRoll = 0;
 
@@ -697,15 +674,8 @@ public class BoardManager : MonoBehaviour
                 );
         }
 
-        // =========================================
-        // DISPLAY FINAL RESULTS
-        // =========================================
-
         if (rollNumberText != null)
-        {
-            rollNumberText.text =
-                mainRoll.ToString();
-        }
+            rollNumberText.text = mainRoll.ToString();
 
         if (bonusRollNumberText != null &&
             hasBonusDice)
@@ -714,7 +684,6 @@ public class BoardManager : MonoBehaviour
                 bonusRoll.ToString();
         }
 
-        // Add both dice together
         int totalRoll =
             mainRoll + bonusRoll;
 
@@ -729,14 +698,9 @@ public class BoardManager : MonoBehaviour
             totalRoll
         );
 
-        // Let player see the final dice.
         yield return new WaitForSecondsRealtime(
             finalRollDisplayTime
         );
-
-        // =========================================
-        // MOVE PLAYER
-        // =========================================
 
         int targetIndex =
             player.currentWaypointIndex +
@@ -753,39 +717,24 @@ public class BoardManager : MonoBehaviour
             targetIndex
         );
 
-        // =========================================
-        // CHECK FOR WIN
-        // =========================================
-
         if (HasPlayerReachedEnd(player))
         {
             EndGame(player);
             yield break;
         }
-
-        // =========================================
-        // TILE EFFECTS
-        // =========================================
 
         yield return ResolveTileEffects(
             player
         );
 
-        // Tile effect may have moved them
-        // onto the final waypoint.
         if (HasPlayerReachedEnd(player))
         {
             EndGame(player);
             yield break;
         }
 
-        // =========================================
-        // FINISH TURN
-        // =========================================
-
         turnInProgress = false;
 
-        // Roll Again tile support.
         if (extraRollGranted)
         {
             extraRollGranted = false;
@@ -797,13 +746,11 @@ public class BoardManager : MonoBehaviour
             );
 
             StartCurrentTurn();
-
             yield break;
         }
 
         FinishCurrentTurn();
     }
-
 
     // =========================================================
     // MOVEMENT
@@ -843,10 +790,9 @@ public class BoardManager : MonoBehaviour
 
             Vector3 destination =
                 waypoints[nextIndex]
-                .transform.position +
+                    .transform.position +
                 player.tileOffset;
 
-            // Move toward next tile.
             while (
                 Vector3.Distance(
                     player.transform.position,
@@ -865,40 +811,31 @@ public class BoardManager : MonoBehaviour
                 yield return null;
             }
 
-            // Snap exactly onto it.
             player.transform.position =
                 destination;
 
             player.currentWaypointIndex =
                 nextIndex;
 
-            // Update Tiles Left as we travel.
             if (player == CurrentPlayer)
-            {
                 UpdateTilesLeftText();
-            }
-
-            // Important:
-            // We DO NOT activate a waypoint here.
-            // Passing through a special tile does nothing.
 
             if (pauseBetweenSpaces > 0f)
             {
-                yield return new WaitForSeconds(
+                yield return new WaitForSecondsRealtime(
                     pauseBetweenSpaces
                 );
             }
         }
     }
 
-
     // =========================================================
     // TILE EFFECTS
     // =========================================================
 
     private IEnumerator ResolveTileEffects(
-    PlayerPiece player
-)
+        PlayerPiece player
+    )
     {
         const int effectSafetyLimit = 20;
         int effectsResolved = 0;
@@ -921,10 +858,7 @@ public class BoardManager : MonoBehaviour
                 ")"
             );
 
-            // =========================================
-            // ROLL AGAIN
-            // =========================================
-
+            // Roll again.
             if (landedWaypoint.tileType ==
                 TileType.RollAgain)
             {
@@ -935,43 +869,34 @@ public class BoardManager : MonoBehaviour
                 );
 
                 extraRollGranted = true;
-
                 yield break;
             }
 
-            // =========================================
-            // SWAP WITH RANDOM PLAYER
-            // =========================================
-
+            // Swap with a random other player.
             if (landedWaypoint.tileType ==
                 TileType.SwapWithRandomPlayer)
             {
-                yield return SwapWithRandomPlayer(player);
+                yield return SwapWithRandomPlayer(
+                    player
+                );
 
                 effectsResolved++;
                 continue;
             }
 
-            // =========================================
-            // SKIP NEXT PLAYER
-            // =========================================
-
+            // Skip the next player in the CURRENT turn order.
+            // If this player is last, nothing happens.
             if (landedWaypoint.tileType ==
                 TileType.SkipNextTurn)
             {
                 GiveSkipToNextPlayer(player);
-
                 yield break;
             }
 
-            // =========================================
-            // MOVE FORWARD / MOVE BACK
-            // =========================================
-
+            // Forward/backward tiles.
             int movement =
                 landedWaypoint.GetMovementEffect();
 
-            // Normal tile.
             if (movement == 0)
                 yield break;
 
@@ -1004,9 +929,10 @@ public class BoardManager : MonoBehaviour
             "Check for tile effects that loop forever."
         );
     }
+
     private IEnumerator SwapWithRandomPlayer(
-     PlayerPiece currentPlayer
- )
+        PlayerPiece currentPlayer
+    )
     {
         List<PlayerPiece> possiblePlayers =
             new List<PlayerPiece>();
@@ -1025,7 +951,6 @@ public class BoardManager : MonoBehaviour
             possiblePlayers.Add(player);
         }
 
-        // No other player exists.
         if (possiblePlayers.Count == 0)
         {
             Debug.Log(
@@ -1035,14 +960,8 @@ public class BoardManager : MonoBehaviour
             yield break;
         }
 
-        // =========================================
-        // SWAP ANIMATER
-        // =========================================
-
         if (swapText != null)
-        {
             swapText.gameObject.SetActive(true);
-        }
 
         float elapsed = 0f;
 
@@ -1059,10 +978,10 @@ public class BoardManager : MonoBehaviour
             if (swapText != null)
             {
                 swapText.text =
-                    "SWAPPING WITH...\n" +
-                    "PLAYER " +
+                    "SWAPPING WITH...\nPLAYER " +
                     fakePlayer.PlayerNumber;
             }
+
             yield return new WaitForSecondsRealtime(
                 swapNumberChangeSpeed
             );
@@ -1070,10 +989,6 @@ public class BoardManager : MonoBehaviour
             elapsed +=
                 swapNumberChangeSpeed;
         }
-
-        // =========================================
-        // PICKS REAL PLAYERS
-        // =========================================
 
         PlayerPiece otherPlayer =
             possiblePlayers[
@@ -1097,13 +1012,10 @@ public class BoardManager : MonoBehaviour
             " is swapping with Player " +
             otherPlayer.PlayerNumber
         );
+
         yield return new WaitForSecondsRealtime(
             swapResultDisplayTime
         );
-
-        // =========================================
-        // SAVE OLD POSITIONS
-        // =========================================
 
         int currentPlayerOldIndex =
             currentPlayer.currentWaypointIndex;
@@ -1111,52 +1023,37 @@ public class BoardManager : MonoBehaviour
         int otherPlayerOldIndex =
             otherPlayer.currentWaypointIndex;
 
-        // =========================================
-        // SWAP LOGICAL POSITIONS
-        // =========================================
-
         currentPlayer.currentWaypointIndex =
             otherPlayerOldIndex;
 
         otherPlayer.currentWaypointIndex =
             currentPlayerOldIndex;
 
-        // =========================================
-        // SWAP VISUAL POSITIONS
-        // =========================================
-
-        Vector3 currentDestination =
+        currentPlayer.transform.position =
             waypoints[
                 currentPlayer.currentWaypointIndex
             ].transform.position +
             currentPlayer.tileOffset;
 
-        Vector3 otherDestination =
+        otherPlayer.transform.position =
             waypoints[
                 otherPlayer.currentWaypointIndex
             ].transform.position +
             otherPlayer.tileOffset;
 
-        currentPlayer.transform.position =
-            currentDestination;
-
-        otherPlayer.transform.position =
-            otherDestination;
-
         UpdateTilesLeftText();
 
         if (swapText != null)
-        {
             swapText.gameObject.SetActive(false);
-        }
-
     }
-    // =========================================
-    // SKIP MANAGER
-    // =========================================
+
+    // =========================================================
+    // SKIP TILE
+    // =========================================================
+
     private void GiveSkipToNextPlayer(
-    PlayerPiece player
-)
+        PlayerPiece player
+    )
     {
         if (player == null)
             return;
@@ -1167,6 +1064,7 @@ public class BoardManager : MonoBehaviour
         if (playerTurnIndex < 0)
             return;
 
+        // Do not wrap to the first player.
         if (playerTurnIndex >=
             turnOrder.Count - 1)
         {
@@ -1174,8 +1072,8 @@ public class BoardManager : MonoBehaviour
                 "Player " +
                 player.PlayerNumber +
                 " landed on Skip Next Turn, " +
-                "but they are last in the turn order.. " +
-                "nothing happens."
+                "but they are last in the turn order. " +
+                "Nothing happens."
             );
 
             return;
@@ -1197,25 +1095,24 @@ public class BoardManager : MonoBehaviour
             " to skip their next turn."
         );
     }
-    // =========================================
-    // SKIP UI ANIMATION (SUBJECT TO CHANGE/EVISCERATION)
-    // =========================================
+
     private IEnumerator ShowSkippedTurn(
-    PlayerPiece skippedPlayer
-)
+        PlayerPiece skippedPlayer
+    )
     {
         turnInProgress = true;
 
         if (rollButton != null)
         {
             rollButton.interactable = false;
+            rollButton.gameObject.SetActive(false);
         }
 
         if (rollNumberText != null)
-        {
-            rollNumberText.gameObject
-                .SetActive(false);
-        }
+            rollNumberText.gameObject.SetActive(false);
+
+        if (bonusRollNumberText != null)
+            bonusRollNumberText.gameObject.SetActive(false);
 
         if (playerCamera != null)
         {
@@ -1229,8 +1126,7 @@ public class BoardManager : MonoBehaviour
             skippedText.text =
                 "SKIPPED";
 
-            skippedText.gameObject
-                .SetActive(true);
+            skippedText.gameObject.SetActive(true);
         }
 
         Debug.Log(
@@ -1243,16 +1139,12 @@ public class BoardManager : MonoBehaviour
         );
 
         if (skippedText != null)
-        {
-            skippedText.gameObject
-                .SetActive(false);
-        }
+            skippedText.gameObject.SetActive(false);
 
         turnInProgress = false;
 
         FinishCurrentTurn();
     }
-
 
     // =========================================================
     // TILES LEFT UI
@@ -1272,8 +1164,7 @@ public class BoardManager : MonoBehaviour
 
         int tilesLeft =
             (waypoints.Count - 1) -
-            CurrentPlayer
-            .currentWaypointIndex;
+            CurrentPlayer.currentWaypointIndex;
 
         tilesLeft = Mathf.Max(
             tilesLeft,
@@ -1284,7 +1175,67 @@ public class BoardManager : MonoBehaviour
             "Left: " +
             tilesLeft;
     }
+    private void UpdateTurnOrderText()
+    {
+        if (turnOrderText == null)
+            return;
 
+        if (turnOrder.Count == 0)
+        {
+            turnOrderText.text = "";
+            return;
+        }
+
+        string text =
+            "ROUND " +
+            currentRound +
+            " TURN ORDER\n\n";
+
+        for (int i = 0;
+             i < turnOrder.Count;
+             i++)
+        {
+            PlayerPiece player =
+                turnOrder[i];
+
+            if (player == null)
+                continue;
+
+            if (i == currentTurnIndex)
+                text += "▶ ";
+            else
+                text += "   ";
+
+            text +=
+                (i + 1) +
+                ". Player " +
+                player.PlayerNumber;
+
+            switch (i)
+            {
+                case 0:
+                    text += "   +D6";
+                    break;
+
+                case 1:
+                    text += "   +D3";
+                    break;
+
+                case 2:
+                    text += "   +D2";
+                    break;
+            }
+
+            if (i <
+                turnOrder.Count - 1)
+            {
+                text += "\n";
+            }
+        }
+
+        turnOrderText.text =
+            text;
+    }
 
     // =========================================================
     // ROUND SYSTEM
@@ -1300,14 +1251,15 @@ public class BoardManager : MonoBehaviour
         if (rollButton != null)
         {
             rollButton.interactable = false;
+            rollButton.gameObject.SetActive(false);
         }
 
         if (rollNumberText != null)
-        {
             rollNumberText.gameObject.SetActive(false);
-        }
 
-        // Move camera above whole map.
+        if (bonusRollNumberText != null)
+            bonusRollNumberText.gameObject.SetActive(false);
+
         if (playerCamera != null &&
             topDownCameraPosition != null)
         {
@@ -1316,7 +1268,6 @@ public class BoardManager : MonoBehaviour
             );
         }
 
-        // Show "ROUND X"
         if (roundText != null)
         {
             roundText.text =
@@ -1332,28 +1283,21 @@ public class BoardManager : MonoBehaviour
             " started."
         );
 
-        // IMPORTANT:
-        // Realtime means matchmaking's Time.timeScale = 0
-        // cannot freeze the round screen.
         yield return new WaitForSecondsRealtime(
             roundTransitionDuration
         );
 
         if (roundText != null)
-        {
             roundText.gameObject.SetActive(false);
-        }
 
         turnInProgress = false;
 
-        if (bonusRollNumberText != null)
-        {
-            bonusRollNumberText.gameObject.SetActive(false);
-        }
-
-        StartCurrentTurn();
+        // Minigame happens before EVERY round,
+        // including Round 1.
+        StartCoroutine(
+            StartMinigameSequence()
+        );
     }
-
 
     // =========================================================
     // ROUND STATISTICS
@@ -1371,30 +1315,16 @@ public class BoardManager : MonoBehaviour
                 " result: Player " +
                 player.PlayerNumber +
                 " = Waypoint " +
-                (
-                    player.currentWaypointIndex +
-                    1
-                )
+                (player.currentWaypointIndex + 1)
             );
         }
     }
 
     private void RecordFinalPositions()
     {
-        /*
-         * The game may end halfway through a round.
-         *
-         * We still save one final snapshot so that
-         * the graph shows where everybody was when
-         * the winner finished.
-         */
-
         foreach (PlayerPiece player in turnOrder)
-        {
             player.RecordRoundPosition();
-        }
     }
-
 
     // =========================================================
     // WIN / GAME OVER
@@ -1419,7 +1349,6 @@ public class BoardManager : MonoBehaviour
         PlayerPiece winner
     )
     {
-        // Prevent EndGame from running twice.
         if (gameOver)
             return;
 
@@ -1432,7 +1361,6 @@ public class BoardManager : MonoBehaviour
             " IS THE WINNER!"
         );
 
-        // No more rolling.
         if (rollButton != null)
         {
             rollButton.interactable = false;
@@ -1440,21 +1368,27 @@ public class BoardManager : MonoBehaviour
         }
 
         if (rollNumberText != null)
-        {
             rollNumberText.gameObject.SetActive(false);
-        }
+
+        if (bonusRollNumberText != null)
+            bonusRollNumberText.gameObject.SetActive(false);
 
         if (roundText != null)
-        {
             roundText.gameObject.SetActive(false);
-        }
+
+        if (minigameText != null)
+            minigameText.gameObject.SetActive(false);
+
+        if (swapText != null)
+            swapText.gameObject.SetActive(false);
+
+        if (skippedText != null)
+            skippedText.gameObject.SetActive(false);
 
         RecordFinalPositions();
 
         foreach (PlayerPiece player in turnOrder)
-        {
             player.SetActiveTurnVisual(true);
-        }
 
         if (matchResultsUI != null)
         {
@@ -1467,16 +1401,10 @@ public class BoardManager : MonoBehaviour
         else
         {
             Debug.LogWarning(
-                "No MatchResultsUI has been " +
-                "assigned to BoardManager."
+                "No MatchResultsUI has been assigned to BoardManager."
             );
         }
-        if (bonusRollNumberText != null)
-        {
-            bonusRollNumberText.gameObject.SetActive(false);
-        }
     }
-
 
     // =========================================================
     // TURN ORDER CHANGING
@@ -1489,52 +1417,34 @@ public class BoardManager : MonoBehaviour
         if (newOrder == null)
             return;
 
-        List<PlayerPiece>
-            validOrder =
+        List<PlayerPiece> validOrder =
             new List<PlayerPiece>();
 
-        foreach (
-            PlayerPiece player
-            in newOrder
-        )
+        foreach (PlayerPiece player in newOrder)
         {
             if (player == null)
                 continue;
 
-            if (!player.gameObject
-                .activeInHierarchy)
+            if (!player.gameObject.activeInHierarchy)
                 continue;
 
             if (!validOrder.Contains(player))
-            {
                 validOrder.Add(player);
-            }
         }
 
-        /*
-         * Make sure a minigame didn't accidentally
-         * forget one of the participating players.
-         */
-        foreach (
-            PlayerPiece player
-            in turnOrder
-        )
+        foreach (PlayerPiece player in turnOrder)
         {
             if (player == null)
                 continue;
 
-            if (!player.gameObject
-                .activeInHierarchy)
+            if (!player.gameObject.activeInHierarchy)
                 continue;
 
             if (!validOrder.Contains(player))
-            {
                 validOrder.Add(player);
-            }
         }
 
         turnOrder = validOrder;
-
         currentTurnIndex = 0;
 
         Debug.Log(
@@ -1542,4 +1452,439 @@ public class BoardManager : MonoBehaviour
         );
     }
 
+    // =========================================================
+    // MINIGAMES
+    // =========================================================
+
+    private void FindMinigameScenes()
+    {
+        availableMinigames.Clear();
+
+        int sceneCount =
+            UnityEngine.SceneManagement
+                .SceneManager.sceneCountInBuildSettings;
+
+        for (int i = 0; i < sceneCount; i++)
+        {
+            string scenePath =
+                UnityEngine.SceneManagement
+                    .SceneUtility
+                    .GetScenePathByBuildIndex(i);
+
+            if (string.IsNullOrEmpty(scenePath))
+                continue;
+
+            if (!scenePath.Contains(
+                "Scenes/Minigame/"
+            ))
+            {
+                continue;
+            }
+
+            string sceneName =
+                System.IO.Path
+                    .GetFileNameWithoutExtension(
+                        scenePath
+                    );
+
+            if (!availableMinigames.Contains(sceneName))
+                availableMinigames.Add(sceneName);
+        }
+
+        Debug.Log(
+            "Found " +
+            availableMinigames.Count +
+            " minigames."
+        );
+    }
+
+    /// <summary>
+    /// Saves the board before loading a minigame.
+    ///
+    /// IMPORTANT:
+    /// playerWaypointPositions is stored by STABLE PlayerNumber:
+    /// index 0 = Player 1
+    /// index 1 = Player 2
+    /// index 2 = Player 3
+    /// index 3 = Player 4
+    ///
+    /// We intentionally DO NOT overwrite playerOrderNumbers here,
+    /// because MinigameResultBridge uses that list to store the
+    /// new 1st/2nd/3rd/4th place order.
+    /// </summary>
+    private void SaveBoardState()
+    {
+        if (MatchData.Instance == null)
+        {
+            Debug.LogError(
+                "No MatchData object exists!"
+            );
+
+            return;
+        }
+
+        // -----------------------------------------
+        // SAVE POSITIONS BY PLAYER NUMBER
+        // -----------------------------------------
+
+        MatchData.Instance.playerWaypointPositions.Clear();
+
+        // Four fixed slots:
+        // [0] P1, [1] P2, [2] P3, [3] P4
+        for (int i = 0; i < 4; i++)
+        {
+            MatchData.Instance
+                .playerWaypointPositions.Add(-1);
+        }
+
+        foreach (PlayerPiece player in playerSlots)
+        {
+            if (player == null)
+                continue;
+
+            int positionSlot =
+                player.PlayerNumber - 1;
+
+            if (positionSlot < 0 ||
+                positionSlot >=
+                MatchData.Instance
+                    .playerWaypointPositions.Count)
+            {
+                continue;
+            }
+
+            MatchData.Instance
+                .playerWaypointPositions[positionSlot] =
+                player.currentWaypointIndex;
+        }
+
+        // -----------------------------------------
+        // SAVE ROUND HISTORY
+        // -----------------------------------------
+
+        MatchData.Instance
+            .historyPlayerNumbers.Clear();
+
+        MatchData.Instance
+            .playerRoundHistories.Clear();
+
+        foreach (PlayerPiece player in playerSlots)
+        {
+            if (player == null)
+                continue;
+
+            MatchData.Instance
+                .historyPlayerNumbers.Add(
+                    player.PlayerNumber
+                );
+
+            MatchData.Instance
+                .playerRoundHistories.Add(
+                    new List<int>(
+                        player.roundWaypointHistory
+                    )
+                );
+        }
+
+        MatchData.Instance.currentRound =
+            currentRound;
+
+        Debug.Log(
+            "Saved board positions/history for minigame."
+        );
+    }
+
+    private IEnumerator StartMinigameSequence()
+    {
+        if (availableMinigames.Count == 0)
+        {
+            Debug.LogError(
+                "No minigame scenes were found. " +
+                "Make sure they are in Assets/Scenes/Minigame " +
+                "and included in Build Settings."
+            );
+
+            yield break;
+        }
+
+        if (MatchData.Instance == null)
+        {
+            Debug.LogError(
+                "MatchData is missing. Cannot start minigame."
+            );
+
+            yield break;
+        }
+
+        turnInProgress = true;
+
+        if (rollButton != null)
+        {
+            rollButton.interactable = false;
+            rollButton.gameObject.SetActive(false);
+        }
+
+        if (rollNumberText != null)
+            rollNumberText.gameObject.SetActive(false);
+
+        if (bonusRollNumberText != null)
+            bonusRollNumberText.gameObject.SetActive(false);
+
+        if (minigameText != null)
+        {
+            minigameText.text =
+                "MINIGAME";
+
+            minigameText.gameObject.SetActive(true);
+        }
+
+        Debug.Log(
+            "Minigame starting."
+        );
+
+        yield return new WaitForSecondsRealtime(
+            1f
+        );
+
+        float elapsed = 0f;
+
+        while (elapsed < minigameAnimationDuration)
+        {
+            string randomName =
+                availableMinigames[
+                    Random.Range(
+                        0,
+                        availableMinigames.Count
+                    )
+                ];
+
+            if (minigameText != null)
+                minigameText.text = randomName;
+
+            yield return new WaitForSecondsRealtime(
+                minigameNameChangeSpeed
+            );
+
+            elapsed +=
+                minigameNameChangeSpeed;
+        }
+
+        string selectedMinigame =
+            availableMinigames[
+                Random.Range(
+                    0,
+                    availableMinigames.Count
+                )
+            ];
+
+        Debug.Log(
+            "Selected minigame: " +
+            selectedMinigame
+        );
+
+        if (minigameText != null)
+            minigameText.text = selectedMinigame;
+
+        MatchData.Instance.selectedMinigameScene =
+            selectedMinigame;
+
+        // Save position/history BEFORE leaving board.
+        SaveBoardState();
+
+        yield return new WaitForSecondsRealtime(
+            minigameSelectedDisplayTime
+        );
+
+        UnityEngine.SceneManagement
+            .SceneManager.LoadScene(
+                selectedMinigame
+            );
+    }
+
+    /// <summary>
+    /// Called after MinigameResultBridge loads the board again.
+    /// Restores:
+    /// - current round
+    /// - board positions
+    /// - chart history
+    /// - turn order from the minigame placements
+    private void RestoreBoardStateFromMinigame()
+    {
+        if (MatchData.Instance == null)
+        {
+            Debug.LogError(
+                "MatchData does not exist."
+            );
+
+            return;
+        }
+
+        currentRound =
+            MatchData.Instance.currentRound;
+
+        // -----------------------------------------
+        // RESTORE POSITIONS BY STABLE PLAYER NUMBER
+        // -----------------------------------------
+
+        foreach (PlayerPiece player in playerSlots)
+        {
+            if (player == null)
+                continue;
+
+            int positionSlot =
+                player.PlayerNumber - 1;
+
+            if (positionSlot >= 0 &&
+                positionSlot <
+                MatchData.Instance
+                    .playerWaypointPositions.Count)
+            {
+                int savedPositionIndex =
+                    MatchData.Instance
+                        .playerWaypointPositions[positionSlot];
+
+                if (savedPositionIndex >= 0)
+                {
+                    savedPositionIndex =
+                        Mathf.Clamp(
+                            savedPositionIndex,
+                            0,
+                            waypoints.Count - 1
+                        );
+
+                    player.currentWaypointIndex =
+                        savedPositionIndex;
+
+                    player.transform.position =
+                        waypoints[savedPositionIndex]
+                            .transform.position +
+                        player.tileOffset;
+
+                }
+                UpdateTurnOrderText();
+            }
+
+            // -----------------------------------------
+            // RESTORE CHART HISTORY
+            // -----------------------------------------
+
+            player.roundWaypointHistory.Clear();
+
+            for (int i = 0;
+                 i <
+                 MatchData.Instance
+                     .historyPlayerNumbers.Count;
+                 i++)
+            {
+                if (
+                    MatchData.Instance
+                        .historyPlayerNumbers[i]
+                    != player.PlayerNumber
+                )
+                {
+                    continue;
+                }
+
+                if (
+                    i <
+                    MatchData.Instance
+                        .playerRoundHistories.Count
+                )
+                {
+                    player.roundWaypointHistory.AddRange(
+                        MatchData.Instance
+                            .playerRoundHistories[i]
+                    );
+                }
+
+                break;
+            }
+
+            Debug.Log(
+                "Restored Player " +
+                player.PlayerNumber +
+                " to Waypoint " +
+                (player.currentWaypointIndex + 1) +
+                " with " +
+                player.roundWaypointHistory.Count +
+                " history entries."
+            );
+        }
+
+        // -----------------------------------------
+        // REBUILD TURN ORDER FROM MINIGAME RESULTS
+        // -----------------------------------------
+
+        List<PlayerPiece> newOrder =
+            new List<PlayerPiece>();
+
+        foreach (
+            int playerNumber
+            in MatchData.Instance.playerOrderNumbers
+        )
+        {
+            PlayerPiece matchingPlayer =
+                FindPlayerByNumber(
+                    playerNumber
+                );
+
+            if (matchingPlayer == null)
+                continue;
+
+            if (!matchingPlayer.gameObject.activeInHierarchy)
+                continue;
+
+            if (!newOrder.Contains(matchingPlayer))
+                newOrder.Add(matchingPlayer);
+        }
+
+        foreach (PlayerPiece player in turnOrder)
+        {
+            if (player == null)
+                continue;
+
+            if (!player.gameObject.activeInHierarchy)
+                continue;
+
+            if (!newOrder.Contains(player))
+                newOrder.Add(player);
+        }
+
+        turnOrder = newOrder;
+        currentTurnIndex = 0;
+
+        Debug.Log(
+            "Restored turn order:"
+        );
+
+        for (int i = 0;
+             i < turnOrder.Count;
+             i++)
+        {
+            Debug.Log(
+                (i + 1) +
+                " place: Player " +
+                turnOrder[i].PlayerNumber
+            );
+        }
+    }
+
+    private PlayerPiece FindPlayerByNumber(
+        int playerNumber
+    )
+    {
+        foreach (PlayerPiece player in playerSlots)
+        {
+            if (player == null)
+                continue;
+
+            if (player.PlayerNumber ==
+                playerNumber)
+            {
+                return player;
+            }
+        }
+
+        return null;
+    }
 }

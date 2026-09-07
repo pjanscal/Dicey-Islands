@@ -5,12 +5,13 @@ using SceneManager = UnityEngine.SceneManagement.SceneManager;
 
 public class MainGameScript : MonoBehaviour
 {
-    LokaalConnecter.PlayerController playerController;
-    [SerializeField] int plrId;
+
+    public LokaalConnecter.PlayerController playerController;
+    [SerializeField] public int plrId;
     [SerializeField] TMP_Text timeText, countdown;
     [SerializeField] RawImage indicator;
     public float elapsed; //public so the cpu can check
-    [SerializeField] bool isRunning, firstTime, ready;
+    [SerializeField] public bool isRunning, firstTime, ready;
     int seconds, centiseconds;
     TimeNeeded timeNeeded;
 
