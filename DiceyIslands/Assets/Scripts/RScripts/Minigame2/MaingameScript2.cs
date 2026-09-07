@@ -19,6 +19,14 @@ public class MaingameScript2 : MonoBehaviour
     LokaalConnecter.PlayerController playerController;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
+    public int PlayerId => plrId;
+
+    public bool IsOccupied =>
+        playerController != null &&
+        playerController.occuplied;
+
+    public bool IsGameFinished =>
+        gameOver;
     void Start()
     {
         spawnObject = FindFirstObjectByType<SpawnObject>();

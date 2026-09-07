@@ -54,10 +54,6 @@ public class MainGameScript : MonoBehaviour
 
             if (isRunning) UpdateTimer();
 
-            if (playerController.GetButtonDown(LokaalConnecter.InputType.y))
-            {
-                SceneManager.LoadScene("Minigame1");
-            }
         }
     }
 

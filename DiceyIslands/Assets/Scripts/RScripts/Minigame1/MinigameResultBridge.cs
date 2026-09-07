@@ -1,18 +1,29 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using SceneManager = UnityEngine.SceneManagement.SceneManager;
+using SceneManager =
+    UnityEngine.SceneManagement.SceneManager;
 
 public class MinigameResultBridge : MonoBehaviour
 {
-    [Header("Return Settings")]
-    [SerializeField] private float returnToBoardDelay = 3f;
+    [Header("Return To Board")]
+    [SerializeField]
+    private float returnToBoardDelay = 3f;
 
     [SerializeField]
     private string boardSceneName =
         "BoardTestScene";
 
+    private bool minigameHasStarted = false;
     private bool resultsProcessed = false;
+
+    private TimeNeeded timeNeeded;
+
+    private void Start()
+    {
+        timeNeeded =
+            FindFirstObjectByType<TimeNeeded>();
+    }
 
     private void Update()
     {
@@ -27,7 +38,10 @@ public class MinigameResultBridge : MonoBehaviour
         List<MainGameScript> activePlayers =
             new List<MainGameScript>();
 
-        foreach (MainGameScript player in allPlayers)
+        foreach (
+            MainGameScript player
+            in allPlayers
+        )
         {
             if (player == null)
                 continue;
@@ -41,41 +55,51 @@ public class MinigameResultBridge : MonoBehaviour
             activePlayers.Add(player);
         }
 
-        // No players available yet.
         if (activePlayers.Count == 0)
             return;
 
         // =========================================
-        // WAIT FOR THE MINIGAME TO ACTUALLY START
+        // WAIT UNTIL THE GAME HAS ACTUALLY STARTED
         // =========================================
 
-        bool everyoneReady = true;
-
-        foreach (MainGameScript player in activePlayers)
+        if (!minigameHasStarted)
         {
-            if (!player.ready)
+            foreach (
+                MainGameScript player
+                in activePlayers
+            )
             {
-                everyoneReady = false;
-                break;
+                if (player.ready ||
+                    player.isRunning)
+                {
+                    minigameHasStarted = true;
+
+                    Debug.Log(
+                        "MinigameResultBridge: " +
+                        "minigame has started."
+                    );
+
+                    break;
+                }
             }
+
+            return;
         }
 
-        // Players have not completed the ready/countdown
-        // sequence yet, so the minigame is still starting.
-        if (!everyoneReady)
-            return;
-
         // =========================================
-        // NOW WAIT FOR EVERYONE TO FINISH
+        // WAIT FOR EVERY PLAYER TO FINISH
         // =========================================
 
-        foreach (MainGameScript player in activePlayers)
+        foreach (
+            MainGameScript player
+            in activePlayers
+        )
         {
             if (player.isRunning)
                 return;
         }
 
-        // Everyone was ready AND everyone has stopped.
+        // Everybody has stopped.
         resultsProcessed = true;
 
         StartCoroutine(
@@ -87,39 +111,6 @@ public class MinigameResultBridge : MonoBehaviour
         List<MainGameScript> players
     )
     {
-        // Sort by closeness to the target time.
-        players.Sort(
-            (a, b) =>
-            {
-                float aDifference =
-                    Mathf.Abs(
-                        a.elapsed -
-                        GetTargetTime()
-                    );
-
-                float bDifference =
-                    Mathf.Abs(
-                        b.elapsed -
-                        GetTargetTime()
-                    );
-
-                int result =
-                    aDifference.CompareTo(
-                        bDifference
-                    );
-
-                if (result != 0)
-                    return result;
-
-                // Same tie-break rule your friend
-                // already uses.
-                return a.plrId.CompareTo(
-                    b.plrId
-                );
-            }
-        );
-
-        // Save 1st -> last in MatchData.
         if (MatchData.Instance == null)
         {
             Debug.LogError(
@@ -129,57 +120,97 @@ public class MinigameResultBridge : MonoBehaviour
             yield break;
         }
 
-        MatchData.Instance.playerOrderNumbers.Clear();
-
-        for (int i = 0; i < players.Count; i++)
-        {
-            MainGameScript player =
-                players[i];
-
-            int place = i + 1;
-
-            Debug.Log(
-                "MINIGAME RESULT - Place " +
-                place +
-                ": Player " +
-                player.plrId
-            );
-
-            MatchData.Instance.playerOrderNumbers.Add(
-                player.plrId
-            );
-        }
-
-        Debug.Log(
-            "Minigame results saved."
-        );
-
-        yield return new WaitForSecondsRealtime(
-            returnToBoardDelay
-        );
-
-        MatchData.Instance.returningFromMinigame =
-            true;
-
-        SceneManager.LoadScene(
-            boardSceneName
-        );
-    }
-
-    private float GetTargetTime()
-    {
-        TimeNeeded timeNeeded =
-            FindFirstObjectByType<TimeNeeded>();
-
         if (timeNeeded == null)
         {
             Debug.LogError(
                 "TimeNeeded could not be found!"
             );
 
-            return 0f;
+            yield break;
         }
 
-        return timeNeeded.timeNeededSeconds;
+        float target =
+            timeNeeded.timeNeededSeconds;
+
+        // =========================================
+        // SORT PLAYERS BY RESULT
+        // =========================================
+
+        players.Sort(
+            (a, b) =>
+            {
+                float aDifference =
+                    Mathf.Abs(
+                        a.elapsed - target
+                    );
+
+                float bDifference =
+                    Mathf.Abs(
+                        b.elapsed - target
+                    );
+
+                int comparison =
+                    aDifference.CompareTo(
+                        bDifference
+                    );
+
+                if (comparison != 0)
+                    return comparison;
+
+                // Tie breaker:
+                // lower player number wins.
+                return a.plrId.CompareTo(
+                    b.plrId
+                );
+            }
+        );
+
+        // =========================================
+        // SAVE NEW TURN ORDER
+        // =========================================
+
+        MatchData.Instance
+            .playerOrderNumbers.Clear();
+
+        for (
+            int i = 0;
+            i < players.Count;
+            i++
+        )
+        {
+            int playerNumber =
+                players[i].plrId;
+
+            MatchData.Instance
+                .playerOrderNumbers.Add(
+                    playerNumber
+                );
+
+            Debug.Log(
+                "MINIGAME RESULT - Place " +
+                (i + 1) +
+                ": Player " +
+                playerNumber
+            );
+        }
+
+        // =========================================
+        // SHOW RESULTS FOR A MOMENT
+        // =========================================
+
+        yield return new WaitForSecondsRealtime(
+            returnToBoardDelay
+        );
+
+        // =========================================
+        // RETURN TO BOARD
+        // =========================================
+
+        MatchData.Instance
+            .returningFromMinigame = true;
+
+        SceneManager.LoadScene(
+            boardSceneName
+        );
     }
 }
