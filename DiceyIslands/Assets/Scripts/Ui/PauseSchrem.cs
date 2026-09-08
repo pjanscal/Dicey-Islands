@@ -84,6 +84,7 @@ public class PauseSchrem: UiBasic
         //loop through all input
         foreach (LokaalConnecter.PlayerController playerController in LokaalConnecter.plrsController.Values)
         {
+            if (!playerController.occuplied || playerController.isCPU) return; //idk want cpu to do things here
             if (!playerController.GetButtonDown(LokaalConnecter.InputType.Pause)) continue;
             
             currentPlrController = playerController;
