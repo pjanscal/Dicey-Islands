@@ -44,6 +44,9 @@ public class BoardManager : MonoBehaviour
 
     [Tooltip("Tiny pause after reaching each waypoint.")]
     [SerializeField] private float pauseBetweenSpaces = 0.08f;
+    [Header("Player Turn Positioning")]
+    [SerializeField] private float inactivePlayerSideOffset = 0.6f;
+    [SerializeField] private float playerShiftSpeed = 5f;
 
     // =========================================================
     // DICE
@@ -474,6 +477,7 @@ public class BoardManager : MonoBehaviour
         );
 
         UpdatePlayerVisuals();
+        UpdatePlayerTurnPositions();
         UpdateTurnOrderText();
 
         if (playerCamera != null)
@@ -552,6 +556,76 @@ public class BoardManager : MonoBehaviour
                 player == CurrentPlayer
             );
         }
+    }
+    private void UpdatePlayerTurnPositions()
+    {
+        foreach (PlayerPiece player in turnOrder)
+        {
+            if (player == null)
+                continue;
+
+            if (player.currentWaypointIndex < 0 ||
+                player.currentWaypointIndex >= waypoints.Count)
+            {
+                continue;
+            }
+
+            Vector3 basePosition =
+                waypoints[player.currentWaypointIndex]
+                    .transform.position +
+                player.tileOffset;
+
+            // Current player stays centered.
+            if (player == CurrentPlayer)
+            {
+                StartCoroutine(
+                    MovePlayerVisualToPosition(
+                        player,
+                        basePosition
+                    )
+                );
+
+                continue;
+            }
+
+            // Other players move slightly to the side.
+            Vector3 sideOffset =
+                Vector3.right *
+                inactivePlayerSideOffset;
+
+            StartCoroutine(
+                MovePlayerVisualToPosition(
+                    player,
+                    basePosition + sideOffset
+                )
+            );
+        }
+    }
+    private IEnumerator MovePlayerVisualToPosition(
+    PlayerPiece player,
+    Vector3 targetPosition
+)
+    {
+        while (
+            Vector3.Distance(
+                player.transform.position,
+                targetPosition
+            ) > 0.01f
+        )
+        {
+            player.transform.position =
+                Vector3.MoveTowards(
+                    player.transform.position,
+                    targetPosition,
+                    playerShiftSpeed *
+                    Time.deltaTime
+                );
+
+            yield return null;
+        }
+
+        player.transform.position =
+            targetPosition;
     }
 
     // =========================================================
