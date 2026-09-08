@@ -1062,14 +1062,14 @@ MonoBehaviour:
   - {fileID: 1999906082}
   - {fileID: 679593882}
   turnOrder: []
-  swapAnimationDuration: 1.2
-  swapNumberChangeSpeed: 0.1
-  swapResultDisplayTime: 0.8
   moveSpeed: 10
   pauseBetweenSpaces: 0.01
   diceAnimationDuration: 0.6
   diceNumberChangeSpeed: 0.06
   finalRollDisplayTime: 0.5
+  swapAnimationDuration: 1.2
+  swapNumberChangeSpeed: 0.1
+  swapResultDisplayTime: 0.8
   rollButton: {fileID: 1721567532}
   tilesLeftText: {fileID: 1611089493}
   rollNumberText: {fileID: 97775223}
@@ -1077,6 +1077,7 @@ MonoBehaviour:
   roundText: {fileID: 254575744}
   swapText: {fileID: 2029632641}
   skippedText: {fileID: 912147200}
+  turnOrderText: {fileID: 682204591}
   skippedDisplayDuration: 1.2
   minigameText: {fileID: 682204591}
   minigameNameChangeSpeed: 0.1
@@ -2629,6 +2630,57 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 870.3081, y: 719.6248, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1046786137
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1046786139}
+  - component: {fileID: 1046786138}
+  m_Layer: 0
+  m_Name: MatchData
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1046786138
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1046786137}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ff7cac5c5e5f99741b3b0cba8f86f2f7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::MatchData
+  playerWaypointPositions: 
+  playerOrderNumbers: 
+  historyPlayerNumbers: 
+  currentRound: 1
+  selectedMinigameScene: 
+  returningFromMinigame: 0
+  minigameTransitionStarted: 0
+--- !u!4 &1046786139
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1046786137}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 1204.6279, y: 667.39417, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -6920,3 +6972,4 @@ SceneRoots:
   - {fileID: 319260765}
   - {fileID: 46817112}
   - {fileID: 997545572}
+  - {fileID: 1046786139}
