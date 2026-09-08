@@ -7,4 +7,5 @@ public class GameMangerSettings : ScriptableObject
     public GameObject pauseSchrem;
     public GameObject eventSystemUi;
     public GameObject loadingScreen;
+    public GameObject miniGameTutorial;
 }

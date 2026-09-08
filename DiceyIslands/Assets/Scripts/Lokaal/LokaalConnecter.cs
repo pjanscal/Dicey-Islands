@@ -47,7 +47,7 @@ public static class LokaalConnecter
         nothing,
         matchConnect,
         CPUDifficultySelect,
-        reConnecting
+        reConnecting, //beta
     }
     
     //say wich state the char select is

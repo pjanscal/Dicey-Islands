@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -20,11 +21,13 @@ public static class GameMangeren
     static public int plrInGame = 0; //help the lokaal script to see what it should be when someone disconnect
     static public CPUDifficulty cPUDifficulty = CPUDifficulty.hard; //the difficulty of the cpu
     static public Dictionary<int, CharacterLoader> charLoaderScript = new(); //help with animations
+    static public Action startMiniGame; //init the minigame when finishing the tutorial
 
     //load info
     static public CharacterData[] charsData = Resources.LoadAll<CharacterData>("CharactersData");
     static private GameMangerSettings gameMangerSettings = Resources.Load<GameMangerSettings>("GameMangerSettings");
     static public LoadingScreen loadingScreen;
+    static public MinigameTutorial minigameTutorial;
 
     static public Dictionary<int, PlrData> plrsData = new();
     static public HashSet<int> allCPU = new(); //a list of plrid about who is cpu
@@ -38,6 +41,7 @@ public static class GameMangeren
 
     //configs
     static private string startSceneName = "StartScene";
+    static private string minigameSceneNames = "minigame";
 
     //when the game start it go once
     [RuntimeInitializeOnLoadMethod]
@@ -52,6 +56,7 @@ public static class GameMangeren
         //set in objects
         GameObject.Instantiate(gameMangerSettings.pauseSchrem);
         GameObject.Instantiate(gameMangerSettings.loadingScreen);
+        GameObject.Instantiate(gameMangerSettings.miniGameTutorial);
         SetInEventSystem();
 
         //setup Connection
@@ -61,6 +66,7 @@ public static class GameMangeren
     static public void SwitchScene(string sceneName)
     {
         //soon if there come a supporter for the gamemanger i change it 
+        startMiniGame = null; //clear the actions else it will overload
         LokaalMatchingUi.instance.StartCoroutine(loadingScreen.LoadScene(sceneName));
     }
 
@@ -75,6 +81,7 @@ public static class GameMangeren
         //reset value's
         inGame = false;
         isPaused = false; //pause
+        minigameTutorial.Init(false); //reset it or delete it
         Time.timeScale = 1; //pause or minigame or dissconnecter
         
         LokaalConnecter.ResetLokaal();
@@ -84,6 +91,9 @@ public static class GameMangeren
     static void OnSceneChanged(Scene scene, LoadSceneMode sceneMode)
     {
         SetInEventSystem();
+
+        if (!IsMiniGame(scene.name)) return;
+        minigameTutorial.Init(true);
     }
 
     static void SetInEventSystem()
@@ -96,6 +106,12 @@ public static class GameMangeren
     }
 
     //help funtion
+    static public bool IsMiniGame(string sceneName)
+    {
+        sceneName = sceneName.ToLower();
+        return sceneName.Contains(minigameSceneNames);
+    }
+
     static public void AddCharLoader(int plrId, CharacterLoader loader)
     {
         charLoaderScript.Remove(plrId); //delete the old one
