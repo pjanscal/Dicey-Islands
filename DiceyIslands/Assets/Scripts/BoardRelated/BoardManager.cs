@@ -793,6 +793,30 @@ public class BoardManager : MonoBehaviour
                     .transform.position +
                 player.tileOffset;
 
+            // =========================================
+            // FACE THE NEXT TILE
+            // =========================================
+
+            Vector3 lookDirection =
+                destination -
+                player.transform.position;
+
+            // Ignore vertical difference so the
+            // character stays standing upright.
+            lookDirection.y = 0f;
+
+            if (lookDirection.sqrMagnitude > 0.001f)
+            {
+                player.transform.rotation =
+                    Quaternion.LookRotation(
+                        lookDirection
+                    );
+            }
+
+            // =========================================
+            // MOVE TO NEXT TILE
+            // =========================================
+
             while (
                 Vector3.Distance(
                     player.transform.position,
@@ -811,6 +835,7 @@ public class BoardManager : MonoBehaviour
                 yield return null;
             }
 
+            // Snap exactly onto the waypoint.
             player.transform.position =
                 destination;
 
@@ -818,7 +843,9 @@ public class BoardManager : MonoBehaviour
                 nextIndex;
 
             if (player == CurrentPlayer)
+            {
                 UpdateTilesLeftText();
+            }
 
             if (pauseBetweenSpaces > 0f)
             {
