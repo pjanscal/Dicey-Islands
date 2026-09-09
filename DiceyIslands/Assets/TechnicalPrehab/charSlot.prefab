@@ -100,10 +100,13 @@ MonoBehaviour:
   - {fileID: 6163293851477693372}
   - {fileID: 6069354584879700423}
   downTutorial: {fileID: 9147335607429226383}
+  downReadyText: {fileID: 8446321304656960638}
   pressAToJoinImage: {fileID: 21300000, guid: 7db15aa219e8ec34ba40917ad755fac8, type: 3}
   isReadyUp: 0
+  currentCharSelected: 0
   plrId: 1
   slotColor: {r: 1, g: 0, b: 0, a: 0.8627451}
+  charSwitchDur: 0.9
 --- !u!1 &3135049441994669586
 GameObject:
   m_ObjectHideFlags: 0
