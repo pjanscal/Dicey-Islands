@@ -390,8 +390,56 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c68950cb206493d4ab80d19a3b5dae16, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Player_Minigame4
-  speed: 0
+  movementType: 0
   PlrId: 1
+--- !u!143 &238397530
+CharacterController:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3511590}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Height: 1
+  m_Radius: 0.4
+  m_SlopeLimit: 45
+  m_StepOffset: 0
+  m_SkinWidth: 0.08
+  m_MinMoveDistance: 0.001
+  m_Center: {x: 0, y: 0.5, z: 0}
+--- !u!136 &238397532
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3511590}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.5
+  m_Height: 1
+  m_Direction: 1
+  m_Center: {x: 0, y: 0.5, z: 0}
 --- !u!1 &255276697 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 8849722135331690908, guid: 2e62a7dbdb18f12449bed012d5fd0afb, type: 3}
@@ -553,6 +601,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 61e45d6775a730e4f8888e2947a0231f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Minigame4Mangeren
+  potato: {fileID: 518055354}
   isActive: 0
   camaraHolder: {fileID: 1681058219}
 --- !u!4 &347113038
@@ -567,7 +616,8 @@ Transform:
   m_LocalPosition: {x: -0.33933, y: 4.23617, z: 6}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 518055357}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &349241792
@@ -734,7 +784,7 @@ GameObject:
   - component: {fileID: 518055356}
   - component: {fileID: 518055355}
   m_Layer: 0
-  m_Name: Sphere
+  m_Name: potato
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -805,12 +855,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 518055354}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -2.31, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0.33933, y: -6.5461698, z: -6}
+  m_LocalScale: {x: 2, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 347113038}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &625906978
 PrefabInstance:
@@ -875,6 +925,12 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 8849722135331690908, guid: 2e62a7dbdb18f12449bed012d5fd0afb, type: 3}
       insertIndex: -1
       addedObject: {fileID: 2039369752}
+    - targetCorrespondingSourceObject: {fileID: 8849722135331690908, guid: 2e62a7dbdb18f12449bed012d5fd0afb, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2039369753}
+    - targetCorrespondingSourceObject: {fileID: 8849722135331690908, guid: 2e62a7dbdb18f12449bed012d5fd0afb, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2039369755}
   m_SourcePrefab: {fileID: 100100000, guid: 2e62a7dbdb18f12449bed012d5fd0afb, type: 3}
 --- !u!1 &630749471
 GameObject:
@@ -1163,6 +1219,12 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 8849722135331690908, guid: 2e62a7dbdb18f12449bed012d5fd0afb, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1903721501}
+    - targetCorrespondingSourceObject: {fileID: 8849722135331690908, guid: 2e62a7dbdb18f12449bed012d5fd0afb, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1903721502}
+    - targetCorrespondingSourceObject: {fileID: 8849722135331690908, guid: 2e62a7dbdb18f12449bed012d5fd0afb, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1903721504}
   m_SourcePrefab: {fileID: 100100000, guid: 2e62a7dbdb18f12449bed012d5fd0afb, type: 3}
 --- !u!1001 &843046713
 PrefabInstance:
@@ -1227,6 +1289,12 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 8849722135331690908, guid: 2e62a7dbdb18f12449bed012d5fd0afb, type: 3}
       insertIndex: -1
       addedObject: {fileID: 2100916709}
+    - targetCorrespondingSourceObject: {fileID: 8849722135331690908, guid: 2e62a7dbdb18f12449bed012d5fd0afb, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2100916710}
+    - targetCorrespondingSourceObject: {fileID: 8849722135331690908, guid: 2e62a7dbdb18f12449bed012d5fd0afb, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2100916712}
   m_SourcePrefab: {fileID: 100100000, guid: 2e62a7dbdb18f12449bed012d5fd0afb, type: 3}
 --- !u!4 &897881996 stripped
 Transform:
@@ -1471,6 +1539,12 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 8849722135331690908, guid: 2e62a7dbdb18f12449bed012d5fd0afb, type: 3}
       insertIndex: -1
       addedObject: {fileID: 238397529}
+    - targetCorrespondingSourceObject: {fileID: 8849722135331690908, guid: 2e62a7dbdb18f12449bed012d5fd0afb, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 238397530}
+    - targetCorrespondingSourceObject: {fileID: 8849722135331690908, guid: 2e62a7dbdb18f12449bed012d5fd0afb, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 238397532}
   m_SourcePrefab: {fileID: 100100000, guid: 2e62a7dbdb18f12449bed012d5fd0afb, type: 3}
 --- !u!1 &1903721499 stripped
 GameObject:
@@ -1489,8 +1563,56 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c68950cb206493d4ab80d19a3b5dae16, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Player_Minigame4
-  speed: 0
+  movementType: 0
   PlrId: 4
+--- !u!143 &1903721502
+CharacterController:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1903721499}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Height: 1
+  m_Radius: 0.4
+  m_SlopeLimit: 45
+  m_StepOffset: 0
+  m_SkinWidth: 0.08
+  m_MinMoveDistance: 0.001
+  m_Center: {x: 0, y: 0.5, z: 0}
+--- !u!136 &1903721504
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1903721499}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.5
+  m_Height: 1
+  m_Direction: 1
+  m_Center: {x: 0, y: 0.5, z: 0}
 --- !u!4 &2039369750 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3841053530604748683, guid: 2e62a7dbdb18f12449bed012d5fd0afb, type: 3}
@@ -1508,8 +1630,56 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c68950cb206493d4ab80d19a3b5dae16, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Player_Minigame4
-  speed: 0
+  movementType: 0
   PlrId: 3
+--- !u!143 &2039369753
+CharacterController:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 508759070}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Height: 1
+  m_Radius: 0.4
+  m_SlopeLimit: 45
+  m_StepOffset: 0
+  m_SkinWidth: 0.08
+  m_MinMoveDistance: 0.001
+  m_Center: {x: 0, y: 0.5, z: 0}
+--- !u!136 &2039369755
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 508759070}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.5
+  m_Height: 1
+  m_Direction: 1
+  m_Center: {x: 0, y: 0.5, z: 0}
 --- !u!4 &2100916707 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3841053530604748683, guid: 2e62a7dbdb18f12449bed012d5fd0afb, type: 3}
@@ -1527,8 +1697,56 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c68950cb206493d4ab80d19a3b5dae16, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Player_Minigame4
-  speed: 0
+  movementType: 0
   PlrId: 2
+--- !u!143 &2100916710
+CharacterController:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 255276697}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Height: 1
+  m_Radius: 0.4
+  m_SlopeLimit: 45
+  m_StepOffset: 0
+  m_SkinWidth: 0.08
+  m_MinMoveDistance: 0.001
+  m_Center: {x: 0, y: 0.5, z: 0}
+--- !u!136 &2100916712
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 255276697}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.5
+  m_Height: 1
+  m_Direction: 1
+  m_Center: {x: 0, y: 0.5, z: 0}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
@@ -1539,4 +1757,3 @@ SceneRoots:
   - {fileID: 1681058219}
   - {fileID: 499374077}
   - {fileID: 347113038}
-  - {fileID: 518055357}
