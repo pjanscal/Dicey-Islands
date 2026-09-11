@@ -59,6 +59,7 @@ public class MaingameScript3 : MonoBehaviour
     public void Init()
     {
         init = true;
+        if (MatchData.Instance != null) MatchData.Instance.playerOrderNumbers.Clear(); //clear it up and use this as a places var
     }
 
     void SpawnAtRaycastHit()
@@ -137,7 +138,7 @@ public class MaingameScript3 : MonoBehaviour
         UpdateDieIndicatorColor();
 
         if (GetEligiblePlayerCount() == 1)
-        {
+        {          
             EndGame();
         }
         else if (thrownPlayersThisRound.Count >= GetEligiblePlayerCount())
@@ -182,6 +183,7 @@ public class MaingameScript3 : MonoBehaviour
 
         gameEnded = true;
 
+        //--spefieck useless... by DDD this make it so 2 player can be draw so u can throw last without letting it change but debug--
         var orderedScores = FindObjectsOfType<MaingameScript3>()
             .Select(x => new
             {
@@ -204,6 +206,30 @@ public class MaingameScript3 : MonoBehaviour
             previousScore = orderedScores[i].SwordsThrown;
             Debug.Log($"Player {orderedScores[i].PlrId} Place {place} SwordsThrown {orderedScores[i].SwordsThrown}");
         }
+
+        //--ended--
+
+        if (MatchData.Instance == null) {Debug.LogError("there is no matchData"); return;}
+        
+        //get last plr
+        for (int plrLeft = 1; plrLeft <= LokaalConnecter.maxPlr; plrLeft++)
+        {
+            if (MatchData.Instance.playerOrderNumbers.Contains(plrLeft)) continue;
+
+            MatchData.Instance.playerOrderNumbers.Add(plrLeft);
+            break;
+        }
+
+        //debug
+        int places = 4;
+        foreach (int placesPlr in MatchData.Instance.playerOrderNumbers)
+        {
+            print($"plr{placesPlr} is place {places} in result matchData");
+        }
+
+        //go back
+        MatchData.Instance.returningFromMinigame = true;
+        GameMangeren.SwitchScene("BoardTestScene"); //beta so we can have it in a mangeren we all can get
     }
 
     bool IsSwordHit(RaycastHit hit)
@@ -231,6 +257,7 @@ public class MaingameScript3 : MonoBehaviour
 
         if (swordHitBlocked)
         {
+            if (MatchData.Instance != null) MatchData.Instance.playerOrderNumbers.Add(plrId); //use this as a global mangener
             dieIndicator.color = Color.red;
         }
         else
