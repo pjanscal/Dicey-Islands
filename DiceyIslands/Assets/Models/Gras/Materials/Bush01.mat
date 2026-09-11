@@ -141,7 +141,7 @@ Material:
     - _Bend_Direction: {r: 4, g: 4, b: 0, a: 0}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
-    - _Primary_Color: {r: 0.5294118, g: 0.6392157, b: 0.18039216, a: 1}
+    - _Primary_Color: {r: 0.2392157, g: 0.4431373, b: 0.20392159, a: 1}
     - _Secondary_Color: {r: 0.23529412, g: 0.23137255, b: 0.21176471, a: 1}
     - _Tertiary_Color: {r: 0, g: 0, b: 0, a: 1}
   m_BuildTextureStacks: []

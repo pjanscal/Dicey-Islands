@@ -13,6 +13,7 @@ public class LokaalCharSelectSlot : MonoBehaviour
     [SerializeField] private TextMeshProUGUI nameDisplay;
     [SerializeField] private Image[] arrows;
     [SerializeField] private Image downTutorial;
+    [SerializeField] private TextMeshProUGUI downReadyText;
     [SerializeField] private Sprite pressAToJoinImage;
     private Image secondaryPreviewUi;
     private Image bgImage;
@@ -63,6 +64,7 @@ public class LokaalCharSelectSlot : MonoBehaviour
             arrow.enabled = false;
         }
         downTutorial.enabled = false;
+        downReadyText.enabled = false;
     }
 
     // Update is called once per frame
@@ -253,6 +255,7 @@ public class LokaalCharSelectSlot : MonoBehaviour
             arrow.enabled = false;
         }
         downTutorial.enabled = false;
+        downReadyText.enabled = false;
 
         //clean up from finalized
         if (currentState == LokaalConnecter.characterSelectState.Finish) DisableFinalize();
@@ -273,6 +276,7 @@ public class LokaalCharSelectSlot : MonoBehaviour
             arrow.enabled = true;
         }
         downTutorial.enabled = true;
+        downReadyText.enabled = true;
 
         //clean up from finalized
         if (currentState == LokaalConnecter.characterSelectState.Finish) DisableFinalize();
