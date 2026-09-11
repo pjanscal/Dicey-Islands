@@ -14,6 +14,7 @@ public class Player_Minigame4 : MonoBehaviour
 
     [HideInInspector] public MovementType movementType = MovementType.walking;
     private CharacterController cc;
+    LokaalConnecter.PlayerController playerController;
     [HideInInspector] public Vector3 velocity = Vector3.zero;
 
     //configs
@@ -29,12 +30,14 @@ public class Player_Minigame4 : MonoBehaviour
     {
         cc = GetComponent<CharacterController>();
         Minigame4Mangeren.instance.plrScripts.Add(PlrId, this);
+        playerController = LokaalConnecter.plrsController[PlrId];
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (!Minigame4Mangeren.instance.isActive) return;
+        if (!Minigame4Mangeren.instance.isActive || GameMangeren.isPaused || !playerController.occuplied
+         || LokaalConnecter.connectionType != LokaalConnecter.ConnectionTypes.nothing) return;
 
         Move();
     }
@@ -42,8 +45,6 @@ public class Player_Minigame4 : MonoBehaviour
     //move the player
     void Move()
     {
-        LokaalConnecter.PlayerController playerController = LokaalConnecter.plrsController[PlrId];
-
         Vector2 moveDir = playerController.GetMoveDir();
 
         //move the plr

@@ -66,6 +66,7 @@ public static class GameMangeren
     static public void SwitchScene(string sceneName)
     {
         //soon if there come a supporter for the gamemanger i change it 
+        startMiniGame = null; //clear the actions else it will overload
         LokaalMatchingUi.instance.StartCoroutine(loadingScreen.LoadScene(sceneName));
     }
 
@@ -89,7 +90,6 @@ public static class GameMangeren
     //init when it change from scene
     static void OnSceneChanged(Scene scene, LoadSceneMode sceneMode)
     {
-        startMiniGame = null; //clear the actions else it will overload
         SetInEventSystem();
 
         if (!IsMiniGame(scene.name)) return;

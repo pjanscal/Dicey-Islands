@@ -225,6 +225,7 @@ public class MaingameScript3 : MonoBehaviour
         foreach (int placesPlr in MatchData.Instance.playerOrderNumbers)
         {
             print($"plr{placesPlr} is place {places} in result matchData");
+            places -= 1;
         }
 
         //go back

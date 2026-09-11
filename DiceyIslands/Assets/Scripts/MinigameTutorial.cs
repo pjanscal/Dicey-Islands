@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using UnityEngine.Video;
 
 public class MinigameTutorial : MonoBehaviour
 {
@@ -16,7 +17,8 @@ public class MinigameTutorial : MonoBehaviour
     }
 
     [Header("Ui")]
-    //soon for the setting th etutorial up
+    [SerializeField] private VideoPlayer videoPlayer;
+    [SerializeField] private Transform keybindsFrame;
 
     private Canvas canvas;
 
@@ -68,6 +70,11 @@ public class MinigameTutorial : MonoBehaviour
         }
 
         Time.timeScale = 0f; //stop it so somethings can't happend
+
+        //set the scene up
+        
+        
+
         canvas.enabled = true;
         isActive = true;
         StartCoroutine(CPUTryToReadyUp());

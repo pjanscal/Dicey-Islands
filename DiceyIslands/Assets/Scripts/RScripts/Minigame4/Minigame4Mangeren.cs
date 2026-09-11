@@ -33,7 +33,6 @@ public class Minigame4Mangeren : MonoBehaviour
     void Awake()
     {
         instance = this;
-        GameMangeren.startMiniGame += Init;
 
         for (int plrId = 1; plrId <= LokaalConnecter.maxPlr; plrId++)
         {
@@ -43,10 +42,14 @@ public class Minigame4Mangeren : MonoBehaviour
         StartCoroutine(PlayerHitDectetorWaitList());
     }
 
+    void Start()
+    {
+        GameMangeren.startMiniGame += Init;
+    }
+
     //init when it start
     public void Init()
     {
-        print("start minigame4");
         isActive = true; //say u can use it
 
         Invoke("GiveRandomPlrPotato", 3f); //starting time soon make a countdown
@@ -92,6 +95,7 @@ public class Minigame4Mangeren : MonoBehaviour
         if (MatchData.Instance == null) {Debug.LogError("there is no mathData Script"); return;}
 
         MatchData.Instance.playerOrderNumbers.Clear();
+        plrsPlaces.Reverse();
         foreach (int plrId in plrsPlaces) //go from last to first
         {
             MatchData.Instance.playerOrderNumbers.Add(plrId); //save it to the matchData Mangeren
