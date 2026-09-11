@@ -13,9 +13,9 @@ public class Minigame4Mangeren : MonoBehaviour
     [HideInInspector] public bool isActive = false;
     [HideInInspector] public HashSet<(int, int)> plrHittedPlr = new(); //here go all the collision check that is going to happend so a void don't happend at the exact same time
     [HideInInspector] public Dictionary<int, Player_Minigame4> plrScripts = new();
-    private HashSet<int> plrsIngame = new();
+    [HideInInspector] public HashSet<int> plrsIngame = new();
     private HashSet<int> plrsImunitty = new(); //plrs that can't get the potato
-    private int potatoTarget = 0; //0 is like no one work as 1 if that plr is dead
+    [HideInInspector] public int potatoTarget = 0; //0 is like no one work as 1 if that plr is dead
     private bool canGivePotato = false;
     private bool canGivePotatoDebounce = true;
     private List<int> plrsPlaces = new(); //0 = last one 3 = first one //list have .indexOf so i don't have to find when debugging
@@ -26,8 +26,8 @@ public class Minigame4Mangeren : MonoBehaviour
     private Vector2 potatoLifeTime = new Vector2(10, 19);
     private Vector3 potatoOffet = new Vector3(0, 3, 0); //offset of being inside a player
     const float potatoRotateSpeed = .8f;
-    const float potatoGivingDebounceDur = .2f;
-    const float durBeforeGivingPlrThePotatoBack = 1f;
+    const float potatoGivingCooldown = .2f;
+    const float plrImmunityDur = 1f; //time before the player can get the potato again
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Awake()
@@ -146,7 +146,7 @@ public class Minigame4Mangeren : MonoBehaviour
 
         IEnumerator WaitToGivePotato()
         {
-            yield return new WaitForSeconds(potatoGivingDebounceDur);
+            yield return new WaitForSeconds(potatoGivingCooldown);
 
             canGivePotatoDebounce = true;
         }
@@ -158,7 +158,7 @@ public class Minigame4Mangeren : MonoBehaviour
             plrScripts[oldPotatoTarget].movementType = Player_Minigame4.MovementType.Running;
 
             //wait
-            yield return new WaitForSeconds(durBeforeGivingPlrThePotatoBack);
+            yield return new WaitForSeconds(plrImmunityDur);
 
             //delete it
             plrScripts[oldPotatoTarget].movementType = Player_Minigame4.MovementType.walking;
