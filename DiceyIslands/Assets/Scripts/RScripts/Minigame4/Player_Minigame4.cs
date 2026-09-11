@@ -14,13 +14,13 @@ public class Player_Minigame4 : MonoBehaviour
 
     [HideInInspector] public MovementType movementType = MovementType.walking;
     private CharacterController cc;
-    private Vector3 velocity = Vector3.zero;
+    [HideInInspector] public Vector3 velocity = Vector3.zero;
 
     //configs
     public int PlrId;
     const float defaultSpeed = 5f; //normal walkspeed
     const float runSpeed = 7f; //run speed
-    const float potatoSpeed = 5.5f; //speed with potato
+    const float potatoHoldSpeed = 5.5f; //speed with potato
     const float rotateSpeed = .7f; //speed of rotating ur character
     const float acceleration = 10f; //momento acceleration speed
 
@@ -90,7 +90,7 @@ public class Player_Minigame4 : MonoBehaviour
     float GetSpeed()
     {
         if (movementType == MovementType.walking) return defaultSpeed;
-        else if (movementType == MovementType.potatoRunning) return potatoSpeed;
+        else if (movementType == MovementType.potatoRunning) return potatoHoldSpeed;
         else return runSpeed;
     }
 }

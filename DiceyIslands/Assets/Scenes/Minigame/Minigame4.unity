@@ -391,6 +391,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Player_Minigame4
   movementType: 0
+  velocity: {x: 0, y: 0, z: 0}
   PlrId: 1
 --- !u!143 &238397530
 CharacterController:
@@ -582,6 +583,7 @@ GameObject:
   m_Component:
   - component: {fileID: 347113038}
   - component: {fileID: 347113037}
+  - component: {fileID: 347113039}
   m_Layer: 0
   m_Name: Mangeren
   m_TagString: Untagged
@@ -603,6 +605,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Minigame4Mangeren
   potato: {fileID: 518055354}
   isActive: 0
+  potatoTarget: 0
   camaraHolder: {fileID: 1681058219}
 --- !u!4 &347113038
 Transform:
@@ -620,6 +623,29 @@ Transform:
   - {fileID: 518055357}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &347113039
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 347113036}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1742793a17bc0c74b9dc2a3233946115, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CPUMinigame4
+  cpuCharacters:
+  - plrId: 1
+    character: {fileID: 3511590}
+  - plrId: 2
+    character: {fileID: 255276697}
+  - plrId: 3
+    character: {fileID: 508759070}
+  - plrId: 4
+    character: {fileID: 1903721499}
+  minigame4Mangeren: {fileID: 347113037}
+  difficultiesConfigsEdit: []
 --- !u!1 &349241792
 GameObject:
   m_ObjectHideFlags: 0
@@ -1564,6 +1590,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Player_Minigame4
   movementType: 0
+  velocity: {x: 0, y: 0, z: 0}
   PlrId: 4
 --- !u!143 &1903721502
 CharacterController:
@@ -1631,6 +1658,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Player_Minigame4
   movementType: 0
+  velocity: {x: 0, y: 0, z: 0}
   PlrId: 3
 --- !u!143 &2039369753
 CharacterController:
@@ -1698,6 +1726,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Player_Minigame4
   movementType: 0
+  velocity: {x: 0, y: 0, z: 0}
   PlrId: 2
 --- !u!143 &2100916710
 CharacterController:
