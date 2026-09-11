@@ -1338,6 +1338,8 @@ MonoBehaviour:
   turnOrder: []
   moveSpeed: 10
   pauseBetweenSpaces: 0.01
+  inactivePlayerSideOffset: 0.6
+  playerShiftSpeed: 5
   diceAnimationDuration: 0.6
   diceNumberChangeSpeed: 0.06
   finalRollDisplayTime: 0.5
@@ -6969,7 +6971,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9123482302704427314, guid: 851259f6529a77b4eb532471e8f30b9f, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 4.5
+      value: 4.348
       objectReference: {fileID: 0}
     - target: {fileID: 9123482302704427314, guid: 851259f6529a77b4eb532471e8f30b9f, type: 3}
       propertyPath: m_LocalRotation.w
