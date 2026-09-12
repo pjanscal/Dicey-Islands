@@ -15,4 +15,6 @@ MonoBehaviour:
   minigameId: 4
   bg: {fileID: 21300000, guid: ad28cfaf7b7adc34c8155e56dada67c4, type: 3}
   videoClip: {fileID: 0}
-  keyBinds: 05000000
+  keyBindsInfo:
+  - keybind: 5
+    actionName: 'Move:'

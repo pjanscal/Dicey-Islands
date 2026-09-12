@@ -16,3 +16,14 @@ MonoBehaviour:
   eventSystemUi: {fileID: 4849947190045337723, guid: 302ce49c9f113cc49bcbf1db9ef40951, type: 3}
   loadingScreen: {fileID: 5102757817660810055, guid: c1a2cc8a3ddd8cd44bf34e34a0291807, type: 3}
   miniGameTutorial: {fileID: 4207183938844821645, guid: 262c064191cd8a340918cc77c9a16e2a, type: 3}
+  keybindSprites:
+  - inputType: 1
+    sprite: {fileID: 21300000, guid: be2abef6819e6254cb1950e5fa9d14f5, type: 3}
+  - inputType: 5
+    sprite: {fileID: 21300000, guid: 0c66af688290b74408f431e6684b23c0, type: 3}
+  - inputType: 6
+    sprite: {fileID: 21300000, guid: 0c66af688290b74408f431e6684b23c0, type: 3}
+  - inputType: 7
+    sprite: {fileID: 21300000, guid: 0c66af688290b74408f431e6684b23c0, type: 3}
+  - inputType: 8
+    sprite: {fileID: 21300000, guid: 0c66af688290b74408f431e6684b23c0, type: 3}
