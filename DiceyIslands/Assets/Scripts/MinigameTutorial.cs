@@ -28,6 +28,7 @@ public class MinigameTutorial : MonoBehaviour
 
     private bool isActive = false;
     private HashSet<int> plrsReadyUp = new();
+    private HashSet<GameObject> allKeybindImages = new();
     private Dictionary<int, MinigameTutorialConfigs> minigameTutorialConfigs = new();
 
     [Header("configs")]
@@ -101,6 +102,7 @@ public class MinigameTutorial : MonoBehaviour
             Image image = newKeybindImageTemplate.GetComponent<Image>();
             image.sprite = GameMangeren.GetKeybindSpriteFromAction(data.keybind);
 
+            allKeybindImages.Add(newKeybindImageTemplate);
             index += 1;
         }
         canvas.enabled = true;
@@ -191,6 +193,15 @@ public class MinigameTutorial : MonoBehaviour
             playerSlotInfo.slot.sprite = controllerImage;
             plrsReadyUp.Clear();
             canvas.enabled = false;
+            videoPlayer.Stop();
+            videoPlayer.clip = null;
+            keybindsTypeText.text = "";
+            
+            foreach (GameObject keybindImage in allKeybindImages)
+            {
+                Destroy(keybindImage);
+            }
+            allKeybindImages.Clear();
         }
     }
 }
