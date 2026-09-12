@@ -21,6 +21,7 @@ public static class GameMangeren
     static public int plrInGame = 0; //help the lokaal script to see what it should be when someone disconnect
     static public CPUDifficulty cPUDifficulty = CPUDifficulty.hard; //the difficulty of the cpu
     static public Dictionary<int, CharacterLoader> charLoaderScript = new(); //help with animations
+    static public Dictionary<LokaalConnecter.InputType, Sprite> keybindSprites = new();
     static public Action startMiniGame; //init the minigame when finishing the tutorial
 
     //load info
@@ -61,6 +62,12 @@ public static class GameMangeren
 
         //setup Connection
         SceneManager.sceneLoaded += OnSceneChanged;
+
+        //setting up the unImportant var
+        foreach (GameMangerSettings.KeybindSprites keybindSpriteData in gameMangerSettings.keybindSprites)
+        {
+            keybindSprites.Add(keybindSpriteData.inputType, keybindSpriteData.sprite);
+        }
     }
 
     static public void SwitchScene(string sceneName)
@@ -93,7 +100,8 @@ public static class GameMangeren
         SetInEventSystem();
 
         if (!IsMiniGame(scene.name)) return;
-        minigameTutorial.Init(true);
+        int minigameId = GetMinigameIdFromScene(scene.name);
+        minigameTutorial.Init(true, minigameId);
     }
 
     static void SetInEventSystem()
@@ -110,6 +118,23 @@ public static class GameMangeren
     {
         sceneName = sceneName.ToLower();
         return sceneName.Contains(minigameSceneNames);
+    }
+
+    static public int GetMinigameIdFromScene(string minigameSceneName)
+    {
+        //get the int out of it
+        minigameSceneName = minigameSceneName.ToUpper(); //make the deleting easier
+        bool succes = int.TryParse(minigameSceneName.Replace("MINIGAME", ""), out int minigameId);
+        if (!succes) {Debug.LogError($"minigame scene name: {minigameSceneName} don't have a number in it"); return 1;} //fail safe
+
+        return minigameId;
+    }
+
+    static public Sprite GetKeybindSpriteFromAction(LokaalConnecter.InputType inputType)
+    {
+        bool succes = keybindSprites.TryGetValue(inputType, out Sprite sprite);
+        if (!succes) {Debug.LogError("there is not a keybind with that sprite"); return null;}
+        return sprite;
     }
 
     static public void AddCharLoader(int plrId, CharacterLoader loader)

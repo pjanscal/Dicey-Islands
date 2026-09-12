@@ -1,0 +1,18 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3a3c015d8634da747ac74cffa683a92c, type: 3}
+  m_Name: Minigame3
+  m_EditorClassIdentifier: Assembly-CSharp::MinigameTutorialConfigs
+  minigameId: 4
+  bg: {fileID: 21300000, guid: ad28cfaf7b7adc34c8155e56dada67c4, type: 3}
+  videoClip: {fileID: 0}
+  keyBinds: 05000000

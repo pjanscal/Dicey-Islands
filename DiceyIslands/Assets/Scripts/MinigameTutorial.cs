@@ -1,6 +1,8 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
+using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -17,20 +19,25 @@ public class MinigameTutorial : MonoBehaviour
     }
 
     [Header("Ui")]
+    [SerializeField] private Image backgroundUi;
     [SerializeField] private VideoPlayer videoPlayer;
     [SerializeField] private Transform keybindsFrame;
-
+    [SerializeField] private TextMeshProUGUI keybindsTypeText;
+    [SerializeField] private GameObject keybindImageTemplate;
     private Canvas canvas;
 
     private bool isActive = false;
     private HashSet<int> plrsReadyUp = new();
+    private Dictionary<int, MinigameTutorialConfigs> minigameTutorialConfigs = new();
 
     [Header("configs")]
     [SerializeField] private List<PlayerSlotInfo> playerSlotInfos;
     [SerializeField] private Sprite controllerImage;
     [SerializeField] private Sprite controllerReadyUpImage;
-
-    private float timeBeforeCpuReadyUp = .5f;
+    
+    private Vector2 keybindImageOffset = new Vector2(150, 0);
+    const float keybindImageDownOffsetPerParagraph = -93;
+    const float timeBeforeCpuReadyUp = .5f;
     
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -51,17 +58,25 @@ public class MinigameTutorial : MonoBehaviour
             playerSlotInfo.slot.color = playerSlotInfo.color;
         }
 
+        //set up the dictionary of minigameConfigs
+        
+        foreach (MinigameTutorialConfigs config in Resources.LoadAll<MinigameTutorialConfigs>("minigameTutorial"))
+        {
+            minigameTutorialConfigs.Add(config.minigameId, config);
+        }
+
         Reset();
 
         //debug
         #if UNITY_EDITOR
             //start if u are in minigame
-            if (GameMangeren.IsMiniGame(SceneManager.GetActiveScene().name)) Init(true);
+            string sceneName = SceneManager.GetActiveScene().name;
+            if (GameMangeren.IsMiniGame(sceneName)) Init(true, GameMangeren.GetMinigameIdFromScene(sceneName));
         #endif
     }
 
     //init when it need to show or not to show
-    public void Init(bool state)
+    public void Init(bool state, int minigameId = 1)
     {
         if (!state)
         {
@@ -72,10 +87,25 @@ public class MinigameTutorial : MonoBehaviour
         Time.timeScale = 0f; //stop it so somethings can't happend
 
         //set the scene up
-        
-        
+        MinigameTutorialConfigs config = minigameTutorialConfigs[minigameId];
+        backgroundUi.sprite = config.bg;
+        videoPlayer.clip = config.videoClip;
 
+        int index = 0; //help with the offset
+        foreach (MinigameTutorialConfigs.KeybindsShowCaseInfo data in config.keyBindsInfo)
+        {
+            keybindsTypeText.text += $"{data.actionName}\n"; //make sure the next one go under soon
+            Vector2 spawnPosition = keybindImageOffset + new Vector2(0, (keybindImageDownOffsetPerParagraph * index));
+            GameObject newKeybindImageTemplate = Instantiate(keybindImageTemplate, keybindsFrame);
+            newKeybindImageTemplate.transform.localPosition = spawnPosition;
+            Image image = newKeybindImageTemplate.GetComponent<Image>();
+            image.sprite = GameMangeren.GetKeybindSpriteFromAction(data.keybind);
+
+            index += 1;
+        }
         canvas.enabled = true;
+        videoPlayer.Play();
+
         isActive = true;
         StartCoroutine(CPUTryToReadyUp());
     }
