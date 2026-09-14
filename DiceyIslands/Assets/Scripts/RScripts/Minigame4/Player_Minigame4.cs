@@ -23,7 +23,7 @@ public class Player_Minigame4 : MonoBehaviour
     const float runSpeed = 7f; //run speed
     const float potatoHoldSpeed = 5.5f; //speed with potato
     const float rotateSpeed = .7f; //speed of rotating ur character
-    const float acceleration = 10f; //momento acceleration speed
+    const float acceleration = 12f; //momento acceleration speed
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -72,10 +72,8 @@ public class Player_Minigame4 : MonoBehaviour
         //get the value's
         Quaternion dir = Quaternion.LookRotation(move);
         float angle = Quaternion.Angle(dir, transform.rotation);
-        float dur = angle / (360 * rotateSpeed); //180 = max angle
-
-        transform.DORotateQuaternion(dir, dur)
-        .SetEase(Ease.Linear); //setting
+        
+        transform.rotation = Quaternion.RotateTowards(transform.rotation, dir, 360 * rotateSpeed * Time.deltaTime);
     }
 
     void OnControllerColliderHit(ControllerColliderHit hit)

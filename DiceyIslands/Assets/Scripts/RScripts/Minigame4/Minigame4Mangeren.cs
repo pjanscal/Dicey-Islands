@@ -177,7 +177,7 @@ public class Minigame4Mangeren : MonoBehaviour
     void GiveRandomPlrPotato()
     {
         //get random player
-        int rng = UnityEngine.Random.Range(1, plrsIngame.Count);
+        int rng = UnityEngine.Random.Range(0, plrsIngame.Count - 1);
         int plrId = plrsIngame.ElementAt(rng);
         print($"player{plrId} have potato");
 
