@@ -20,8 +20,8 @@ public class MaingameScript3 : MonoBehaviour
 
     GameObject spawnedSword;
     GameObject swordObject;
-    bool canShoot = true, init;
-    bool hasThrownThisRound = false;
+    public bool canShoot = true, init;
+    public bool hasThrownThisRound = false;
     bool swordHitBlocked = false;
     readonly Color normalDieColor = Color.green;
 

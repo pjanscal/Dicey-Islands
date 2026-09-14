@@ -75,11 +75,11 @@ public class CPUMinigame2: CPUMangeren
             float offset = UnityEngine.Random.Range(configs.offSet.x, configs.offSet.y);
 
             //bbug if it go the same or no one press nothing happend
-            yield return new WaitUntil(() => spawnObject.objectToActivate == null || !spawnObject.objectToActivate.activeSelf || oldPointGain != getPointGain());
+            yield return new WaitUntil(() => spawnObject.objectToActivate == null || !spawnObject.objectToActivate.activeSelf || oldPointGain != GetPointGain());
             yield return new WaitUntil(() => spawnObject.objectToActivate != null && spawnObject.objectToActivate.activeSelf);
 
             //now it spawned in and it wait for the offset while caculating if it want it
-            int pointGain = getPointGain();
+            int pointGain = GetPointGain();
             oldPointGain = pointGain;
             float chanceToSelect = configs.pointsChance[pointGain];
             float rngChance = UnityEngine.Random.Range(0f, 1f); //1 is th emax
@@ -96,7 +96,7 @@ public class CPUMinigame2: CPUMangeren
         //yield return null;
     }
 
-    int getPointGain()
+    int GetPointGain()
     {
         Match pointMatch = Regex.Match(spawnObject.objectToActivate.name, @"-?\d+");
         if (!pointMatch.Success) return -3; //if it false jut return the smalest of them all
