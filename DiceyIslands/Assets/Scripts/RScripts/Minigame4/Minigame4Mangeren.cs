@@ -53,7 +53,7 @@ public class Minigame4Mangeren : MonoBehaviour
         isActive = true; //say u can use it
 
         Invoke("GiveRandomPlrPotato", 3f); //starting time soon make a countdown
-        potato.transform.DOLocalRotate(new Vector3(0, 360, 0), 1 / potatoRotateSpeed, RotateMode.FastBeyond360)
+        potato.transform.DOLocalRotate(new Vector3(potato.transform.localEulerAngles.x, 360, potato.transform.localEulerAngles.z), 1 / potatoRotateSpeed, RotateMode.FastBeyond360)
         .SetEase(Ease.Linear).SetLoops(-1); //settings
     }
 
