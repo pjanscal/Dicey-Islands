@@ -57,6 +57,9 @@ public class BoardManager : MonoBehaviour
     [SerializeField] private AudioClip turnStartSound;
     [SerializeField] private AudioClip turnSkippedSound;
 
+    [SerializeField] private AudioClip roundEndSound;
+    [SerializeField] private AudioClip minigamePopupSound;
+    [SerializeField] private AudioClip minigameRouletteTickSound;
     // =========================================================
     // DICE
     // =========================================================
@@ -537,7 +540,11 @@ public class BoardManager : MonoBehaviour
 
             RecordRoundPositions();
 
+            PlayRoundEndSound();
+
             currentRound++;
+
+            // Continue existing round transition...
 
             if (MatchData.Instance != null)
             {
@@ -940,6 +947,45 @@ public class BoardManager : MonoBehaviour
     // =========================================================
     // Sounds
     // =========================================================
+
+    private void PlayRoundEndSound()
+    {
+        if (movementAudioSource == null)
+            return;
+
+        if (roundEndSound == null)
+            return;
+
+        movementAudioSource.PlayOneShot(
+            roundEndSound
+        );
+    }
+
+    private void PlayMinigamePopupSound()
+    {
+        if (movementAudioSource == null)
+            return;
+
+        if (minigamePopupSound == null)
+            return;
+
+        movementAudioSource.PlayOneShot(
+            minigamePopupSound
+        );
+    }
+
+    private void PlayMinigameRouletteTickSound()
+    {
+        if (movementAudioSource == null)
+            return;
+
+        if (minigameRouletteTickSound == null)
+            return;
+
+        movementAudioSource.PlayOneShot(
+            minigameRouletteTickSound
+        );
+    }
     private void PlayTileStepSound()
     {
         if (movementAudioSource == null)
@@ -1785,6 +1831,7 @@ public class BoardManager : MonoBehaviour
                 "MINIGAME";
 
             minigameText.gameObject.SetActive(true);
+            PlayMinigamePopupSound();
         }
 
         Debug.Log(
@@ -1806,6 +1853,7 @@ public class BoardManager : MonoBehaviour
                         availableMinigames.Count
                     )
                 ];
+            PlayMinigameRouletteTickSound();
 
             if (minigameText != null)
                 minigameText.text = randomName;
@@ -1819,12 +1867,12 @@ public class BoardManager : MonoBehaviour
         }
 
         string selectedMinigame =
-            availableMinigames[
-                Random.Range(
-                    0,
-                    availableMinigames.Count
-                )
-            ];
+     availableMinigames[
+         Random.Range(
+             0,
+             availableMinigames.Count
+         )
+     ];
 
         Debug.Log(
             "Selected minigame: " +
@@ -1837,17 +1885,27 @@ public class BoardManager : MonoBehaviour
         MatchData.Instance.selectedMinigameScene =
             selectedMinigame;
 
-        // Save position/history BEFORE leaving board.
-        SaveBoardState();
+
+        // =========================================
+        // KEEP SELECTED MINIGAME ON SCREEN
+        // =========================================
 
         yield return new WaitForSecondsRealtime(
             minigameSelectedDisplayTime
         );
 
-        UnityEngine.SceneManagement
-            .SceneManager.LoadScene(
-                selectedMinigame
-            );
+
+        // =========================================
+        // SAVE AND LOAD MINIGAME
+        // =========================================
+
+        SaveBoardState();
+
+        MatchData.Instance.minigameTransitionStarted = true;
+
+        GameMangeren.SwitchScene(
+            MatchData.Instance.selectedMinigameScene
+        );
     }
 
     /// <summary>

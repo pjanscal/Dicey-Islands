@@ -209,7 +209,7 @@ public class MinigameResultBridge : MonoBehaviour
         MatchData.Instance
             .returningFromMinigame = true;
 
-        SceneManager.LoadScene(
+        GameMangeren.SwitchScene(
             boardSceneName
         );
     }
