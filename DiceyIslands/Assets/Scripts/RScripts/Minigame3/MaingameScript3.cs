@@ -229,9 +229,8 @@ public class MaingameScript3 : MonoBehaviour
             places += 1;
         }
 
-        //go back
-        MatchData.Instance.returningFromMinigame = true;
-        GameMangeren.SwitchScene("BoardTestScene"); //beta so we can have it in a mangeren we all can get
+        //show winner
+        GameMangeren.MinigameWinner(MatchData.Instance.playerOrderNumbers);
     }
 
     bool IsSwordHit(RaycastHit hit)
