@@ -143,14 +143,11 @@ public class Minigame2ResultBridge : MonoBehaviour
         );
 
         // =========================================
-        // RETURN TO BOARD
+        // SHOW RESULT
         // =========================================
 
-        MatchData.Instance
-            .returningFromMinigame = true;
-
-        GameMangeren.SwitchScene(
-            boardSceneName
-         );
+        GameMangeren.MinigameWinner(
+            MatchData.Instance.playerOrderNumbers
+        );
     }
 }
