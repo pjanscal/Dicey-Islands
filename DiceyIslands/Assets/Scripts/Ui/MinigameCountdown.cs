@@ -18,6 +18,7 @@ public class MinigameCountdown : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        DontDestroyOnLoad(gameObject);
         GameMangeren.minigameCountdown = this;
         canvas = GetComponent<Canvas>();
         canvasGroup = GetComponent<CanvasGroup>();
@@ -25,12 +26,6 @@ public class MinigameCountdown : MonoBehaviour
         //set all default
         canvas.enabled = false;
         canvasGroup.alpha = 0;
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
     }
 
     public void Init()

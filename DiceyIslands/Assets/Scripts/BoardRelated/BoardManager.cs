@@ -50,9 +50,12 @@ public class BoardManager : MonoBehaviour
     // =========================================================
     // Sound
     // ==========================================================
-    [Header("Movement Audio")]
+    [Header("Game Audio")]
     [SerializeField] private AudioSource movementAudioSource;
+
     [SerializeField] private AudioClip tileStepSound;
+    [SerializeField] private AudioClip turnStartSound;
+    [SerializeField] private AudioClip turnSkippedSound;
 
     // =========================================================
     // DICE
@@ -511,6 +514,7 @@ public class BoardManager : MonoBehaviour
 
             return;
         }
+        PlayTurnStartSound();
 
         if (rollButton != null)
         {
@@ -933,6 +937,9 @@ public class BoardManager : MonoBehaviour
             }
         }
     }
+    // =========================================================
+    // Sounds
+    // =========================================================
     private void PlayTileStepSound()
     {
         if (movementAudioSource == null)
@@ -943,6 +950,31 @@ public class BoardManager : MonoBehaviour
 
         movementAudioSource.PlayOneShot(
             tileStepSound
+        );
+    }
+    private void PlayTurnStartSound()
+    {
+        if (movementAudioSource == null)
+            return;
+
+        if (turnStartSound == null)
+            return;
+
+        movementAudioSource.PlayOneShot(
+            turnStartSound
+        );
+    }
+
+    private void PlayTurnSkippedSound()
+    {
+        if (movementAudioSource == null)
+            return;
+
+        if (turnSkippedSound == null)
+            return;
+
+        movementAudioSource.PlayOneShot(
+            turnSkippedSound
         );
     }
 
@@ -1224,7 +1256,7 @@ public class BoardManager : MonoBehaviour
             rollButton.interactable = false;
             rollButton.gameObject.SetActive(false);
         }
-
+        PlayTurnSkippedSound();
         if (rollNumberText != null)
             rollNumberText.gameObject.SetActive(false);
 
