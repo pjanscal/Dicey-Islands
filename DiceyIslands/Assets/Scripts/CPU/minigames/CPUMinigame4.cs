@@ -48,12 +48,11 @@ public class CPUMinigame4: CPUMangeren
         {
             difficultiesConfigs.Add(difficultyCPUConfigs.difficulty, difficultyCPUConfigs);
         }
-
-        configs = difficultiesConfigs[GameMangeren.cPUDifficulty];
     }
 
     protected override IEnumerator CPUStart(int plrId)
     {
+        configs = difficultiesConfigs[GameMangeren.cPUDifficulty]; //else it won't do lastet vers when testing
         cpuSaveFiles.Add(plrId, new());
 
         return base.CPUStart(plrId);
