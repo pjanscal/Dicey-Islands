@@ -53,7 +53,7 @@ public class Minigame4Mangeren : MonoBehaviour
         isActive = true; //say u can use it
 
         Invoke("GiveRandomPlrPotato", 3f); //starting time soon make a countdown
-        potato.transform.DOLocalRotate(new Vector3(0, 360, 0), 1 / potatoRotateSpeed, RotateMode.FastBeyond360)
+        potato.transform.DOLocalRotate(new Vector3(potato.transform.localEulerAngles.x, 360, potato.transform.localEulerAngles.z), 1 / potatoRotateSpeed, RotateMode.FastBeyond360)
         .SetEase(Ease.Linear).SetLoops(-1); //settings
     }
 
@@ -96,11 +96,11 @@ public class Minigame4Mangeren : MonoBehaviour
 
         MatchData.Instance.playerOrderNumbers.Clear();
         plrsPlaces.Reverse();
-        foreach (int plrId in plrsPlaces) //go from last to first
+        foreach (int plrId in plrsPlaces) //go from first to last
         {
             MatchData.Instance.playerOrderNumbers.Add(plrId); //save it to the matchData Mangeren
 
-            Debug.Log($"MINIGAME RESULT - Place {4 - plrsPlaces.IndexOf(plrId)}: Player {plrId}");    
+            Debug.Log($"MINIGAME RESULT - Place {1 + plrsPlaces.IndexOf(plrId)}: Player {plrId}");    
         }
 
         //go back
@@ -177,7 +177,7 @@ public class Minigame4Mangeren : MonoBehaviour
     void GiveRandomPlrPotato()
     {
         //get random player
-        int rng = UnityEngine.Random.Range(1, plrsIngame.Count);
+        int rng = UnityEngine.Random.Range(0, plrsIngame.Count - 1);
         int plrId = plrsIngame.ElementAt(rng);
         print($"player{plrId} have potato");
 

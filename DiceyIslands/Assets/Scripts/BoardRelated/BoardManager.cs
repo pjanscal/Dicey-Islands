@@ -47,6 +47,15 @@ public class BoardManager : MonoBehaviour
     [Header("Player Turn Positioning")]
     [SerializeField] private float inactivePlayerSideOffset = 0.6f;
     [SerializeField] private float playerShiftSpeed = 5f;
+    // =========================================================
+    // Sound
+    // ==========================================================
+    [Header("Game Audio")]
+    [SerializeField] private AudioSource movementAudioSource;
+
+    [SerializeField] private AudioClip tileStepSound;
+    [SerializeField] private AudioClip turnStartSound;
+    [SerializeField] private AudioClip turnSkippedSound;
 
     // =========================================================
     // DICE
@@ -421,9 +430,6 @@ public class BoardManager : MonoBehaviour
         }
 #endif
 
-        // New scene instance starts with empty history.
-        // If this is a minigame return, RestoreBoardStateFromMinigame()
-        // restores the saved history immediately afterward.
         foreach (PlayerPiece player in turnOrder)
             player.ClearMatchHistory();
 
@@ -508,6 +514,7 @@ public class BoardManager : MonoBehaviour
 
             return;
         }
+        PlayTurnStartSound();
 
         if (rollButton != null)
         {
@@ -909,12 +916,13 @@ public class BoardManager : MonoBehaviour
                 yield return null;
             }
 
-            // Snap exactly onto the waypoint.
             player.transform.position =
-                destination;
+    destination;
 
             player.currentWaypointIndex =
                 nextIndex;
+
+            PlayTileStepSound();
 
             if (player == CurrentPlayer)
             {
@@ -928,6 +936,46 @@ public class BoardManager : MonoBehaviour
                 );
             }
         }
+    }
+    // =========================================================
+    // Sounds
+    // =========================================================
+    private void PlayTileStepSound()
+    {
+        if (movementAudioSource == null)
+            return;
+
+        if (tileStepSound == null)
+            return;
+
+        movementAudioSource.PlayOneShot(
+            tileStepSound
+        );
+    }
+    private void PlayTurnStartSound()
+    {
+        if (movementAudioSource == null)
+            return;
+
+        if (turnStartSound == null)
+            return;
+
+        movementAudioSource.PlayOneShot(
+            turnStartSound
+        );
+    }
+
+    private void PlayTurnSkippedSound()
+    {
+        if (movementAudioSource == null)
+            return;
+
+        if (turnSkippedSound == null)
+            return;
+
+        movementAudioSource.PlayOneShot(
+            turnSkippedSound
+        );
     }
 
     // =========================================================
@@ -1208,7 +1256,7 @@ public class BoardManager : MonoBehaviour
             rollButton.interactable = false;
             rollButton.gameObject.SetActive(false);
         }
-
+        PlayTurnSkippedSound();
         if (rollNumberText != null)
             rollNumberText.gameObject.SetActive(false);
 

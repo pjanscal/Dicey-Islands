@@ -9,6 +9,7 @@ public class CharacterData : ScriptableObject
     public GameObject character; //the char that go in the game
     [Tooltip("image of the char when selecting a char")] //could also do with 3D into a viewporframe
     public Sprite preview;
+    public Sprite inGamePreview;
     //mabyeSound or do it with humanoid
     public string charName; //ingame name
 }

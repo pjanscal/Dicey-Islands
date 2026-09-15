@@ -23,12 +23,14 @@ public static class GameMangeren
     static public Dictionary<int, CharacterLoader> charLoaderScript = new(); //help with animations
     static public Dictionary<LokaalConnecter.InputType, Sprite> keybindSprites = new();
     static public Action startMiniGame; //init the minigame when finishing the tutorial
+    static public Action startMinigameCountdown; //for if u wanna do something in this time idk
 
     //load info
     static public CharacterData[] charsData = Resources.LoadAll<CharacterData>("CharactersData");
     static private GameMangerSettings gameMangerSettings = Resources.Load<GameMangerSettings>("GameMangerSettings");
     static public LoadingScreen loadingScreen;
     static public MinigameTutorial minigameTutorial;
+    static public MinigameCountdown minigameCountdown;
 
     static public Dictionary<int, PlrData> plrsData = new();
     static public HashSet<int> allCPU = new(); //a list of plrid about who is cpu
@@ -58,6 +60,7 @@ public static class GameMangeren
         GameObject.Instantiate(gameMangerSettings.pauseSchrem);
         GameObject.Instantiate(gameMangerSettings.loadingScreen);
         GameObject.Instantiate(gameMangerSettings.miniGameTutorial);
+        GameObject.Instantiate(gameMangerSettings.minigameCountDown);
         SetInEventSystem();
 
         //setup Connection
@@ -74,6 +77,7 @@ public static class GameMangeren
     {
         //soon if there come a supporter for the gamemanger i change it 
         startMiniGame = null; //clear the actions else it will overload
+        startMinigameCountdown = null;
         LokaalMatchingUi.instance.StartCoroutine(loadingScreen.LoadScene(sceneName));
     }
 
