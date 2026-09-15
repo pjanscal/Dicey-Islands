@@ -47,6 +47,12 @@ public class BoardManager : MonoBehaviour
     [Header("Player Turn Positioning")]
     [SerializeField] private float inactivePlayerSideOffset = 0.6f;
     [SerializeField] private float playerShiftSpeed = 5f;
+    // =========================================================
+    // Sound
+    // ==========================================================
+    [Header("Movement Audio")]
+    [SerializeField] private AudioSource movementAudioSource;
+    [SerializeField] private AudioClip tileStepSound;
 
     // =========================================================
     // DICE
@@ -421,9 +427,6 @@ public class BoardManager : MonoBehaviour
         }
 #endif
 
-        // New scene instance starts with empty history.
-        // If this is a minigame return, RestoreBoardStateFromMinigame()
-        // restores the saved history immediately afterward.
         foreach (PlayerPiece player in turnOrder)
             player.ClearMatchHistory();
 
@@ -909,12 +912,13 @@ public class BoardManager : MonoBehaviour
                 yield return null;
             }
 
-            // Snap exactly onto the waypoint.
             player.transform.position =
-                destination;
+    destination;
 
             player.currentWaypointIndex =
                 nextIndex;
+
+            PlayTileStepSound();
 
             if (player == CurrentPlayer)
             {
@@ -928,6 +932,18 @@ public class BoardManager : MonoBehaviour
                 );
             }
         }
+    }
+    private void PlayTileStepSound()
+    {
+        if (movementAudioSource == null)
+            return;
+
+        if (tileStepSound == null)
+            return;
+
+        movementAudioSource.PlayOneShot(
+            tileStepSound
+        );
     }
 
     // =========================================================

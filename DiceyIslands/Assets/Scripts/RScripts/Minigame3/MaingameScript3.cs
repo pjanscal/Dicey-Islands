@@ -219,13 +219,14 @@ public class MaingameScript3 : MonoBehaviour
             MatchData.Instance.playerOrderNumbers.Add(plrLeft);
             break;
         }
+        MatchData.Instance.playerOrderNumbers.Reverse(); //last become first
 
         //debug
-        int places = 4;
+        int places = 1;
         foreach (int placesPlr in MatchData.Instance.playerOrderNumbers)
         {
             print($"plr{placesPlr} is place {places} in result matchData");
-            places -= 1;
+            places += 1;
         }
 
         //go back
