@@ -18,6 +18,7 @@ public static class GameMangeren
     static public bool inGame = false; //tell if it is in game or not
     static public bool isPaused = false; //tell if it pause
     static public bool isLoading = false; //tell if it is loading
+    static public bool isShowingResult = false; //tell if it can be pause or if it is showing winner
     static public int plrInGame = 0; //help the lokaal script to see what it should be when someone disconnect
     static public CPUDifficulty cPUDifficulty = CPUDifficulty.hard; //the difficulty of the cpu
     static public Dictionary<int, CharacterLoader> charLoaderScript = new(); //help with animations
@@ -31,6 +32,7 @@ public static class GameMangeren
     static public LoadingScreen loadingScreen;
     static public MinigameTutorial minigameTutorial;
     static public MinigameCountdown minigameCountdown;
+    static public MinigameWinnerGUI minigameWinnerGui;
 
     static public Dictionary<int, PlrData> plrsData = new();
     static public HashSet<int> allCPU = new(); //a list of plrid about who is cpu
@@ -61,6 +63,7 @@ public static class GameMangeren
         GameObject.Instantiate(gameMangerSettings.loadingScreen);
         GameObject.Instantiate(gameMangerSettings.miniGameTutorial);
         GameObject.Instantiate(gameMangerSettings.minigameCountDown);
+        GameObject.Instantiate(gameMangerSettings.minigameWinnerGui);
         SetInEventSystem();
 
         //setup Connection
@@ -118,6 +121,11 @@ public static class GameMangeren
     }
 
     //help funtion
+    static public void MinigameWinner(List<int> places)
+    {
+        minigameWinnerGui.Toggle(true, places);
+    }
+
     static public bool IsMiniGame(string sceneName)
     {
         sceneName = sceneName.ToLower();

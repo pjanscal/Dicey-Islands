@@ -10,12 +10,16 @@ public class CharacterLoader : MonoBehaviour
         jumping
     }
 
-    [SerializeField] private int plrId;
+    public int plrId;
     
     private LokaalConnecter.PlayerController playerController;
     private GameMangeren.PlrData plrData;
     private GameObject character; //help finding the char in a instant
     private Animator animator; //char animator
+
+    //configs
+    [Header("Configs")]
+    [SerializeField] bool canConnectToMangener = true; //for if u wanna use it for like winner gui
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -30,7 +34,7 @@ public class CharacterLoader : MonoBehaviour
             SetUpCharacter();
         #endif
 
-        GameMangeren.AddCharLoader(plrId, this);
+        if (canConnectToMangener) GameMangeren.AddCharLoader(plrId, this);
     }
 
     //wait until the plr is here
@@ -57,6 +61,13 @@ public class CharacterLoader : MonoBehaviour
     public void UseAnimation(CharactersAnimationEvent animationEvent)
     {
         Debug.LogWarning($"char use {animationEvent} but don't have animmation script yet");
+    }
+
+    public void ReLoad()
+    {
+        plrData = GameMangeren.GetPlrDataFromId(plrId);
+        Destroy(character);
+        SetUpCharacter();
     }
 
     // Update is called once per frame

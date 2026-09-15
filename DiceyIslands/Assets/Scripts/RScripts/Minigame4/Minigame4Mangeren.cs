@@ -103,9 +103,7 @@ public class Minigame4Mangeren : MonoBehaviour
             Debug.Log($"MINIGAME RESULT - Place {1 + plrsPlaces.IndexOf(plrId)}: Player {plrId}");    
         }
 
-        //go back
-        MatchData.Instance.returningFromMinigame = true;
-        GameMangeren.SwitchScene("BoardTestScene"); //beta so we can have it in a mangeren we all can get
+        GameMangeren.MinigameWinner(plrsPlaces);
     }
 
     //give the plr a potato

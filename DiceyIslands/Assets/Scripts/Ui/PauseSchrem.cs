@@ -32,7 +32,7 @@ public class PauseSchrem: UiBasic
     {
         base.Update();
 
-        if (GameMangeren.isLoading) return; //stop it from pausing or doing things inside of loadingscreen
+        if (GameMangeren.isLoading || GameMangeren.isShowingResult) return; //stop it from pausing or doing things inside of loadingscreen
 
         TryPausing();
         CheckIfNotDisSelected();
