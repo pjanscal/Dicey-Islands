@@ -17,6 +17,7 @@ MonoBehaviour:
   loadingScreen: {fileID: 5102757817660810055, guid: c1a2cc8a3ddd8cd44bf34e34a0291807, type: 3}
   miniGameTutorial: {fileID: 4207183938844821645, guid: 262c064191cd8a340918cc77c9a16e2a, type: 3}
   minigameCountDown: {fileID: 5872316312532121748, guid: d30e231030b1f7f48b71d19dcb17069e, type: 3}
+  minigameWinnerGui: {fileID: 6408041752602752708, guid: a3c16bc4f952cad4f990e3a2ad8eddf2, type: 3}
   keybindSprites:
   - inputType: 1
     sprite: {fileID: 21300000, guid: be2abef6819e6254cb1950e5fa9d14f5, type: 3}

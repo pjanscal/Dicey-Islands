@@ -1,10 +1,15 @@
 using System.Collections.Generic;
+using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 public class MaingameScript5 : MonoBehaviour
 {
+    //DDD note bug were for multiplayer u use navigation ui that is good for playing alone 
+    // and the fix for the button is vector2? movedir void i reccendamom u early so u get one axis
+    // so u just have to fix the highlight/ delay between down and up DDD out
+
     [SerializeField] int plrId;
     [SerializeField] RawImage mainColor;
     [SerializeField] Slider redSlider;
@@ -65,23 +70,27 @@ public class MaingameScript5 : MonoBehaviour
         if (playerController == null || !playerController.occuplied)
             return;
 
-        Vector2 moveDir = playerController.GetMoveDir();
+        Vector2? moveDir = GetMoveDir(); //doing like this could make it so x is not use
+        
+        if (moveDir == null) return;
 
-        if (moveDir.y > 0.3f)
+        print($"movedir{moveDir}, currentSelected: {selectedSliderIndex}");
+
+        if (moveDir == Vector2.up)
         {
             selectedSliderIndex = Mathf.Max(0, selectedSliderIndex - 1);
             SelectSlider(selectedSliderIndex);
         }
-        else if (moveDir.y < -0.3f)
+        else if (moveDir == Vector2.down)
         {
             selectedSliderIndex = Mathf.Min(2, selectedSliderIndex + 1);
             SelectSlider(selectedSliderIndex);
         }
-        else if (moveDir.x < -0.3f)
+        else if (moveDir == Vector2.left)
         {
             AdjustSelectedSlider(-sliderStep);
         }
-        else if (moveDir.x > 0.3f)
+        else if (moveDir == Vector2.right)
         {
             AdjustSelectedSlider(sliderStep);
         }
@@ -98,8 +107,10 @@ public class MaingameScript5 : MonoBehaviour
         if (chosenSlider == null)
             return;
 
+        /* //problem this work *if u playing alone...
         if (EventSystem.current != null)
             EventSystem.current.SetSelectedGameObject(chosenSlider.gameObject);
+        */
 
         chosenSlider.Select();
     }
@@ -150,6 +161,24 @@ public class MaingameScript5 : MonoBehaviour
         {
             colorPrinted = true;
             Debug.Log("Confirmed color: " + mainColor.color);
+        }
+    }
+
+    //helper function
+    Vector2? GetMoveDir()
+    {
+        Vector2 moveDir = playerController.GetMoveDir();
+
+        //check or it is the x or the y
+        if (math.abs(moveDir.y) > math.abs(moveDir.x))
+        {
+            if (math.abs(moveDir.y) < .3f) return null; //make sure it is not a little
+            return new Vector2(0, math.sign(moveDir.y));
+        }
+        else
+        {
+            if (math.abs(moveDir.x) < .3f) return null; //make sure it is not a little
+            return new Vector2(math.sign(moveDir.x), 0);
         }
     }
 }

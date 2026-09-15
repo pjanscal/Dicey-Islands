@@ -155,6 +155,44 @@ RectTransform:
   m_AnchoredPosition: {x: -5, y: 0}
   m_SizeDelta: {x: -20, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!1 &62453253
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 62453254}
+  m_Layer: 5
+  m_Name: Sliders3
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &62453254
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 62453253}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 255629983}
+  - {fileID: 2099009370}
+  - {fileID: 1952709119}
+  m_Father: {fileID: 341696187}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 100, y: 100}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &81255092
 GameObject:
   m_ObjectHideFlags: 0
@@ -187,7 +225,7 @@ RectTransform:
   - {fileID: 154886496}
   - {fileID: 490428311}
   - {fileID: 1182360344}
-  m_Father: {fileID: 341696187}
+  m_Father: {fileID: 1558984827}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -721,7 +759,7 @@ RectTransform:
   - {fileID: 587064239}
   - {fileID: 17875843}
   - {fileID: 920871423}
-  m_Father: {fileID: 341696187}
+  m_Father: {fileID: 62453254}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -847,7 +885,7 @@ RectTransform:
   - {fileID: 239912332}
   - {fileID: 2016350611}
   - {fileID: 1547196367}
-  m_Father: {fileID: 341696187}
+  m_Father: {fileID: 2061409749}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -1083,18 +1121,10 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 379447578}
-  - {fileID: 1461251240}
-  - {fileID: 255629983}
-  - {fileID: 1897440217}
-  - {fileID: 1135024511}
-  - {fileID: 937557471}
-  - {fileID: 2099009370}
-  - {fileID: 1292429862}
-  - {fileID: 81255093}
-  - {fileID: 282355116}
-  - {fileID: 1952709119}
-  - {fileID: 1368364097}
+  - {fileID: 1558984827}
+  - {fileID: 2061409749}
+  - {fileID: 62453254}
+  - {fileID: 918165874}
   m_Father: {fileID: 1530421202}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
@@ -1172,6 +1202,7 @@ MonoBehaviour:
   redSlider: {fileID: 1461251241}
   greenSlider: {fileID: 937557472}
   blueSlider: {fileID: 282355117}
+  sliderStep: 5
 --- !u!4 &375676282
 Transform:
   m_ObjectHideFlags: 0
@@ -1219,7 +1250,7 @@ RectTransform:
   - {fileID: 1200585104}
   - {fileID: 1087892596}
   - {fileID: 547240893}
-  m_Father: {fileID: 341696187}
+  m_Father: {fileID: 1558984827}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -1941,6 +1972,7 @@ MonoBehaviour:
   redSlider: {fileID: 1897440218}
   greenSlider: {fileID: 1292429863}
   blueSlider: {fileID: 1368364098}
+  sliderStep: 5
 --- !u!4 &740088693
 Transform:
   m_ObjectHideFlags: 0
@@ -2473,6 +2505,7 @@ MonoBehaviour:
   redSlider: {fileID: 255629984}
   greenSlider: {fileID: 2099009371}
   blueSlider: {fileID: 1952709120}
+  sliderStep: 5
 --- !u!4 &901986067
 Transform:
   m_ObjectHideFlags: 0
@@ -2488,6 +2521,44 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &918165873
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 918165874}
+  m_Layer: 5
+  m_Name: Sliders4
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &918165874
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 918165873}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 1897440217}
+  - {fileID: 1292429862}
+  - {fileID: 1368364097}
+  m_Father: {fileID: 341696187}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 100, y: 100}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &920871422
 GameObject:
   m_ObjectHideFlags: 0
@@ -2556,7 +2627,7 @@ RectTransform:
   - {fileID: 290187723}
   - {fileID: 1675823014}
   - {fileID: 1805230760}
-  m_Father: {fileID: 341696187}
+  m_Father: {fileID: 2061409749}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -2868,7 +2939,7 @@ RectTransform:
   - {fileID: 1139862496}
   - {fileID: 398494236}
   - {fileID: 1639726451}
-  m_Father: {fileID: 341696187}
+  m_Father: {fileID: 1558984827}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -3161,6 +3232,7 @@ MonoBehaviour:
   redSlider: {fileID: 379447579}
   greenSlider: {fileID: 1135024512}
   blueSlider: {fileID: 81255094}
+  sliderStep: 5
 --- !u!1 &1182360343
 GameObject:
   m_ObjectHideFlags: 0
@@ -3585,7 +3657,7 @@ RectTransform:
   - {fileID: 955409694}
   - {fileID: 162088438}
   - {fileID: 1634897826}
-  m_Father: {fileID: 341696187}
+  m_Father: {fileID: 918165874}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -3900,7 +3972,7 @@ RectTransform:
   - {fileID: 719723824}
   - {fileID: 2039762697}
   - {fileID: 1076324030}
-  m_Father: {fileID: 341696187}
+  m_Father: {fileID: 918165874}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -4062,7 +4134,7 @@ RectTransform:
   - {fileID: 1995494557}
   - {fileID: 245352311}
   - {fileID: 682700571}
-  m_Father: {fileID: 341696187}
+  m_Father: {fileID: 2061409749}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -4379,6 +4451,44 @@ RectTransform:
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: -20, y: 0}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!1 &1558984826
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1558984827}
+  m_Layer: 5
+  m_Name: Sliders1
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &1558984827
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1558984826}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 379447578}
+  - {fileID: 1135024511}
+  - {fileID: 81255093}
+  m_Father: {fileID: 341696187}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1563575732
 GameObject:
@@ -5140,7 +5250,7 @@ RectTransform:
   - {fileID: 2104481211}
   - {fileID: 2094320284}
   - {fileID: 1135209038}
-  m_Father: {fileID: 341696187}
+  m_Father: {fileID: 918165874}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -5230,7 +5340,7 @@ RectTransform:
   - {fileID: 1563575733}
   - {fileID: 282335216}
   - {fileID: 667014948}
-  m_Father: {fileID: 341696187}
+  m_Father: {fileID: 62453254}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -5510,6 +5620,44 @@ RectTransform:
   m_AnchoredPosition: {x: -5, y: 0}
   m_SizeDelta: {x: -20, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!1 &2061409748
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2061409749}
+  m_Layer: 5
+  m_Name: Sliders2
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &2061409749
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2061409748}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 1461251240}
+  - {fileID: 937557471}
+  - {fileID: 282355116}
+  m_Father: {fileID: 341696187}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 100, y: 100}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &2086281704
 GameObject:
   m_ObjectHideFlags: 0
@@ -5728,7 +5876,7 @@ RectTransform:
   - {fileID: 671611511}
   - {fileID: 354350929}
   - {fileID: 884747850}
-  m_Father: {fileID: 341696187}
+  m_Father: {fileID: 62453254}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
