@@ -74,8 +74,6 @@ public class MaingameScript5 : MonoBehaviour
         
         if (moveDir == null) return;
 
-        print($"movedir{moveDir}, currentSelected: {selectedSliderIndex}");
-
         if (moveDir == Vector2.up)
         {
             selectedSliderIndex = Mathf.Max(0, selectedSliderIndex - 1);
