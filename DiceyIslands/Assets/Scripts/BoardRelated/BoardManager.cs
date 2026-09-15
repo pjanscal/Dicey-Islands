@@ -6,19 +6,12 @@ using UnityEngine.UI;
 
 public class BoardManager : MonoBehaviour
 {
-    // =========================================================
-    // BOARD
-    // =========================================================
 
     [Header("Board")]
     [SerializeField] private Transform waypointParent;
 
     private readonly List<Waypoint> waypoints =
         new List<Waypoint>();
-
-    // =========================================================
-    // PLAYERS
-    // =========================================================
 
     [Header("Players")]
     [Tooltip("Add up to 4 players here. Empty/inactive players are ignored.")]
@@ -35,9 +28,6 @@ public class BoardManager : MonoBehaviour
     private int currentTurnIndex = 0;
     private bool extraRollGranted = false;
 
-    // =========================================================
-    // MOVEMENT
-    // =========================================================
 
     [Header("Movement")]
     [SerializeField] private float moveSpeed = 4f;
@@ -47,9 +37,7 @@ public class BoardManager : MonoBehaviour
     [Header("Player Turn Positioning")]
     [SerializeField] private float inactivePlayerSideOffset = 0.6f;
     [SerializeField] private float playerShiftSpeed = 5f;
-    // =========================================================
-    // Sound
-    // ==========================================================
+
     [Header("Game Audio")]
     [SerializeField] private AudioSource movementAudioSource;
 
@@ -60,9 +48,6 @@ public class BoardManager : MonoBehaviour
     [SerializeField] private AudioClip roundEndSound;
     [SerializeField] private AudioClip minigamePopupSound;
     [SerializeField] private AudioClip minigameRouletteTickSound;
-    // =========================================================
-    // DICE
-    // =========================================================
 
     [Header("Dice")]
     [SerializeField] private float diceAnimationDuration = 0.6f;
@@ -71,18 +56,11 @@ public class BoardManager : MonoBehaviour
     [Tooltip("How long the final roll stays visible before movement begins.")]
     [SerializeField] private float finalRollDisplayTime = 0.5f;
 
-    // =========================================================
-    // SWAP TILE
-    // =========================================================
 
     [Header("Swap Tile")]
     [SerializeField] private float swapAnimationDuration = 1.2f;
     [SerializeField] private float swapNumberChangeSpeed = 0.1f;
     [SerializeField] private float swapResultDisplayTime = 0.8f;
-
-    // =========================================================
-    // UI
-    // =========================================================
 
     [Header("UI")]
     [SerializeField] private Button rollButton;
@@ -97,9 +75,6 @@ public class BoardManager : MonoBehaviour
     [Header("Skip Turn")]
     [SerializeField] private float skippedDisplayDuration = 1.5f;
 
-    // =========================================================
-    // MINIGAME
-    // =========================================================
 
     [Header("Minigame")]
     [SerializeField] private TMP_Text minigameText;
@@ -110,33 +85,21 @@ public class BoardManager : MonoBehaviour
     private readonly List<string> availableMinigames =
         new List<string>();
 
-    // =========================================================
-    // CAMERA
-    // =========================================================
 
     [Header("Camera")]
     [SerializeField] private PlayerCamera playerCamera;
     [SerializeField] private Transform topDownCameraPosition;
 
-    // =========================================================
-    // ROUND SYSTEM
-    // =========================================================
 
     [Header("Round System")]
     [SerializeField] private float roundTransitionDuration = 2f;
 
     private int currentRound = 1;
 
-    // =========================================================
-    // RESULTS
-    // =========================================================
 
     [Header("Match Results")]
     [SerializeField] private MatchResultsUI matchResultsUI;
 
-    // =========================================================
-    // STATE
-    // =========================================================
 
     [HideInInspector] public bool turnInProgress = false;
     private bool gameOver = false;
@@ -173,7 +136,7 @@ public class BoardManager : MonoBehaviour
     }
 
     // =========================================================
-    // UNITY
+    // VERY
     // =========================================================
 
     private void Awake()

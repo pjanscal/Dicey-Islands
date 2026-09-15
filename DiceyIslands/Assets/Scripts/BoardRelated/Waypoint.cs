@@ -14,15 +14,16 @@ public enum TileType
 
 public class Waypoint : MonoBehaviour
 {
-    [Header("Waypoint Info")]
+    [Header("waypoint Info")]
     public int waypointNumber;
 
-    [Header("Tile Effect")]
+    [Header("tile Effect")]
     public TileType tileType = TileType.Normal;
 
-    [Tooltip("How many spaces this effect moves the player.")]
+    [Tooltip("how many spaces this move the player")]
     public int effectAmount = 0;
-
+    //===========================================================
+    //WAYPOI
     public int GetMovementEffect()
     {
         switch (tileType)
