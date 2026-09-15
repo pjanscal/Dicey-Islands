@@ -53,7 +53,6 @@ public class MinigameCountdown : MonoBehaviour
          {
             canvas.enabled = false;
             GameMangeren.startMiniGame?.Invoke();
-            Time.timeScale = 1;
          });
     }
 }

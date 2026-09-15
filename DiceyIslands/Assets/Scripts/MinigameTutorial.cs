@@ -183,6 +183,7 @@ public class MinigameTutorial : MonoBehaviour
         //send message to the minigame
         GameMangeren.minigameCountdown.Init();
         GameMangeren.startMinigameCountdown?.Invoke();
+        Time.timeScale = 1;
     }
 
     //reset when done
