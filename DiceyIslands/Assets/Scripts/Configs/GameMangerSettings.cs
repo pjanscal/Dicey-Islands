@@ -17,6 +17,7 @@ public class GameMangerSettings : ScriptableObject
     public GameObject eventSystemUi;
     public GameObject loadingScreen;
     public GameObject miniGameTutorial;
+    public GameObject minigameCountDown;
 
     [Header("configs")]
     public KeybindSprites[] keybindSprites;

@@ -96,11 +96,11 @@ public class Minigame4Mangeren : MonoBehaviour
 
         MatchData.Instance.playerOrderNumbers.Clear();
         plrsPlaces.Reverse();
-        foreach (int plrId in plrsPlaces) //go from last to first
+        foreach (int plrId in plrsPlaces) //go from first to last
         {
             MatchData.Instance.playerOrderNumbers.Add(plrId); //save it to the matchData Mangeren
 
-            Debug.Log($"MINIGAME RESULT - Place {4 - plrsPlaces.IndexOf(plrId)}: Player {plrId}");    
+            Debug.Log($"MINIGAME RESULT - Place {1 + plrsPlaces.IndexOf(plrId)}: Player {plrId}");    
         }
 
         //go back
