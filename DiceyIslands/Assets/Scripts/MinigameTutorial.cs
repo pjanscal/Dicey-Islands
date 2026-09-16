@@ -85,6 +85,7 @@ public class MinigameTutorial : MonoBehaviour
             return;
         }
 
+        GameMangeren.isShowingResult = false; //stop pause but here if u press it in like .01 sec idk it might work pausing wich is not much of a problem
         Time.timeScale = 0f; //stop it so somethings can't happend
 
         //set the scene up
@@ -184,6 +185,7 @@ public class MinigameTutorial : MonoBehaviour
         GameMangeren.minigameCountdown.Init();
         GameMangeren.startMinigameCountdown?.Invoke();
         Time.timeScale = 1;
+        GameMangeren.isShowingResult = false; //stop pause
     }
 
     //reset when done

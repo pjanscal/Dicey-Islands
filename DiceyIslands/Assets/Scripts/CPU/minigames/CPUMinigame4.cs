@@ -33,8 +33,9 @@ public class CPUMinigame4: CPUMangeren
     //configs
     [Header("Configs")]
     [SerializeField] private List<DifficultyCPUConfigs> difficultiesConfigsEdit = new(3); // soon update it better just beta testing
-    const float mapSize = 10;
-    const float mapSideMarge = .5f;
+    private Vector3 middlePoint = new Vector3(3.56f, 0.33f, 4.38f);
+    const float mapSize = 18.5f;
+    const float mapSideMarge = .5f * 2;
     const float minAngleToSwitch = 45;
     const float maxChaseTime = 1;
     private Dictionary<GameMangeren.CPUDifficulty, DifficultyCPUConfigs> difficultiesConfigs = new();
@@ -164,12 +165,12 @@ public class CPUMinigame4: CPUMangeren
         Vector3 dir = AngleToDirection(rngAngle);
 
         //get a random distance he can walk.
-        Vector3 plrPosition = plrsChar[plrId].transform.position;
+        Vector3 plrPosition = plrsChar[plrId].transform.position - middlePoint; //if they were in middle
         float halfMapValidDistance = mapSize / 2 - mapSideMarge;
         float maxXDis = GetMaxDistant(0); //get distance how long it take to get to the boundries
         float maxYDis = GetMaxDistant(2);
         float distance = UnityEngine.Random.Range(0, math.min(maxXDis, maxYDis));
-        Vector3 targetPos = plrPosition + dir * distance;
+        Vector3 targetPos = plrPosition + middlePoint + dir * distance;
 
         //0 = x, 1 = y, 2 = z
         //get distance how long it take to get to the boundries
@@ -182,7 +183,7 @@ public class CPUMinigame4: CPUMangeren
             if (!Minigame4Mangeren.instance.plrsIngame.Contains(potatoTarget)) return maxDisant;
 
             //look at the enemie *hulp from ai here
-            Vector3 chaserPos = plrsChar[potatoTarget].transform.position;
+            Vector3 chaserPos = plrsChar[potatoTarget].transform.position - middlePoint; //like if they were in middle
             Vector3 chaserDir = chaserPos - plrPosition;
             
             // How far the enemy is along our movement direction
@@ -225,8 +226,8 @@ public class CPUMinigame4: CPUMangeren
     //position when running away from the chaser
     Vector3 GetRunnerDirectionWhenRunningAway(int plrId)
     {
-        Vector3 plrPos = plrsChar[plrId].transform.position;
-        Vector3 chaserPos = plrsChar[potatoTarget].transform.position;
+        Vector3 plrPos = plrsChar[plrId].transform.position - middlePoint; //like what they pos are if it is middle = 0, 0, 0
+        Vector3 chaserPos = plrsChar[potatoTarget].transform.position - middlePoint; //like what they pos are if it is middle = 0, 0, 0
         Vector3 dirFromChaser = (plrPos - chaserPos);
         dirFromChaser.y = 0;
         dirFromChaser = dirFromChaser.normalized;

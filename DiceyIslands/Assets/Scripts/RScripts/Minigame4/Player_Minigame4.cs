@@ -19,11 +19,12 @@ public class Player_Minigame4 : MonoBehaviour
 
     //configs
     public int PlrId;
-    const float defaultSpeed = 5f; //normal walkspeed
-    const float runSpeed = 7f; //run speed
-    const float potatoHoldSpeed = 5.5f; //speed with potato
+    //--times 2 for the extra size :3
+    const float defaultSpeed = 5f * 2; //normal walkspeed
+    const float runSpeed = 7f * 2; //run speed
+    const float potatoHoldSpeed = 5.5f * 2; //speed with potato
     const float rotateSpeed = .7f; //speed of rotating ur character
-    const float acceleration = 12f; //momento acceleration speed
+    const float acceleration = 12f * 2; //momento acceleration speed
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
