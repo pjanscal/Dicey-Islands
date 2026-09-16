@@ -23,7 +23,8 @@ public class Waypoint : MonoBehaviour
     [Tooltip("how many spaces this move the player")]
     public int effectAmount = 0;
     //===========================================================
-    //WAYPOI
+    //MOVEMENT BASED TILES TYPES
+    //===========================================================
     public int GetMovementEffect()
     {
         switch (tileType)
