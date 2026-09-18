@@ -1238,6 +1238,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::MaingameScript5
   plrId: 2
   mainColor: {fileID: 784710929}
+  targetColor: {fileID: 176496699}
   slowModeUi: {fileID: 972699202}
   redSlider: {fileID: 1461251241}
   greenSlider: {fileID: 937557472}
@@ -2124,6 +2125,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::MaingameScript5
   plrId: 4
   mainColor: {fileID: 1804995640}
+  targetColor: {fileID: 176496699}
   slowModeUi: {fileID: 521528629}
   redSlider: {fileID: 1897440218}
   greenSlider: {fileID: 1292429863}
@@ -2755,6 +2757,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::MaingameScript5
   plrId: 3
   mainColor: {fileID: 1474909132}
+  targetColor: {fileID: 176496699}
   slowModeUi: {fileID: 942927689}
   redSlider: {fileID: 255629984}
   greenSlider: {fileID: 2099009371}
@@ -3709,6 +3712,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::MaingameScript5
   plrId: 1
   mainColor: {fileID: 1410801253}
+  targetColor: {fileID: 176496699}
   slowModeUi: {fileID: 903551918}
   redSlider: {fileID: 379447579}
   greenSlider: {fileID: 1135024512}

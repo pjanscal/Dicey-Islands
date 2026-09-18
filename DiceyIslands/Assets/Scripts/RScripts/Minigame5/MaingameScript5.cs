@@ -17,6 +17,7 @@ public class MaingameScript5 : MonoBehaviour
     
     [Header("UI")]
     [SerializeField] RawImage mainColor;
+    [SerializeField] RawImage targetColor;
     [SerializeField] private Image slowModeUi;
     [SerializeField] Slider redSlider;
     [SerializeField] Slider greenSlider;
@@ -212,7 +213,7 @@ public class MaingameScript5 : MonoBehaviour
         if (confirmedPlayers.Count >= occupiedPlayerCount)
         {
             //colorPrinted = true; since they can't go back why
-            Debug.Log("Confirmed color: " + mainColor.color);
+            Debug.Log("Confirmed color: " + targetColor.color);
             Winner();
         }
     }
@@ -277,7 +278,7 @@ public class MaingameScript5 : MonoBehaviour
 
     int GetMainColorMaxDistance(int colorId)
     {
-        int colorValue = Mathf.RoundToInt(mainColor.color[colorId] * 255); //make from .7 to a number like 0-255
+        int colorValue = Mathf.RoundToInt(targetColor.color[colorId] * 255); //make from .7 to a number like 0-255
         int distance = colorValue < (255 / 2)? 255 - colorValue : colorValue; //255 is like the color things
         return distance;
     }

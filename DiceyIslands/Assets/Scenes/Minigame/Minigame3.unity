@@ -198,6 +198,9 @@ MonoBehaviour:
   hitPrefab: {fileID: 116000536}
   rotationOffset: {x: 0, y: 0, z: 0}
   dieIndicator: {fileID: 485932702}
+  canShoot: 1
+  init: 0
+  hasThrownThisRound: 0
 --- !u!1001 &177387573
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -747,6 +750,9 @@ MonoBehaviour:
   hitPrefab: {fileID: 116000536}
   rotationOffset: {x: 0, y: 0, z: 0}
   dieIndicator: {fileID: 585905973}
+  canShoot: 1
+  init: 0
+  hasThrownThisRound: 0
 --- !u!1 &485932700
 GameObject:
   m_ObjectHideFlags: 0
@@ -1026,6 +1032,9 @@ MonoBehaviour:
   hitPrefab: {fileID: 116000536}
   rotationOffset: {x: 0, y: 0, z: 0}
   dieIndicator: {fileID: 216550223}
+  canShoot: 1
+  init: 0
+  hasThrownThisRound: 0
 --- !u!4 &647936443 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 396939891f650dd44af34ac6f9fba906, type: 3}
@@ -1164,6 +1173,9 @@ MonoBehaviour:
   hitPrefab: {fileID: 116000536}
   rotationOffset: {x: 0, y: 0, z: 0}
   dieIndicator: {fileID: 1110857179}
+  canShoot: 1
+  init: 0
+  hasThrownThisRound: 0
 --- !u!1001 &944012713
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1542,6 +1554,76 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1110857177}
   m_CullTransparentMesh: 1
+--- !u!1 &1116495551
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1116495553}
+  - component: {fileID: 1116495552}
+  m_Layer: 0
+  m_Name: CPUMangener
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1116495552
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1116495551}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 62a8fda91314e02408dabeb7a2299dee, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CPUMinigame3
+  cpuCharacters:
+  - plrId: 1
+    character: {fileID: 459077542}
+  - plrId: 2
+    character: {fileID: 608025755}
+  - plrId: 3
+    character: {fileID: 134534139}
+  - plrId: 4
+    character: {fileID: 902615173}
+  targetBlock: {fileID: 264957876}
+  difficultiesConfigsEdit:
+  - difficulty: 0
+    minRoundToSurvive: 2
+    chanceToDie: 65
+    checkingRange: 1
+    checkingAfterRange: 0.5
+  - difficulty: 1
+    minRoundToSurvive: 3
+    chanceToDie: 45
+    checkingRange: 1
+    checkingAfterRange: 0.5
+  - difficulty: 2
+    minRoundToSurvive: 4
+    chanceToDie: 40
+    checkingRange: 0.6
+    checkingAfterRange: 0.4
+--- !u!4 &1116495553
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1116495551}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0.8589, y: -34.39517, z: 14.466}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1371375236
 GameObject:
   m_ObjectHideFlags: 0
@@ -2194,3 +2276,4 @@ SceneRoots:
   - {fileID: 238141026}
   - {fileID: 264957880}
   - {fileID: 865941892}
+  - {fileID: 1116495553}
