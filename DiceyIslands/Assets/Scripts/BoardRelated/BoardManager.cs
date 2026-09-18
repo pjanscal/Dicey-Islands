@@ -49,6 +49,9 @@ public class BoardManager : MonoBehaviour
     [SerializeField] private AudioClip minigamePopupSound;
     [SerializeField] private AudioClip minigameRouletteTickSound;
 
+    [SerializeField] private AudioClip moveForwardTileSound;
+    [SerializeField] private AudioClip moveBackTileSound;
+
     [Header("Dice")]
     [SerializeField] private float diceAnimationDuration = 0.6f;
     [SerializeField] private float diceNumberChangeSpeed = 0.06f;
@@ -910,7 +913,31 @@ public class BoardManager : MonoBehaviour
     // =========================================================
     // Sounds
     // =========================================================
+    private void PlayMoveForwardTileSound()
+    {
+        if (movementAudioSource == null)
+            return;
 
+        if (moveForwardTileSound == null)
+            return;
+
+        movementAudioSource.PlayOneShot(
+            moveForwardTileSound
+        );
+    }
+
+    private void PlayMoveBackTileSound()
+    {
+        if (movementAudioSource == null)
+            return;
+
+        if (moveBackTileSound == null)
+            return;
+
+        movementAudioSource.PlayOneShot(
+            moveBackTileSound
+        );
+    }
     private void PlayRoundEndSound()
     {
         if (movementAudioSource == null)
@@ -1042,8 +1069,6 @@ public class BoardManager : MonoBehaviour
                 continue;
             }
 
-            // Skip the next player in the CURRENT turn order.
-            // If this player is last, nothing happens.
             if (landedWaypoint.tileType ==
                 TileType.SkipNextTurn)
             {
@@ -1051,12 +1076,22 @@ public class BoardManager : MonoBehaviour
                 yield break;
             }
 
-            // Forward/backward tiles.
             int movement =
-                landedWaypoint.GetMovementEffect();
+    landedWaypoint.GetMovementEffect();
 
             if (movement == 0)
                 yield break;
+
+
+            if (landedWaypoint.tileType == TileType.MoveForward)
+            {
+                PlayMoveForwardTileSound();
+            }
+            else if (landedWaypoint.tileType == TileType.MoveBack)
+            {
+                PlayMoveBackTileSound();
+            }
+
 
             int targetIndex =
                 player.currentWaypointIndex +

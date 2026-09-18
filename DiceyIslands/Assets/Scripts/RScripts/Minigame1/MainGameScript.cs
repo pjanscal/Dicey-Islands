@@ -3,6 +3,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using SceneManager = UnityEngine.SceneManagement.SceneManager;
 
+
 public class MainGameScript : MonoBehaviour
 {
 
@@ -12,6 +13,7 @@ public class MainGameScript : MonoBehaviour
     [SerializeField] RawImage indicator;
     public float elapsed; //public so the cpu can check
     [SerializeField] public bool isRunning, firstTime, ready;
+    bool init;
     int seconds, centiseconds;
     TimeNeeded timeNeeded;
 
@@ -21,8 +23,15 @@ public class MainGameScript : MonoBehaviour
         firstTime = true;
         isRunning = false;
         playerController = LokaalConnecter.plrsController[plrId];
+        GameMangeren.startMiniGame += Init;
         countdown = GameObject.Find("Countdown").GetComponent<TMP_Text>();
         countdown.text = "";
+    }
+
+        public void Init()
+    {
+        init = true;
+        if (MatchData.Instance != null) MatchData.Instance.playerOrderNumbers.Clear(); //clear it up and use this as a places var
     }
 
     void Update()
@@ -30,7 +39,10 @@ public class MainGameScript : MonoBehaviour
 
         if (LokaalConnecter.connectionType == LokaalConnecter.ConnectionTypes.nothing)
         {
-            if (playerController == null || !playerController.occuplied) return;
+            if (!init || playerController == null || !playerController.occuplied)
+            {
+                return;
+            }
 
             if (!ready && firstTime && playerController.GetButtonDown(LokaalConnecter.InputType.x))
             {
