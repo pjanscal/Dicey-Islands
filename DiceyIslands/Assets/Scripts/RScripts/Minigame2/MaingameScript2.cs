@@ -8,7 +8,7 @@ public class MaingameScript2 : MonoBehaviour
     [SerializeField] int plrId;
     SpawnObject spawnObject;
     public int points;
-    bool gameOver;
+    bool gameOver, init;
     bool ready;
     bool gameStarted;
     float nextPressTime;
@@ -32,13 +32,24 @@ public class MaingameScript2 : MonoBehaviour
         spawnObject = FindFirstObjectByType<SpawnObject>();
 
         playerController = LokaalConnecter.plrsController[plrId];
+        GameMangeren.startMiniGame += Init;
+    }
+
+    public void Init()
+    {
+        init = true;
+        if (MatchData.Instance != null) MatchData.Instance.playerOrderNumbers.Clear(); //clear it up and use this as a places var
     }
 
     void Update()
     {
         if (LokaalConnecter.connectionType == LokaalConnecter.ConnectionTypes.nothing)
         {
-            if (playerController == null || !playerController.occuplied) return;
+
+            if (!init || playerController == null || !playerController.occuplied)
+            {
+                return;
+            }
 
             if (playerController.GetButtonDown(LokaalConnecter.InputType.y) && IsGameOver())
             {
