@@ -26,7 +26,7 @@ public class MaingameScript5 : MonoBehaviour
     [Tooltip("Change in script folder")] [SerializeField] private Sprite slowModeOnSprite;
     [Tooltip("Change in script folder")] [SerializeField] private Sprite slowModeOffSprite;
 
-    private readonly Slider[] sliders = new Slider[3];
+    [HideInInspector] public readonly Slider[] sliders = new Slider[3];
     private int selectedSliderIndex = 0;
 
     private static readonly HashSet<int> confirmedPlayers = new(); //... why not mangeren
