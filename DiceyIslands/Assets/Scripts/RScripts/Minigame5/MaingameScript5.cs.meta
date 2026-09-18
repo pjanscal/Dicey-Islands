@@ -1,2 +1,18 @@
 fileFormatVersion: 2
 guid: 08e21f3e4c497504ab8da5d7974dc317
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - mainColor: {instanceID: 0}
+  - slowModeUi: {instanceID: 0}
+  - redSlider: {instanceID: 0}
+  - greenSlider: {instanceID: 0}
+  - blueSlider: {instanceID: 0}
+  - slowModeOnSprite: {fileID: 21300000, guid: 748779ee7b5325143ae85aa1bcf88343, type: 3}
+  - slowModeOffSprite: {fileID: 21300000, guid: d66ce6549936e424e8bd99b9d23ece9f, type: 3}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
