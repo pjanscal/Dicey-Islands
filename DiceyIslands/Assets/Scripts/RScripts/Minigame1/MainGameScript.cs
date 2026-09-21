@@ -63,7 +63,7 @@ public class MainGameScript : MonoBehaviour
         timeText.text = $"{seconds:00} : {centiseconds:00}";
         if (seconds == 3)
         {
-            timeText.color = Color.black;
+            timeText.color = Color.clear;
         }
     }
 
