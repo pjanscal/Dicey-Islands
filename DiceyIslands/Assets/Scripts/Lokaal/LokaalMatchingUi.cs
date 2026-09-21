@@ -204,6 +204,7 @@ public class LokaalMatchingUi : MonoBehaviour
 
         if (LokaalConnecter.connectionType != LokaalConnecter.ConnectionTypes.matchConnect) return;
 
+        LokaalConnecter.currentPlr += 1;
         charSelectSlot.SwitchState(LokaalConnecter.characterSelectState.Choosing);
     }
 
@@ -215,6 +216,7 @@ public class LokaalMatchingUi : MonoBehaviour
 
         if (LokaalConnecter.connectionType != LokaalConnecter.ConnectionTypes.matchConnect) return;
 
+        LokaalConnecter.currentPlr += 1;
         charSelectSlot.SwitchState(LokaalConnecter.characterSelectState.Choosing);
     }
 
@@ -227,6 +229,7 @@ public class LokaalMatchingUi : MonoBehaviour
 
         if (LokaalConnecter.connectionType != LokaalConnecter.ConnectionTypes.matchConnect) return;
 
+        LokaalConnecter.currentPlr -= 1;
         charSelectSlot.SwitchState(LokaalConnecter.characterSelectState.Connecting);
     }
 

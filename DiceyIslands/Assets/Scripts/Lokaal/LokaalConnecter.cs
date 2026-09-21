@@ -302,6 +302,8 @@ public static class LokaalConnecter
         {
             slotData.ResetSlot();
         }
+
+        currentPlr = 0;
     }
 
     // Init when a device stateChanged use for leaving
@@ -351,7 +353,6 @@ public static class LokaalConnecter
         plrData.gamepad = gamepad;
 
         LokaalMatchingUi.instance.ChangeOutputUi(plrId, LokaalMatchingUi.ConnectionTypes.Join);
-        currentPlr += 1;
 
         Debug.LogWarning($"Plr{plrId} joined");
     }
@@ -386,8 +387,6 @@ public static class LokaalConnecter
             #endif
         }
 
-        currentPlr -= 1;
-
         //here for the logic wa happend if they leave
 
         Debug.LogWarning($"plr{plrId} left the game");
@@ -407,7 +406,6 @@ public static class LokaalConnecter
         alrUsedKeyboardId.Add(keyboardId);
 
         LokaalMatchingUi.instance.ChangeOutputUi(plrId, LokaalMatchingUi.ConnectionTypes.JoinDev);
-        currentPlr += 1;
 
         Debug.LogWarning($"Plr{plrId} joined *with keyboard*");
     }
@@ -477,6 +475,15 @@ public static class LokaalConnecter
 
         Debug.LogWarning("EveryoneIsReadyUp");
 
+        //if all are player skip adding cpu
+        //Debug.Log(currentPlr);
+        if (currentPlr == 4)
+        {
+            Debug.LogWarning("all 4 are players");
+            FinishCpuDifficultySelect(); //get the finisher
+            return;
+        }
+
         //set in all cpu
         foreach (PlayerController plrData in plrsController.Values)
         {
@@ -510,9 +517,8 @@ public static class LokaalConnecter
     //start the game
     static public void FinishCpuDifficultySelect()
     {
-        connectionType = ConnectionTypes.nothing;
-
         SwitchMatchMaking(false); //turn of the ui
+        connectionType = ConnectionTypes.nothing;
         outOfMatchMaking?.Invoke(true); //send the event to sartschrem to load scene if it is not there then it won't switch scene
         GameMangeren.inGame = true; //it would be a prob to make true = true :3* if this is found
         GameMangeren.plrInGame = currentPlr;
