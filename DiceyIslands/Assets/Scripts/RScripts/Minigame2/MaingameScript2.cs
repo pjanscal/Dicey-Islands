@@ -38,6 +38,11 @@ public class MaingameScript2 : MonoBehaviour
     public void Init()
     {
         init = true;
+        gameStarted = true;
+
+        if (spawnObject != null)
+            spawnObject.StartSpawning();
+
         if (MatchData.Instance != null) MatchData.Instance.playerOrderNumbers.Clear(); //clear it up and use this as a places var
     }
 
@@ -45,7 +50,6 @@ public class MaingameScript2 : MonoBehaviour
     {
         if (LokaalConnecter.connectionType == LokaalConnecter.ConnectionTypes.nothing)
         {
-
             if (!init || playerController == null || !playerController.occuplied)
             {
                 return;
@@ -66,14 +70,7 @@ public class MaingameScript2 : MonoBehaviour
 
             if (playerController.GetButtonDown(LokaalConnecter.InputType.x))
             {
-                if (!ready)
-                {
-                    readyColor.color = Color.green;
-                    ready = true;
-                    CheckIfEveryoneIsReady();
-                    return;
-                }
-
+            
                 if (!gameStarted) return;
                 if (Time.time < nextPressTime) return;
 
@@ -92,7 +89,7 @@ public class MaingameScript2 : MonoBehaviour
                 {
                     points += int.Parse(pointMatch.Value);
 
-                    if (points >= 15)
+                    if (points >= 10)
                     {
                         gameOver = true;
                         spawnObject.StopSpawning();
@@ -106,24 +103,7 @@ public class MaingameScript2 : MonoBehaviour
         }
     }
 
-    void CheckIfEveryoneIsReady()
-    {
-        foreach (MaingameScript2 player in FindObjectsByType<MaingameScript2>(FindObjectsSortMode.None))
-        {
-            if (player.playerController != null && player.playerController.occuplied && !player.ready) return;
-        }
-
-        foreach (MaingameScript2 player in FindObjectsByType<MaingameScript2>(FindObjectsSortMode.None))
-        {
-            if (player.playerController != null && player.playerController.occuplied)
-            {
-                player.gameStarted = true;
-            }
-        }
-
-        spawnObject.StartSpawning();
-        winnerText.text = "Everyone is ready. The game has started!";
-    }
+    
 
     bool IsGameOver()
     {
