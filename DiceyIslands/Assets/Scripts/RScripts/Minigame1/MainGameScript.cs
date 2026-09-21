@@ -31,31 +31,17 @@ public class MainGameScript : MonoBehaviour
         public void Init()
     {
         init = true;
+        StartCoroutine(StartTimer());
         if (MatchData.Instance != null) MatchData.Instance.playerOrderNumbers.Clear(); //clear it up and use this as a places var
     }
 
     void Update()
     {
+        if (!init) return;
 
         if (LokaalConnecter.connectionType == LokaalConnecter.ConnectionTypes.nothing)
         {
-            if (!init || playerController == null || !playerController.occuplied)
-            {
-                return;
-            }
-
-            if (!ready && firstTime && playerController.GetButtonDown(LokaalConnecter.InputType.x))
-            {
-                firstTime = false;
-                indicator.color = Color.green;
-
-                foreach (var t in Object.FindObjectsByType<MainGameScript>(FindObjectsSortMode.None))
-                {
-                    if (t.playerController != null && t.playerController.occuplied && t.firstTime) return;
-                }
-
-                StartCoroutine(StartTimer());
-            }
+            if (playerController == null || !playerController.occuplied) return;
 
             if (ready && isRunning && playerController.GetButtonDown(LokaalConnecter.InputType.x))
             {
@@ -65,7 +51,6 @@ public class MainGameScript : MonoBehaviour
             }
 
             if (isRunning) UpdateTimer();
-
         }
     }
 
@@ -84,13 +69,6 @@ public class MainGameScript : MonoBehaviour
 
     System.Collections.IEnumerator StartTimer()
     {
-        countdown.text = "3";
-        yield return new WaitForSeconds(1f);
-        countdown.text = "2";
-        yield return new WaitForSeconds(1f);
-        countdown.text = "1";
-        yield return new WaitForSeconds(1f);
-        countdown.text = "0";
         foreach (var t in Object.FindObjectsByType<MainGameScript>(FindObjectsSortMode.None))
         {
             if (t.playerController != null && t.playerController.occuplied)
@@ -100,8 +78,9 @@ public class MainGameScript : MonoBehaviour
                 t.indicator.color = Color.red;
             }
         }
-        yield return new WaitForSeconds(1f);
+
         countdown.text = "";
+        yield break;
     }
 
     void Winner()
