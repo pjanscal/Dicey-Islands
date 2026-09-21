@@ -1357,6 +1357,8 @@ MonoBehaviour:
   roundEndSound: {fileID: 8300000, guid: d01e96e1e8a0a6b4ba21308279ce7de0, type: 3}
   minigamePopupSound: {fileID: 8300000, guid: 539bdf3f375fdba489adea2d5633ecc0, type: 3}
   minigameRouletteTickSound: {fileID: 8300000, guid: 5064eaa220458db418210e3e44c937a8, type: 3}
+  moveForwardTileSound: {fileID: 8300000, guid: aaae807d8d45a3149b0977da40477677, type: 3}
+  moveBackTileSound: {fileID: 8300000, guid: e7416c0655f3db345835606a86404e63, type: 3}
   diceAnimationDuration: 0.6
   diceNumberChangeSpeed: 0.06
   finalRollDisplayTime: 0.5
