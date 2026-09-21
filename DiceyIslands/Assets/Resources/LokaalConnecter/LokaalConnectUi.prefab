@@ -2670,14 +2670,10 @@ PrefabInstance:
       propertyPath: m_Enabled
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 1228931255606784144, guid: 6a46df69a8367c140af71345b356429a, type: 3}
-      propertyPath: m_Type
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1228931255606784144, guid: 6a46df69a8367c140af71345b356429a, type: 3}
-      propertyPath: m_Sprite
+    - target: {fileID: 1950530534768554112, guid: 6a46df69a8367c140af71345b356429a, type: 3}
+      propertyPath: m_Texture
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 8400000, guid: 80ad549344e82c54591b84e3d8e78c6c, type: 2}
     - target: {fileID: 2023998177104105472, guid: 6a46df69a8367c140af71345b356429a, type: 3}
       propertyPath: m_Name
       value: Player1Slot
@@ -2717,26 +2713,6 @@ PrefabInstance:
     - target: {fileID: 3090399637608446313, guid: 6a46df69a8367c140af71345b356429a, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: -303.93
-      objectReference: {fileID: 0}
-    - target: {fileID: 3507860274500691532, guid: 6a46df69a8367c140af71345b356429a, type: 3}
-      propertyPath: m_SizeDelta.x
-      value: -146.8
-      objectReference: {fileID: 0}
-    - target: {fileID: 3507860274500691532, guid: 6a46df69a8367c140af71345b356429a, type: 3}
-      propertyPath: m_AnchoredPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4095696881315194838, guid: 6a46df69a8367c140af71345b356429a, type: 3}
-      propertyPath: slotColor.b
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4095696881315194838, guid: 6a46df69a8367c140af71345b356429a, type: 3}
-      propertyPath: slotColor.g
-      value: 0.13991976
-      objectReference: {fileID: 0}
-    - target: {fileID: 4095696881315194838, guid: 6a46df69a8367c140af71345b356429a, type: 3}
-      propertyPath: slotColor.r
-      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4095696881315194838, guid: 6a46df69a8367c140af71345b356429a, type: 3}
       propertyPath: pressAToJoinImage
@@ -2971,6 +2947,10 @@ PrefabInstance:
       propertyPath: m_Enabled
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 1950530534768554112, guid: 6a46df69a8367c140af71345b356429a, type: 3}
+      propertyPath: m_Texture
+      value: 
+      objectReference: {fileID: 8400000, guid: 5db54dd4042335a4d8a0fe318e6d121c, type: 2}
     - target: {fileID: 2023998177104105472, guid: 6a46df69a8367c140af71345b356429a, type: 3}
       propertyPath: m_Name
       value: Player3Slot
@@ -2995,6 +2975,10 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: -302.55014
       objectReference: {fileID: 0}
+    - target: {fileID: 3039788417231126407, guid: 6a46df69a8367c140af71345b356429a, type: 3}
+      propertyPath: m_TargetTexture
+      value: 
+      objectReference: {fileID: 8400000, guid: 7d13a8206833f3d459b8acfe86369e94, type: 2}
     - target: {fileID: 3090399637608446313, guid: 6a46df69a8367c140af71345b356429a, type: 3}
       propertyPath: m_SizeDelta.x
       value: 152.69
@@ -3195,6 +3179,10 @@ PrefabInstance:
       propertyPath: m_hasFontAssetChanged
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7104303724348667574, guid: 6a46df69a8367c140af71345b356429a, type: 3}
+      propertyPath: m_Texture
+      value: 
+      objectReference: {fileID: 8400000, guid: 7d13a8206833f3d459b8acfe86369e94, type: 2}
     - target: {fileID: 8844568307012960372, guid: 6a46df69a8367c140af71345b356429a, type: 3}
       propertyPath: m_SizeDelta.x
       value: 364.43
@@ -3211,6 +3199,10 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 344
       objectReference: {fileID: 0}
+    - target: {fileID: 8939403977009026788, guid: 6a46df69a8367c140af71345b356429a, type: 3}
+      propertyPath: m_TargetTexture
+      value: 
+      objectReference: {fileID: 8400000, guid: 5db54dd4042335a4d8a0fe318e6d121c, type: 2}
     - target: {fileID: 9147335607429226383, guid: 6a46df69a8367c140af71345b356429a, type: 3}
       propertyPath: m_Sprite
       value: 
@@ -3504,6 +3496,10 @@ PrefabInstance:
       propertyPath: m_Enabled
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 1950530534768554112, guid: 6a46df69a8367c140af71345b356429a, type: 3}
+      propertyPath: m_Texture
+      value: 
+      objectReference: {fileID: 8400000, guid: 2a84471f6aa36634f9f3fa22f57c3d6f, type: 2}
     - target: {fileID: 2023998177104105472, guid: 6a46df69a8367c140af71345b356429a, type: 3}
       propertyPath: m_Name
       value: Player4Slot
@@ -3528,6 +3524,10 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: -302.55014
       objectReference: {fileID: 0}
+    - target: {fileID: 3039788417231126407, guid: 6a46df69a8367c140af71345b356429a, type: 3}
+      propertyPath: m_TargetTexture
+      value: 
+      objectReference: {fileID: 8400000, guid: 08be8335e09167d4b831dac238399e54, type: 2}
     - target: {fileID: 3090399637608446313, guid: 6a46df69a8367c140af71345b356429a, type: 3}
       propertyPath: m_SizeDelta.x
       value: 152.69
@@ -3557,8 +3557,12 @@ PrefabInstance:
       value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 4095696881315194838, guid: 6a46df69a8367c140af71345b356429a, type: 3}
+      propertyPath: slotColor.b
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4095696881315194838, guid: 6a46df69a8367c140af71345b356429a, type: 3}
       propertyPath: slotColor.g
-      value: 0.9583559
+      value: 0.8347555
       objectReference: {fileID: 0}
     - target: {fileID: 4095696881315194838, guid: 6a46df69a8367c140af71345b356429a, type: 3}
       propertyPath: slotColor.r
@@ -3724,6 +3728,10 @@ PrefabInstance:
       propertyPath: m_hasFontAssetChanged
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7104303724348667574, guid: 6a46df69a8367c140af71345b356429a, type: 3}
+      propertyPath: m_Texture
+      value: 
+      objectReference: {fileID: 8400000, guid: 08be8335e09167d4b831dac238399e54, type: 2}
     - target: {fileID: 8844568307012960372, guid: 6a46df69a8367c140af71345b356429a, type: 3}
       propertyPath: m_SizeDelta.x
       value: 364.43
@@ -3740,6 +3748,10 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 344
       objectReference: {fileID: 0}
+    - target: {fileID: 8939403977009026788, guid: 6a46df69a8367c140af71345b356429a, type: 3}
+      propertyPath: m_TargetTexture
+      value: 
+      objectReference: {fileID: 8400000, guid: 2a84471f6aa36634f9f3fa22f57c3d6f, type: 2}
     - target: {fileID: 9147335607429226383, guid: 6a46df69a8367c140af71345b356429a, type: 3}
       propertyPath: m_Sprite
       value: 
@@ -3813,6 +3825,10 @@ PrefabInstance:
       propertyPath: m_Enabled
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 1950530534768554112, guid: 6a46df69a8367c140af71345b356429a, type: 3}
+      propertyPath: m_Texture
+      value: 
+      objectReference: {fileID: 8400000, guid: f3579acfdbf464a41bf5616ad90368ee, type: 2}
     - target: {fileID: 2023998177104105472, guid: 6a46df69a8367c140af71345b356429a, type: 3}
       propertyPath: m_Name
       value: Player2Slot
@@ -3837,6 +3853,10 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: -302.55014
       objectReference: {fileID: 0}
+    - target: {fileID: 3039788417231126407, guid: 6a46df69a8367c140af71345b356429a, type: 3}
+      propertyPath: m_TargetTexture
+      value: 
+      objectReference: {fileID: 8400000, guid: f781dd1c036fa4e49ad7fab12a7897d1, type: 2}
     - target: {fileID: 3090399637608446313, guid: 6a46df69a8367c140af71345b356429a, type: 3}
       propertyPath: m_SizeDelta.x
       value: 152.69
@@ -4037,6 +4057,10 @@ PrefabInstance:
       propertyPath: m_hasFontAssetChanged
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7104303724348667574, guid: 6a46df69a8367c140af71345b356429a, type: 3}
+      propertyPath: m_Texture
+      value: 
+      objectReference: {fileID: 8400000, guid: f781dd1c036fa4e49ad7fab12a7897d1, type: 2}
     - target: {fileID: 8844568307012960372, guid: 6a46df69a8367c140af71345b356429a, type: 3}
       propertyPath: m_SizeDelta.x
       value: 364.43
@@ -4053,6 +4077,10 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 344
       objectReference: {fileID: 0}
+    - target: {fileID: 8939403977009026788, guid: 6a46df69a8367c140af71345b356429a, type: 3}
+      propertyPath: m_TargetTexture
+      value: 
+      objectReference: {fileID: 8400000, guid: f3579acfdbf464a41bf5616ad90368ee, type: 2}
     - target: {fileID: 9147335607429226383, guid: 6a46df69a8367c140af71345b356429a, type: 3}
       propertyPath: m_Sprite
       value: 
