@@ -9,7 +9,7 @@ public class MainGameScript : MonoBehaviour
 
     public LokaalConnecter.PlayerController playerController;
     [SerializeField] public int plrId;
-    [SerializeField] TMP_Text timeText, countdown;
+    [SerializeField] TMP_Text timeText;
     [SerializeField] RawImage indicator;
     public float elapsed; //public so the cpu can check
     [SerializeField] public bool isRunning, firstTime, ready;
@@ -24,8 +24,6 @@ public class MainGameScript : MonoBehaviour
         isRunning = false;
         playerController = LokaalConnecter.plrsController[plrId];
         GameMangeren.startMiniGame += Init;
-        countdown = GameObject.Find("Countdown").GetComponent<TMP_Text>();
-        countdown.text = "";
     }
 
         public void Init()
@@ -46,7 +44,7 @@ public class MainGameScript : MonoBehaviour
             if (ready && isRunning && playerController.GetButtonDown(LokaalConnecter.InputType.x))
             {
                 isRunning = false;
-                indicator.color = Color.green;
+                indicator.color = new Color32(34, 139, 34, 255);
                 Winner();
             }
 
@@ -75,11 +73,9 @@ public class MainGameScript : MonoBehaviour
             {
                 t.ready = true;
                 t.isRunning = true;
-                t.indicator.color = Color.red;
             }
         }
 
-        countdown.text = "";
         yield break;
     }
 
