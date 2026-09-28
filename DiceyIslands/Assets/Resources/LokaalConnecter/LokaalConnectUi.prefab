@@ -1765,9 +1765,9 @@ MonoBehaviour:
   charSelectGui: {fileID: 2675350755762923159}
   cpuSelectGui: {fileID: 1284471963916984416}
   nothingEnabledUi: {fileID: 21300000, guid: 78b4895f50808cf4187bfb7e8ecb0bb4, type: 3}
-  controllerUi: {fileID: 21300000, guid: 7db15aa219e8ec34ba40917ad755fac8, type: 3}
+  controllerUi: {fileID: 21300000, guid: 5244fb8312eedfd438d9d9e4e78747e0, type: 3}
   devUi: {fileID: 21300000, guid: be8cca89b30ee834892a8c8d66061971, type: 3}
-  cpuUi: {fileID: 21300000, guid: f4c5b3702844ec042aea6ac473ab6306, type: 3}
+  cpuUi: {fileID: 21300000, guid: 475c8a1381a433e418d49828bcd63550, type: 3}
   dissconnectedControl: {fileID: 21300000, guid: bfaea8e77b9aedb48978eb6f0b552b0d, type: 3}
 --- !u!1 &6840759263089414641
 GameObject:
@@ -3576,6 +3576,22 @@ PrefabInstance:
       value: -303.93
       objectReference: {fileID: 0}
     - target: {fileID: 4095696881315194838, guid: 6a46df69a8367c140af71345b356429a, type: 3}
+      propertyPath: slotColor.a
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4095696881315194838, guid: 6a46df69a8367c140af71345b356429a, type: 3}
+      propertyPath: slotColor.b
+      value: 0.47843137
+      objectReference: {fileID: 0}
+    - target: {fileID: 4095696881315194838, guid: 6a46df69a8367c140af71345b356429a, type: 3}
+      propertyPath: slotColor.g
+      value: 0.32941177
+      objectReference: {fileID: 0}
+    - target: {fileID: 4095696881315194838, guid: 6a46df69a8367c140af71345b356429a, type: 3}
+      propertyPath: slotColor.r
+      value: 0.16078432
+      objectReference: {fileID: 0}
+    - target: {fileID: 4095696881315194838, guid: 6a46df69a8367c140af71345b356429a, type: 3}
       propertyPath: pressAToJoinImage
       value: 
       objectReference: {fileID: 21300000, guid: 0e97b4d662c10774c9114e9e1d2194c5, type: 3}
@@ -3869,16 +3885,20 @@ PrefabInstance:
       value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 4095696881315194838, guid: 6a46df69a8367c140af71345b356429a, type: 3}
-      propertyPath: slotColor.b
-      value: 0.119745255
-      objectReference: {fileID: 0}
-    - target: {fileID: 4095696881315194838, guid: 6a46df69a8367c140af71345b356429a, type: 3}
-      propertyPath: slotColor.g
+      propertyPath: slotColor.a
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4095696881315194838, guid: 6a46df69a8367c140af71345b356429a, type: 3}
+      propertyPath: slotColor.b
+      value: 0.11372549
+      objectReference: {fileID: 0}
+    - target: {fileID: 4095696881315194838, guid: 6a46df69a8367c140af71345b356429a, type: 3}
+      propertyPath: slotColor.g
+      value: 0.52156866
+      objectReference: {fileID: 0}
+    - target: {fileID: 4095696881315194838, guid: 6a46df69a8367c140af71345b356429a, type: 3}
       propertyPath: slotColor.r
-      value: 0
+      value: 0.44313726
       objectReference: {fileID: 0}
     - target: {fileID: 4095696881315194838, guid: 6a46df69a8367c140af71345b356429a, type: 3}
       propertyPath: pressAToJoinImage
@@ -4418,16 +4438,20 @@ PrefabInstance:
       value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 4095696881315194838, guid: 6a46df69a8367c140af71345b356429a, type: 3}
+      propertyPath: slotColor.a
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4095696881315194838, guid: 6a46df69a8367c140af71345b356429a, type: 3}
       propertyPath: slotColor.b
-      value: 0
+      value: 0.09019608
       objectReference: {fileID: 0}
     - target: {fileID: 4095696881315194838, guid: 6a46df69a8367c140af71345b356429a, type: 3}
       propertyPath: slotColor.g
-      value: 0.8347555
+      value: 0.52156866
       objectReference: {fileID: 0}
     - target: {fileID: 4095696881315194838, guid: 6a46df69a8367c140af71345b356429a, type: 3}
       propertyPath: slotColor.r
-      value: 1
+      value: 0.8117647
       objectReference: {fileID: 0}
     - target: {fileID: 4095696881315194838, guid: 6a46df69a8367c140af71345b356429a, type: 3}
       propertyPath: pressAToJoinImage
@@ -4747,16 +4771,20 @@ PrefabInstance:
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 4095696881315194838, guid: 6a46df69a8367c140af71345b356429a, type: 3}
+      propertyPath: slotColor.a
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4095696881315194838, guid: 6a46df69a8367c140af71345b356429a, type: 3}
       propertyPath: slotColor.b
-      value: 0
+      value: 0.11372549
       objectReference: {fileID: 0}
     - target: {fileID: 4095696881315194838, guid: 6a46df69a8367c140af71345b356429a, type: 3}
       propertyPath: slotColor.g
-      value: 0.04057025
+      value: 0.2509804
       objectReference: {fileID: 0}
     - target: {fileID: 4095696881315194838, guid: 6a46df69a8367c140af71345b356429a, type: 3}
       propertyPath: slotColor.r
-      value: 1
+      value: 0.70980394
       objectReference: {fileID: 0}
     - target: {fileID: 4095696881315194838, guid: 6a46df69a8367c140af71345b356429a, type: 3}
       propertyPath: pressAToJoinImage

@@ -428,18 +428,18 @@ MonoBehaviour:
   playerSlotInfos:
   - plrId: 1
     slot: {fileID: 7462458956862436719}
-    color: {r: 0, g: 0.06382322, b: 1, a: 1}
+    color: {r: 0.16078432, g: 0.32941177, b: 0.47843137, a: 1}
   - plrId: 2
     slot: {fileID: 204007620965610246}
-    color: {r: 1, g: 0, b: 0, a: 1}
+    color: {r: 0.70980394, g: 0.2509804, b: 0.11372549, a: 1}
   - plrId: 3
     slot: {fileID: 287742772253606521}
-    color: {r: 0, g: 1, b: 0.015791178, a: 1}
+    color: {r: 0.44313726, g: 0.52156866, b: 0.11372549, a: 1}
   - plrId: 4
     slot: {fileID: 2470424730090662198}
-    color: {r: 0.9626423, g: 1, b: 0, a: 1}
-  controllerImage: {fileID: 21300000, guid: 7db15aa219e8ec34ba40917ad755fac8, type: 3}
-  controllerReadyUpImage: {fileID: 21300000, guid: bfaea8e77b9aedb48978eb6f0b552b0d, type: 3}
+    color: {r: 0.8117647, g: 0.52156866, b: 0.09019608, a: 1}
+  controllerImage: {fileID: 21300000, guid: 5244fb8312eedfd438d9d9e4e78747e0, type: 3}
+  controllerReadyUpImage: {fileID: 21300000, guid: 833a9a8f9cdf23a4b80250baaede1786, type: 3}
 --- !u!1 &4616282192110543219
 GameObject:
   m_ObjectHideFlags: 0
