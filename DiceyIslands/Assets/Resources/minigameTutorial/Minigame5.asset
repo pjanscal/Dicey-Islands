@@ -17,6 +17,8 @@ MonoBehaviour:
   videoClip: {fileID: 0}
   keyBindsInfo:
   - keybind: 5
-    actionName: 'Switch:'
+    actionName: 'Move:'
   - keybind: 1
-    actionName: 'IDK:'
+    actionName: 'Done:'
+  - keybind: 0
+    actionName: 'Slowmode:'
