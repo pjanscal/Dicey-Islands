@@ -29,7 +29,12 @@ public class SpawnObject : MonoBehaviour
         {
             child.gameObject.SetActive(false);
         }
-        objectToActivate = objectToSpawnParent.transform.GetChild(Random.Range(0, objectToSpawnParent.transform.childCount)).gameObject;
+
+        Transform chosenChild = objectToSpawnParent.transform.GetChild(Random.Range(0, objectToSpawnParent.transform.childCount));
+        chosenChild.localPosition = chosenChild.localPosition;
+        chosenChild.localEulerAngles = chosenChild.localEulerAngles;
+
+        objectToActivate = chosenChild.gameObject;
         objectToActivate.SetActive(true);
     }
 
