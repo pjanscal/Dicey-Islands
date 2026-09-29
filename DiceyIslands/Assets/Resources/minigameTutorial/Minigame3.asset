@@ -17,6 +17,4 @@ MonoBehaviour:
   videoClip: {fileID: 0}
   keyBindsInfo:
   - keybind: 1
-    actionName: 'Test:'
-  - keybind: 1
-    actionName: 'IDK:'
+    actionName: 'Throw:'

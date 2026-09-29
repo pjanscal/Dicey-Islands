@@ -242,13 +242,13 @@ public class MaingameScript5 : MonoBehaviour
 
         //debug
         #if UNITY_EDITOR
-        int placeIndex = 1;
+            int placeIndex = 1;
 
-        foreach ((float score, int plrId) in places)
-        {
-            print($"plr{plrId}, Score: {score}, place: {placeIndex}");
-            placeIndex += 1;
-        }
+            foreach ((float score, int plrId) in places)
+            {
+                print($"plr{plrId}, Score: {score}, place: {placeIndex}");
+                placeIndex += 1;
+            }
         #endif
 
         if (MatchData.Instance == null) {Debug.LogError("no matchData found"); return;}

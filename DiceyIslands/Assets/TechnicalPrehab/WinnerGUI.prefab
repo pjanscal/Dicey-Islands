@@ -374,7 +374,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CharacterLoader
   plrId: 1
+  animator: {fileID: 0}
   canConnectToMangener: 0
+  autoCharacter: 1
 --- !u!1 &6408041752602752708
 GameObject:
   m_ObjectHideFlags: 0
