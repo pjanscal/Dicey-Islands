@@ -21,6 +21,7 @@ public class CharacterLoader : MonoBehaviour
     private GameMangeren.PlrData plrData;
     private GameObject character; //help finding the char in a instant
     [HideInInspector] public Animator animator; //char animator
+    private VisualeEffectAnimatorSupport vfxController;
 
     //configs
     [Header("Configs")]
@@ -84,6 +85,7 @@ public class CharacterLoader : MonoBehaviour
         if (!animator) {Debug.LogError($"no animator is in {character} or in plr{plrId}"); return;}
         Debug.LogWarning($"char use {animationEvent}");
         
+        vfxController.StopAllVisualeEffect();
         animator.SetTrigger(animationEvent.ToString());
     }
 
@@ -106,5 +108,6 @@ public class CharacterLoader : MonoBehaviour
         character.transform.localPosition = Vector3.zero;
 
         animator = character.GetComponent<Animator>();
+        vfxController = character.GetComponent<VisualeEffectAnimatorSupport>();
     }
 }
