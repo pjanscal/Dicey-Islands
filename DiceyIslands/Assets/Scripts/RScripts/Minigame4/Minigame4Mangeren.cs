@@ -13,7 +13,7 @@ public class Minigame4Mangeren : MonoBehaviour
 
     [HideInInspector] public bool isActive = false;
     [HideInInspector] public HashSet<(int, int)> plrHittedPlr = new(); //here go all the collision check that is going to happend so a void don't happend at the exact same time
-    [HideInInspector] public Dictionary<int, Player_Minigame4> plrScripts = new();
+    [HideInInspector] public Dictionary<int, PlayerMinigame4> plrScripts = new();
     [HideInInspector] public HashSet<int> plrsIngame = new();
     private HashSet<int> plrsImunitty = new(); //plrs that can't get the potato
     [HideInInspector] public int potatoTarget = 0; //0 is like no one work as 1 if that plr is dead
@@ -118,7 +118,7 @@ public class Minigame4Mangeren : MonoBehaviour
         potatoTarget = plrId;
         potato.transform.SetParent(plrScripts[plrId].transform);
         potato.transform.localPosition = potatoOffet;
-        plrScripts[plrId].movementType = Player_Minigame4.MovementType.potatoRunning;
+        plrScripts[plrId].movementType = PlayerMinigame4.MovementType.potatoRunning;
     }
 
     //wait for a plr to hit someone and send a message to playercollidewithotherplayer void
@@ -160,13 +160,13 @@ public class Minigame4Mangeren : MonoBehaviour
         {
             //give him immunity
             plrsImunitty.Add(oldPotatoTarget);
-            plrScripts[oldPotatoTarget].movementType = Player_Minigame4.MovementType.Running;
+            plrScripts[oldPotatoTarget].movementType = PlayerMinigame4.MovementType.Running;
 
             //wait
             yield return new WaitForSeconds(plrImmunityDur);
 
             //delete it
-            plrScripts[oldPotatoTarget].movementType = Player_Minigame4.MovementType.walking;
+            plrScripts[oldPotatoTarget].movementType = PlayerMinigame4.MovementType.walking;
             plrsImunitty.Remove(oldPotatoTarget);
         }
 

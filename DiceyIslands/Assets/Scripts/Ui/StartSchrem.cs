@@ -14,7 +14,7 @@ public class StartSchrem: UiBasic
     protected void OnMatchMakingFinished(bool state)
     {
         //deleted old vers it is for now so it can switch
-        if (state) SwitchScene(LokaalConnecter.bordGameScene); //need this so if it is not startscene then u won't change scene :3
+        if (state) SwitchScene(GameMangeren.boardGameSceneName); //need this so if it is not startscene then u won't change scene :3
     }
 
     //MatchButton

@@ -70,7 +70,7 @@ public class LoadingScreen : MonoBehaviour
         AsyncOperation operation = SceneManager.LoadSceneAsync(sceneName);
         operation.allowSceneActivation = false;
 
-        yield return new WaitForSeconds(GetFakeLoadingTime()); //wait min for the feeling
+        yield return new WaitForSecondsRealtime(GetFakeLoadingTime()); //wait min for the feeling
 
         operation.allowSceneActivation = true;
 

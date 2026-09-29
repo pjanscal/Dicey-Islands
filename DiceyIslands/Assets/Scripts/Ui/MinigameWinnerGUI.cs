@@ -53,7 +53,7 @@ public class MinigameWinnerGUI : MonoBehaviour
 
     void Testing()
     {
-        if (!Input.GetKeyDown(KeyCode.Space)) return;
+        if (!Input.GetKeyDown(KeyCode.Equals)) return;
 
         List<int> places= new() {2, 1, 3, 4};
         Toggle(true, places);
@@ -92,7 +92,7 @@ public class MinigameWinnerGUI : MonoBehaviour
             //go to BoardGame
             if (MatchData.Instance == null) {Debug.LogError("no matchData to return to...");}
             MatchData.Instance.returningFromMinigame = true;
-            GameMangeren.SwitchScene("BoardTestScene"); //beta so we can have it in a mangeren we all can get
+            GameMangeren.SwitchScene(GameMangeren.boardGameSceneName);
 
             TurnOff();
         }
