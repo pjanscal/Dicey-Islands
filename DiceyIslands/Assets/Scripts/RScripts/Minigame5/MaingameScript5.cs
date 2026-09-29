@@ -242,13 +242,13 @@ public class MaingameScript5 : MonoBehaviour
 
         //debug
         #if UNITY_EDITOR
-        int placeIndex = 1;
+            int placeIndex = 1;
 
-        foreach ((float score, int plrId) in places)
-        {
-            print($"plr{plrId}, Score: {score}, place: {placeIndex}");
-            placeIndex += 1;
-        }
+            foreach ((float score, int plrId) in places)
+            {
+                print($"plr{plrId}, Score: {score}, place: {placeIndex}");
+                placeIndex += 1;
+            }
         #endif
 
         if (MatchData.Instance == null) {Debug.LogError("no matchData found"); return;}
@@ -288,7 +288,7 @@ public class MaingameScript5 : MonoBehaviour
     {
         Slider[] playerSliders = playersSliders[plrId];
         float playerValue = playerSliders[colorId].value;
-        float playerDisant = math.abs(Mathf.RoundToInt(mainColor.color[colorId] * 255f) - playerValue);
+        float playerDisant = math.abs(Mathf.Round(targetColor.color[colorId] * 255f) - playerValue);
         
         if (playerDisant == 0) return 1; //perfect score
         return 1 - (playerDisant + 1) / (maxValue + 1); //(v + 1) stop the 0 / 0 and make the procent some chaos 

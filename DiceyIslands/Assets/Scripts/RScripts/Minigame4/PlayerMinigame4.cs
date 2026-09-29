@@ -4,7 +4,7 @@ using UnityEngine;
 //shortcut
 using BooleanEvents = CharacterLoader.CharactersAnimationBooleanEvent;
 
-public class Player_Minigame4 : MonoBehaviour
+public class PlayerMinigame4 : MonoBehaviour
 {
     //can do with one public speed or a enum that can check look soon wich one is better
 
@@ -91,7 +91,7 @@ public class Player_Minigame4 : MonoBehaviour
     void OnControllerColliderHit(ControllerColliderHit hit)
     {
         //check or it is a player
-        Player_Minigame4 playerMinigame4 = hit.gameObject.GetComponent<Player_Minigame4>();
+        PlayerMinigame4 playerMinigame4 = hit.gameObject.GetComponent<PlayerMinigame4>();
         if (playerMinigame4 == null) return;
 
         Minigame4Mangeren.instance.plrHittedPlr.Add((plrId, playerMinigame4.plrId));

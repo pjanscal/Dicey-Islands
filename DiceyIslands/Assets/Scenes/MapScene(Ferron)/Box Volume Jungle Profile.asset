@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 66f335fb1ffd8684294ad653bf1c7564, type: 3}
   m_Name: ColorAdjustments
   m_EditorClassIdentifier: Unity.RenderPipelines.Universal.Runtime::UnityEngine.Rendering.Universal.ColorAdjustments
-  active: 1
+  active: 0
   postExposure:
     m_OverrideState: 0
     m_Value: 0
@@ -46,19 +46,19 @@ MonoBehaviour:
     m_Value: 1
   gaussianStart:
     m_OverrideState: 1
-    m_Value: 21.8
+    m_Value: 1016.9
   gaussianEnd:
     m_OverrideState: 1
-    m_Value: 30
+    m_Value: 482.61
   gaussianMaxRadius:
     m_OverrideState: 0
-    m_Value: 1
+    m_Value: 1.5
   highQualitySampling:
-    m_OverrideState: 0
+    m_OverrideState: 1
     m_Value: 0
   focusDistance:
-    m_OverrideState: 0
-    m_Value: 10
+    m_OverrideState: 1
+    m_Value: 2.33
   aperture:
     m_OverrideState: 0
     m_Value: 5.6

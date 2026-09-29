@@ -5,6 +5,7 @@ using DG.Tweening;
 using TMPro;
 using Unity.Mathematics;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class CPUDifficultySelect : MonoBehaviour
 {
@@ -28,6 +29,7 @@ public class CPUDifficultySelect : MonoBehaviour
     [SerializeField] private GameObject[] arrows; //to change the color of who is controllering?
     [SerializeField] private Transform difficultyFrame;
     [SerializeField] private TextMeshProUGUI primeDifficultyText; //the prime where the difficulty go in
+    [SerializeField] private Image cpuIcon; //the icon that change color
 
     private TextMeshProUGUI secondaryDifficultyText;
     private bool primeDifficultyIsSelected = true; //help knowing wich one is on the screen
@@ -63,8 +65,10 @@ public class CPUDifficultySelect : MonoBehaviour
         //set up the colors and text
         int difficultyId = (int)GameMangeren.cPUDifficulty;
         DifficultyInfo difficultyInfo = difficultyInfos[difficultyId];
+
         primeDifficultyText.text = difficultyInfo.name;
         primeDifficultyText.color = difficultyInfo.color;
+        cpuIcon.color = difficultyInfo.color;
 
         currentDifficultyId = difficultyId;
     }
@@ -199,7 +203,7 @@ public class CPUDifficultySelect : MonoBehaviour
         LokaalConnecter.FinishCpuDifficultySelect();
     }
 
-    //help switching the text
+    //help switching the text and the icon
     void SwitchDifficultyUi(Vector2 dir)
     {
         RectTransform selected = primeDifficultyIsSelected? primeDifficultyText.rectTransform : secondaryDifficultyText.rectTransform;
@@ -210,6 +214,7 @@ public class CPUDifficultySelect : MonoBehaviour
         DOTween.Sequence() //so it can start all at the exact same time
         .Append(selected.DOLocalMove(targetPos, difficultySwitchDur))
         .Join(newPreview.DOLocalMove(Vector2.zero, difficultySwitchDur))
+        .Join(cpuIcon.DOColor(difficultyInfos[currentDifficultyId].color, difficultySwitchDur)) //icon color switching
         .SetEase(Ease.OutBounce).SetUpdate(true) //settings
         .OnComplete(() =>
         {

@@ -20,7 +20,7 @@ public static class GameMangeren
     static public bool isLoading = false; //tell if it is loading
     static public bool isShowingResult = false; //tell if it can be pause or if it is showing winner
     static public int plrInGame = 0; //help the lokaal script to see what it should be when someone disconnect
-    static public CPUDifficulty cPUDifficulty = CPUDifficulty.hard; //the difficulty of the cpu
+    static public CPUDifficulty cPUDifficulty = CPUDifficulty.normal; //the difficult that it will begin of cpu
     static public Dictionary<int, CharacterLoader> charLoaderScript = new(); //help with animations
     static public Dictionary<LokaalConnecter.InputType, Sprite> keybindSprites = new();
     static public Action startMiniGame; //init the minigame when finishing the tutorial
@@ -45,6 +45,7 @@ public static class GameMangeren
     }
 
     //configs
+    static public string boardGameSceneName = "MapScene(Ferron)";
     static private string startSceneName = "StartScene";
     static private string minigameSceneNames = "minigame";
 

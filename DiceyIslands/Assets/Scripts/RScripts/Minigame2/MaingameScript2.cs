@@ -15,7 +15,6 @@ public class MaingameScript2 : MonoBehaviour
     float lastPressTime = -1f;
     [SerializeField] TextMeshProUGUI pointsText;
     [SerializeField] RawImage readyColor;
-    [SerializeField] TextMeshProUGUI winnerText;
     LokaalConnecter.PlayerController playerController;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -93,7 +92,7 @@ public class MaingameScript2 : MonoBehaviour
                     {
                         gameOver = true;
                         spawnObject.StopSpawning();
-                        winnerText.text = "Player " + plrId + " wins with " + points + " points!";
+                        Debug.Log("Player " + plrId + " wins with " + points + " points!");
                     }
                 }
 
@@ -127,7 +126,7 @@ public class MaingameScript2 : MonoBehaviour
             player.gameStarted = false;
             player.nextPressTime = 0f;
             player.lastPressTime = -1f;
-            player.winnerText.text = "";
+            // player.winnerText.text = "";
             player.readyColor.color = Color.black;
         }
     }

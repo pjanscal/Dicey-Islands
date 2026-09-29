@@ -53,7 +53,7 @@ public class MinigameWinnerGUI : MonoBehaviour
 
     void Testing()
     {
-        if (!Input.GetKeyDown(KeyCode.Space)) return;
+        if (!Input.GetKeyDown(KeyCode.Equals)) return;
 
         List<int> places= new() {2, 1, 3, 4};
         Toggle(true, places);
@@ -74,13 +74,13 @@ public class MinigameWinnerGUI : MonoBehaviour
             int plrId = places[winnerSlot.place - 1];
             winnerSlot.characterLoader.plrId = plrId;
             print($"place {winnerSlot.place} select new plr{plrId}");
-            winnerSlot.characterLoader.ReLoad();
+            winnerSlot.characterLoader.ReLoad(true);
 
             winnerSlot.background.color = playerColors[plrId];
         }
 
         winnerCharacterLoader.plrId = places[0]; //0 == first
-        winnerCharacterLoader.ReLoad();
+        winnerCharacterLoader.ReLoad(true);
 
         canvas.enabled = true;
         StartCoroutine(enumerator());
@@ -92,7 +92,7 @@ public class MinigameWinnerGUI : MonoBehaviour
             //go to BoardGame
             if (MatchData.Instance == null) {Debug.LogError("no matchData to return to...");}
             MatchData.Instance.returningFromMinigame = true;
-            GameMangeren.SwitchScene("BoardTestScene"); //beta so we can have it in a mangeren we all can get
+            GameMangeren.SwitchScene(GameMangeren.boardGameSceneName);
 
             TurnOff();
         }

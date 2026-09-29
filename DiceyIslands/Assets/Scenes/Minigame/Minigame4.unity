@@ -683,7 +683,7 @@ ParticleSystem:
   emitterVelocityMode: 0
   looping: 0
   prewarm: 0
-  playOnAwake: 1
+  playOnAwake: 0
   useUnscaledTime: 0
   autoRandomSeed: 1
   startDelay:
@@ -6291,14 +6291,14 @@ MonoBehaviour:
     character: {fileID: 1903721499}
   difficultiesConfigsEdit:
   - difficulty: 0
-    chasingOffset: -0.2
-    chasingDecectRange: 1
+    chasingOffset: -0.4
+    chasingDecectRange: 2
   - difficulty: 1
     chasingOffset: 0
-    chasingDecectRange: 2
+    chasingDecectRange: 4
   - difficulty: 2
-    chasingOffset: 0.5
-    chasingDecectRange: 2.5
+    chasingOffset: 1
+    chasingDecectRange: 5
 --- !u!1 &349241792
 GameObject:
   m_ObjectHideFlags: 0
