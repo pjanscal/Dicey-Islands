@@ -1,13 +1,18 @@
+using System;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class CharacterLoader : MonoBehaviour
 {
-    public enum CharactersAnimationEvent
+    public enum CharactersAnimationTriggerEvent
     {
-        Idle,
-        running,
-        jumping
+        ActivePress
+    }
+
+    public enum CharactersAnimationBooleanEvent
+    {
+        IsRunning
     }
 
     public int plrId;
@@ -15,12 +20,18 @@ public class CharacterLoader : MonoBehaviour
     private LokaalConnecter.PlayerController playerController;
     private GameMangeren.PlrData plrData;
     private GameObject character; //help finding the char in a instant
-    private Animator animator; //char animator
+    [HideInInspector] public Animator animator; //char animator
 
     //configs
     [Header("Configs")]
     [SerializeField] private bool canConnectToMangener = true; //for if u wanna use it for like winner gui
     [Tooltip("let it make the character when the game start")] [SerializeField] private bool autoCharacter = true;
+
+
+    void Awake()
+    {
+        if (canConnectToMangener) GameMangeren.AddCharLoader(plrId, this);
+    }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -35,8 +46,6 @@ public class CharacterLoader : MonoBehaviour
         #else
             SetUpCharacter();
         #endif
-
-        if (canConnectToMangener) GameMangeren.AddCharLoader(plrId, this);
     }
 
     //wait until the plr is here
@@ -54,11 +63,6 @@ public class CharacterLoader : MonoBehaviour
         PlaceCharacterDown(charData.character);
     }
 
-    public void UseAnimation(CharactersAnimationEvent animationEvent)
-    {
-        Debug.LogWarning($"char use {animationEvent} but don't have animmation script yet");
-    }
-
     public void ReLoad()
     {
         plrData = GameMangeren.GetPlrDataFromId(plrId);
@@ -72,6 +76,26 @@ public class CharacterLoader : MonoBehaviour
         Destroy(character);
         PlaceCharacterDown(characterData.character);
     }
+
+    //--Animation--
+
+    public void UseAnimation(CharactersAnimationTriggerEvent animationEvent)
+    {
+        if (!animator) {Debug.LogError($"no animator is in {character} or in plr{plrId}"); return;}
+        Debug.LogWarning($"char use {animationEvent}");
+        
+        animator.SetTrigger(animationEvent.ToString());
+    }
+
+    public void SetAnimationBool(CharactersAnimationBooleanEvent booleanEvent, bool state)
+    {
+        if (!animator) {Debug.LogError($"no animator is in {character} or in plr{plrId}"); return;}
+        //Debug.LogWarning($"char switch {booleanEvent} to {state}");
+        
+        animator.SetBool(booleanEvent.ToString(), state);
+    }
+
+    //--ended--
 
     //so 2 function can use it*
     void PlaceCharacterDown(GameObject newCharacter)

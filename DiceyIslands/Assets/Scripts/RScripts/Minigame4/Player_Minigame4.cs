@@ -1,6 +1,9 @@
 using DG.Tweening;
 using UnityEngine;
 
+//shortcut
+using BooleanEvents = CharacterLoader.CharactersAnimationBooleanEvent;
+
 public class Player_Minigame4 : MonoBehaviour
 {
     //can do with one public speed or a enum that can check look soon wich one is better
@@ -16,9 +19,10 @@ public class Player_Minigame4 : MonoBehaviour
     private CharacterController cc;
     LokaalConnecter.PlayerController playerController;
     [HideInInspector] public Vector3 velocity = Vector3.zero;
+    private CharacterLoader animatorController;
 
     //configs
-    public int PlrId;
+    public int plrId;
     //--times 2 for the extra size :3
     const float defaultSpeed = 5f * 2; //normal walkspeed
     const float runSpeed = 7f * 2; //run speed
@@ -26,12 +30,16 @@ public class Player_Minigame4 : MonoBehaviour
     const float rotateSpeed = .7f; //speed of rotating ur character
     const float acceleration = 12f * 2; //momento acceleration speed
 
+    //animation
+    const float minDistanceToRun = .5f;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         cc = GetComponent<CharacterController>();
-        Minigame4Mangeren.instance.plrScripts.Add(PlrId, this);
-        playerController = LokaalConnecter.plrsController[PlrId];
+        Minigame4Mangeren.instance.plrScripts.Add(plrId, this);
+        playerController = LokaalConnecter.plrsController[plrId];
+        animatorController = GameMangeren.GetCharacterLoaderFromId(plrId);
     }
 
     // Update is called once per frame
@@ -62,6 +70,9 @@ public class Player_Minigame4 : MonoBehaviour
         velocity = Vector3.MoveTowards(velocity, move, acceleration * Time.deltaTime); //momento
         cc.Move(velocity * Time.deltaTime);
         LookAtMoveDir(move);
+
+        //animation
+        animatorController.SetAnimationBool(BooleanEvents.IsRunning, velocity.magnitude >= minDistanceToRun);
     }
 
     //let the player rotate based on where he move
@@ -83,7 +94,7 @@ public class Player_Minigame4 : MonoBehaviour
         Player_Minigame4 playerMinigame4 = hit.gameObject.GetComponent<Player_Minigame4>();
         if (playerMinigame4 == null) return;
 
-        Minigame4Mangeren.instance.plrHittedPlr.Add((PlrId, playerMinigame4.PlrId));
+        Minigame4Mangeren.instance.plrHittedPlr.Add((plrId, playerMinigame4.plrId));
     }
 
     //get the speed based on ur movementType

@@ -9,6 +9,7 @@ public class Minigame4Mangeren : MonoBehaviour
     public static Minigame4Mangeren instance;
 
     [SerializeField] private GameObject potato;
+    [SerializeField] private ParticleSystem bombVfx;
 
     [HideInInspector] public bool isActive = false;
     [HideInInspector] public HashSet<(int, int)> plrHittedPlr = new(); //here go all the collision check that is going to happend so a void don't happend at the exact same time
@@ -69,6 +70,8 @@ public class Minigame4Mangeren : MonoBehaviour
         plrsIngame.Remove(target);
         plrsPlaces.Add(target);
 
+        bombVfx.transform.position = plrScripts[target].transform.position;
+        bombVfx.Play();
         potato.SetActive(false);
         potato.transform.SetParent(transform);
         plrScripts[target].gameObject.SetActive(false); //soon make it better

@@ -310,27 +310,88 @@ public class BoardManager : MonoBehaviour
             return;
         }
 
-        for (int i = 0;
-             i < waypointParent.childCount;
-             i++)
+        // Find all Waypoint components underneath the
+        // Waypoints parent.
+        //
+        // This also allows the actual hierarchy order
+        // to be completely random.
+        Waypoint[] foundWaypoints =
+            waypointParent.GetComponentsInChildren<Waypoint>(
+                true
+            );
+
+        foreach (Waypoint waypoint in foundWaypoints)
         {
-            Transform child =
-                waypointParent.GetChild(i);
-
-            Waypoint waypoint =
-                child.GetComponent<Waypoint>();
-
             if (waypoint == null)
                 continue;
 
-            waypoint.waypointNumber =
-                waypoints.Count + 1;
+            // Ignore invalid waypoint names.
+            if (waypoint.WaypointNumber < 0)
+            {
+                Debug.LogError(
+                    "Ignoring invalid waypoint: " +
+                    waypoint.gameObject.name
+                );
+
+                continue;
+            }
 
             waypoints.Add(waypoint);
         }
 
+        // =========================================
+        // SORT BY NUMBER IN THE GAMEOBJECT NAME
+        // =========================================
+
+        waypoints.Sort(
+            (a, b) =>
+                a.WaypointNumber.CompareTo(
+                    b.WaypointNumber
+                )
+        );
+
+        // =========================================
+        // VALIDATION
+        // =========================================
+
+        for (int i = 0; i < waypoints.Count; i++)
+        {
+            Waypoint waypoint =
+                waypoints[i];
+
+            // Detect duplicate numbers.
+            if (i > 0)
+            {
+                Waypoint previous =
+                    waypoints[i - 1];
+
+                if (previous.WaypointNumber ==
+                    waypoint.WaypointNumber)
+                {
+                    Debug.LogError(
+                        "Duplicate waypoint number " +
+                        waypoint.WaypointNumber +
+                        " found on:\n" +
+                        previous.gameObject.name +
+                        "\nand\n" +
+                        waypoint.gameObject.name
+                    );
+                }
+            }
+
+            Debug.Log(
+                "Board index " +
+                i +
+                " = " +
+                waypoint.gameObject.name +
+                " (Waypoint " +
+                waypoint.WaypointNumber +
+                ")"
+            );
+        }
+
         Debug.Log(
-            "Loaded " +
+            "Loaded and sorted " +
             waypoints.Count +
             " waypoints."
         );
@@ -810,6 +871,10 @@ public class BoardManager : MonoBehaviour
     // MOVEMENT
     // =========================================================
 
+    // =========================================================
+    // MOVEMENT
+    // =========================================================
+
     private IEnumerator MovePlayerToWaypoint(
         PlayerPiece player,
         int targetIndex
@@ -830,71 +895,130 @@ public class BoardManager : MonoBehaviour
         int direction =
             targetIndex >
             player.currentWaypointIndex
-            ? 1
-            : -1;
+                ? 1
+                : -1;
 
         while (
             player.currentWaypointIndex !=
             targetIndex
         )
         {
+            int currentIndex =
+                player.currentWaypointIndex;
+
             int nextIndex =
-                player.currentWaypointIndex +
+                currentIndex +
                 direction;
 
+            Waypoint currentWaypoint =
+                waypoints[currentIndex];
+
+            Waypoint nextWaypoint =
+                waypoints[nextIndex];
+
+            // =========================================
+            // FORWARD MOVEMENT
+            // =========================================
+            //
+            // The sub-waypoints belong to the waypoint
+            // we're travelling INTO.
+            //
+            // Example:
+            //
+            // Waypoint 5
+            //      ↓
+            // Sub 1
+            //      ↓
+            // Sub 2
+            //      ↓
+            // Waypoint 6
+            //
+            // =========================================
+
+            if (direction > 0)
+            {
+                foreach (
+                    Transform subWaypoint
+                    in nextWaypoint.SubWaypoints
+                )
+                {
+                    if (subWaypoint == null)
+                        continue;
+
+                    Vector3 subDestination =
+                        subWaypoint.position +
+                        player.tileOffset;
+
+                    yield return MovePlayerToPosition(
+                        player,
+                        subDestination
+                    );
+                }
+            }
+
+            // =========================================
+            // BACKWARD MOVEMENT
+            // =========================================
+            //
+            // When travelling backwards, use the
+            // current waypoint's path in reverse.
+            //
+            // Forward:
+            // 5 -> A -> B -> 6
+            //
+            // Backward:
+            // 6 -> B -> A -> 5
+            //
+            // =========================================
+
+            else
+            {
+                IReadOnlyList<Transform> subWaypoints =
+                    currentWaypoint.SubWaypoints;
+
+                for (
+                    int i = subWaypoints.Count - 1;
+                    i >= 0;
+                    i--
+                )
+                {
+                    Transform subWaypoint =
+                        subWaypoints[i];
+
+                    if (subWaypoint == null)
+                        continue;
+
+                    Vector3 subDestination =
+                        subWaypoint.position +
+                        player.tileOffset;
+
+                    yield return MovePlayerToPosition(
+                        player,
+                        subDestination
+                    );
+                }
+            }
+
+            // =========================================
+            // MOVE TO ACTUAL TILE
+            // =========================================
+
             Vector3 destination =
-                waypoints[nextIndex]
-                    .transform.position +
+                nextWaypoint.transform.position +
                 player.tileOffset;
 
-            // =========================================
-            // FACE THE NEXT TILE
-            // =========================================
+            yield return MovePlayerToPosition(
+                player,
+                destination
+            );
 
-            Vector3 lookDirection =
-                destination -
-                player.transform.position;
-
-            // Ignore vertical difference so the
-            // character stays standing upright.
-            lookDirection.y = 0f;
-
-            if (lookDirection.sqrMagnitude > 0.001f)
-            {
-                player.transform.rotation =
-                    Quaternion.LookRotation(
-                        lookDirection
-                    );
-            }
-
-            // =========================================
-            // MOVE TO NEXT TILE
-            // =========================================
-
-            while (
-                Vector3.Distance(
-                    player.transform.position,
-                    destination
-                ) > 0.01f
-            )
-            {
-                player.transform.position =
-                    Vector3.MoveTowards(
-                        player.transform.position,
-                        destination,
-                        moveSpeed *
-                        Time.deltaTime
-                    );
-
-                yield return null;
-            }
-
-            player.transform.position =
-    destination;
-
+            // Only update the logical board position
+            // once the REAL waypoint has been reached.
             player.currentWaypointIndex =
                 nextIndex;
 
+            // One step sound per actual board tile.
+            // Sub-waypoints do NOT count as steps.
             PlayTileStepSound();
 
             if (player == CurrentPlayer)
@@ -904,11 +1028,70 @@ public class BoardManager : MonoBehaviour
 
             if (pauseBetweenSpaces > 0f)
             {
-                yield return new WaitForSecondsRealtime(
-                    pauseBetweenSpaces
-                );
+                yield return
+                    new WaitForSecondsRealtime(
+                        pauseBetweenSpaces
+                    );
             }
         }
+    }
+
+
+    // =========================================================
+    // MOVE TO A SINGLE POSITION
+    // =========================================================
+
+    private IEnumerator MovePlayerToPosition(
+        PlayerPiece player,
+        Vector3 destination
+    )
+    {
+        if (player == null)
+            yield break;
+
+        // =========================================
+        // FACE WHERE WE'RE GOING
+        // =========================================
+
+        Vector3 lookDirection =
+            destination -
+            player.transform.position;
+
+        // Keep the character upright.
+        lookDirection.y = 0f;
+
+        if (lookDirection.sqrMagnitude > 0.001f)
+        {
+            player.transform.rotation =
+                Quaternion.LookRotation(
+                    lookDirection
+                );
+        }
+
+        // =========================================
+        // MOVE
+        // =========================================
+
+        while (
+            Vector3.Distance(
+                player.transform.position,
+                destination
+            ) > 0.01f
+        )
+        {
+            player.transform.position =
+                Vector3.MoveTowards(
+                    player.transform.position,
+                    destination,
+                    moveSpeed *
+                    Time.deltaTime
+                );
+
+            yield return null;
+        }
+
+        player.transform.position =
+            destination;
     }
     // =========================================================
     // Sounds
@@ -1037,7 +1220,7 @@ public class BoardManager : MonoBehaviour
                 "Player " +
                 player.PlayerNumber +
                 " landed on Waypoint " +
-                landedWaypoint.waypointNumber +
+                landedWaypoint.WaypointNumber +
                 " (" +
                 landedWaypoint.tileType +
                 ")"
