@@ -45,6 +45,7 @@ public static class GameMangeren
     }
 
     //configs
+    static public string boardGameSceneName = "MapScene(Ferron)";
     static private string startSceneName = "StartScene";
     static private string minigameSceneNames = "minigame";
 

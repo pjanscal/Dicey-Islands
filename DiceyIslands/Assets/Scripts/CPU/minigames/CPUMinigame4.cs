@@ -28,14 +28,14 @@ public class CPUMinigame4: CPUMangeren
 
     //minigameMangeren4Script that is use manytime
     private int potatoTarget => Minigame4Mangeren.instance.potatoTarget;
-    private Dictionary<int, Player_Minigame4> plrScripts => Minigame4Mangeren.instance.plrScripts;
+    private Dictionary<int, PlayerMinigame4> plrScripts => Minigame4Mangeren.instance.plrScripts;
 
     //configs
     [Header("Configs")]
     [SerializeField] private List<DifficultyCPUConfigs> difficultiesConfigsEdit = new(3); // soon update it better just beta testing
     private Vector3 middlePoint = new Vector3(3.56f, 0.33f, 4.38f);
     const float mapSize = 18.5f;
-    const float mapSideMarge = .5f * 2;
+    const float mapSideMarge = .5f * 2; //*2 for the twice the side
     const float minAngleToSwitch = 45;
     const float maxChaseTime = 1;
     private Dictionary<GameMangeren.CPUDifficulty, DifficultyCPUConfigs> difficultiesConfigs = new();

@@ -254,7 +254,7 @@ public static class LokaalConnecter
     static public int maxPlr = 4; //how many plr there can go in a game
 
     //configs
-    static public string bordGameScene = "BoardTestScene";
+    //static public string bordGameScene = "BoardTestScene";
 
 
     //when the game start it go once
