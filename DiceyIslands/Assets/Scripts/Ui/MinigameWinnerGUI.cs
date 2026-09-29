@@ -74,13 +74,13 @@ public class MinigameWinnerGUI : MonoBehaviour
             int plrId = places[winnerSlot.place - 1];
             winnerSlot.characterLoader.plrId = plrId;
             print($"place {winnerSlot.place} select new plr{plrId}");
-            winnerSlot.characterLoader.ReLoad();
+            winnerSlot.characterLoader.ReLoad(true);
 
             winnerSlot.background.color = playerColors[plrId];
         }
 
         winnerCharacterLoader.plrId = places[0]; //0 == first
-        winnerCharacterLoader.ReLoad();
+        winnerCharacterLoader.ReLoad(true);
 
         canvas.enabled = true;
         StartCoroutine(enumerator());
