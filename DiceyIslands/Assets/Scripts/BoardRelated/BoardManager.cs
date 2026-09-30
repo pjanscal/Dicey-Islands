@@ -10,6 +10,9 @@ public class BoardManager : MonoBehaviour
     [Header("Board")]
     [SerializeField] private Transform waypointParent;
 
+    [Header("Dice Viewport")]
+    [SerializeField] private DiceDisplayController diceDisplay;
+
     private readonly List<Waypoint> waypoints =
         new List<Waypoint>();
 
