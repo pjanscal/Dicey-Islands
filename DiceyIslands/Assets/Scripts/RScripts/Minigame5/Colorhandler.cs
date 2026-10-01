@@ -4,7 +4,13 @@ using UnityEngine.UI;
 
 public class Colorhandler : MonoBehaviour
 {
-    [SerializeField] RawImage mainColor;
+    public static Colorhandler instance;
+    public RawImage[] mainColors;
+
+    void Awake()
+    {
+        instance = this;
+    }
 
     void Start()
     {
@@ -18,7 +24,10 @@ public class Colorhandler : MonoBehaviour
         randomColor.g = Mathf.Max(randomColor.g, 40f / 255f);
         randomColor.b = Mathf.Max(randomColor.b, 40f / 255f);
 
-        mainColor.color = randomColor;
-        Debug.Log("Main color: " + mainColor.color);
+        foreach (RawImage mainColor in mainColors)
+        {
+            mainColor.color = randomColor;
+        }
+        Debug.Log("Main color: " + randomColor);
     }
 }

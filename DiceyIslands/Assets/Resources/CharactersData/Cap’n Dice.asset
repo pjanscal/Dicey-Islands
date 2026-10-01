@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: "Cap\u2019n Dice"
   m_EditorClassIdentifier: Assembly-CSharp::CharacterData
   character: {fileID: 1848558616807539756, guid: d0cbe2ea173e0da409b8ba9f2f046ee0, type: 3}
-  preview: {fileID: 21300000, guid: 07af2b64720a55647b08dd6a3532611d, type: 3}
+  characterIcon: {fileID: 21300000, guid: 4c4743028676ce348a83d918d646a4e9, type: 3}
   inGamePreview: {fileID: 0}
   charName: bobbie
