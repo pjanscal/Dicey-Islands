@@ -7336,7 +7336,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bf6be81378dfd7642aae2c27d2f41b71, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CharacterIconLoader
-  plrId: 1
+  plrId: 3
 --- !u!114 &902167429
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -17143,7 +17143,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bf6be81378dfd7642aae2c27d2f41b71, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CharacterIconLoader
-  plrId: 2
+  plrId: 4
 --- !u!114 &2067195583
 MonoBehaviour:
   m_ObjectHideFlags: 0
