@@ -13,5 +13,6 @@ MonoBehaviour:
   m_Name: Molten
   m_EditorClassIdentifier: Assembly-CSharp::CharacterData
   character: {fileID: 6699713421153631620, guid: 5c663932d220f6f47affd557d0aed51b, type: 3}
+  characterIcon: {fileID: 21300000, guid: 0ff93d291f737dd48af370aaa77d5ed4, type: 3}
   inGamePreview: {fileID: 0}
   charName: Dev

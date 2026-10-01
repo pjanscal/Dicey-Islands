@@ -14,7 +14,7 @@ public class CPUMinigame5: CPUMangeren
         public Vector2 finalScore;
     }
 
-    [SerializeField] private RawImage mainColor; //get the color of the target
+    private RawImage mainColor;
     [SerializeField] private List<MaingameScript5> allMaingameScript5;
     
     private bool isActive = false;
@@ -38,6 +38,8 @@ public class CPUMinigame5: CPUMangeren
         {
             difficultiesConfigs.Add(difficultyCPUConfigs.difficulty, difficultyCPUConfigs);
         }
+
+        mainColor = Colorhandler.instance.mainColors[0];
     }
 
     public void Init()

@@ -4,6 +4,8 @@ using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
+using DG.Tweening;
+using TMPro;
 
 public class MaingameScript5 : MonoBehaviour
 {
@@ -17,11 +19,12 @@ public class MaingameScript5 : MonoBehaviour
     
     [Header("UI")]
     [SerializeField] RawImage mainColor;
-    [SerializeField] RawImage targetColor;
     [SerializeField] private Image slowModeUi;
     [SerializeField] Slider redSlider;
     [SerializeField] Slider greenSlider;
     [SerializeField] Slider blueSlider;
+    [SerializeField] TextMeshProUGUI scoreText;
+    private RawImage targetColor;// => Colorhandler.instance.mainColors[0];
 
     [Header("Asset")]
     [Tooltip("Change in script folder")] [SerializeField] private Sprite slowModeOnSprite;
@@ -33,6 +36,7 @@ public class MaingameScript5 : MonoBehaviour
     private static readonly HashSet<int> confirmedPlayers = new(); //... why not mangeren
     //private static bool colorPrinted = false; ...
     private static readonly Dictionary<int, Slider[]> playersSliders = new(); //since it is all client i need this /:
+    private static readonly Dictionary<int, TextMeshProUGUI> playersScoreText = new();
 
     LokaalConnecter.PlayerController playerController;
 
@@ -46,6 +50,9 @@ public class MaingameScript5 : MonoBehaviour
     const float defaultSliderSpeed = 130f; //to get there fast
     const float slowSliderSpeed = 10f; //if u wanna do the final tweeks
     const float timeBetweenSwitchingSlider = .2f;
+    const float timeBeforeShowingResult = .5f;
+    const float timeBeforeShowingWinner = 1.8f;
+    const float scoreASec = 34f; //how fast it go toward the endscore
 
     //anti magic number
     const int totaleColorSlider = 3;
@@ -77,6 +84,12 @@ public class MaingameScript5 : MonoBehaviour
         
         SelectSlider(0);
         playersSliders.Add(plrId, sliders);
+        playersScoreText.Add(plrId, scoreText);
+        targetColor = Colorhandler.instance.mainColors[0];
+
+        //debug
+        if (mainColor == null || redSlider == null || greenSlider == null || blueSlider == null || scoreText || slowModeUi)
+            Debug.LogError("a var is not assign");
     }
 
     void Update()
@@ -117,7 +130,7 @@ public class MaingameScript5 : MonoBehaviour
             }
             
             StartCoroutine(enumerator()); //after x amount of sec make it true again;
-            ChangeSliderColor(sliders[selectedSliderIndex], Color.clear); //clear the selection
+            ChangeSliderColor(sliders[selectedSliderIndex], Color.white); //clear the selection
             selectedSliderIndex = newSelectSliderIndex;
             SelectSlider(selectedSliderIndex);
 
@@ -176,12 +189,10 @@ public class MaingameScript5 : MonoBehaviour
 
     void ApplyColorFromSliders()
     {
-        if (mainColor == null || redSlider == null || greenSlider == null || blueSlider == null)
-            return;
-
-        float r = Mathf.Max(redSlider.value, 40f) / 255f;
-        float g = Mathf.Max(greenSlider.value, 40f) / 255f;
-        float b = Mathf.Max(blueSlider.value, 40f) / 255f;
+        //float r = Mathf.Max(redSlider.value, 40f) / 255f; for if u don't wanna go below 40 but that is only for the other thing so ye else the score also need a update...
+        float r = redSlider.value / 255f;
+        float g = greenSlider.value / 255f;
+        float b = blueSlider.value / 255f;
 
         mainColor.color = new Color(r, g, b, 1f);
     }
@@ -201,7 +212,7 @@ public class MaingameScript5 : MonoBehaviour
 
         playerColorConfirm = true;
         confirmedPlayers.Add(plrId);
-        ChangeSliderColor(sliders[selectedSliderIndex], Color.clear);
+        ChangeSliderColor(sliders[selectedSliderIndex], Color.white);
 
         int occupiedPlayerCount = 0;
         foreach (var controller in LokaalConnecter.plrsController.Values)
@@ -214,12 +225,12 @@ public class MaingameScript5 : MonoBehaviour
         {
             //colorPrinted = true; since they can't go back why
             Debug.Log("Confirmed color: " + targetColor.color);
-            Winner();
+            ShowResult();
         }
     }
 
-    //find the winner and send it back
-    void Winner()
+    //show the result / find the winner and send it back
+    void ShowResult()
     {
         List<(float, int)> places = new();
 
@@ -240,25 +251,45 @@ public class MaingameScript5 : MonoBehaviour
         }
         places.Sort((a, b) => b.Item1.CompareTo(a.Item1)); //sort largest at top
 
-        //debug
-        #if UNITY_EDITOR
-            int placeIndex = 1;
-
-            foreach ((float score, int plrId) in places)
-            {
-                print($"plr{plrId}, Score: {score}, place: {placeIndex}");
-                placeIndex += 1;
-            }
-        #endif
-
-        if (MatchData.Instance == null) {Debug.LogError("no matchData found"); return;}
-
-        foreach (var (_, plrId) in places)
+        //show the result
+        //int placeIndex = 1;
+        foreach (TextMeshProUGUI text in playersScoreText.Values)
         {
-            MatchData.Instance.playerOrderNumbers.Add(plrId);
+            text.enabled = true;
         }
 
-        GameMangeren.MinigameWinner(MatchData.Instance.playerOrderNumbers);
+        Sequence sequence = DOTween.Sequence(); //play all at same time :3
+        sequence.AppendInterval(timeBeforeShowingResult);
+        foreach ((float score, int plrId) in places)
+        {
+            float currentScore = 0;
+            float duration = score / scoreASec;
+            Tween tween = DOTween.To(() => currentScore, x =>
+            {
+                currentScore = x;
+                playersScoreText[plrId].text = currentScore.ToString("F1");
+            },
+            score, duration);
+            sequence.Join(tween);
+
+            print($"plr{plrId}, Score: {score}");
+            //placeIndex += 1;
+        }
+        sequence.AppendCallback(() => {}); //wait until the tween is done
+        sequence.AppendInterval(timeBeforeShowingWinner);
+
+        sequence.Play().OnComplete(() =>
+        {
+            //send back the winner and go to the boardscene
+            if (MatchData.Instance == null) {Debug.LogError("no matchData found"); return;}
+
+            foreach (var (_, plrId) in places)
+            {
+                MatchData.Instance.playerOrderNumbers.Add(plrId);
+            }
+
+            GameMangeren.MinigameWinner(MatchData.Instance.playerOrderNumbers);
+        });
     }
 
     //helper function

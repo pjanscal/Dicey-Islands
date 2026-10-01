@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: Waddles
   m_EditorClassIdentifier: Assembly-CSharp::CharacterData
   character: {fileID: 6177076882539985341, guid: fa424c32da5c78d46947fbcbd241dd8a, type: 3}
-  preview: {fileID: 21300000, guid: cde6f667dc181844c9c1ed28806cb187, type: 3}
+  characterIcon: {fileID: 21300000, guid: eb1b1f0febd7e6543b1a819743c26b7e, type: 3}
   inGamePreview: {fileID: 0}
   charName: Dev
