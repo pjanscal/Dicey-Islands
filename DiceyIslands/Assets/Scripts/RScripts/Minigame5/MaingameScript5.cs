@@ -88,8 +88,8 @@ public class MaingameScript5 : MonoBehaviour
         targetColor = Colorhandler.instance.mainColors[0];
 
         //debug
-        if (mainColor == null || redSlider == null || greenSlider == null || blueSlider == null || scoreText || slowModeUi)
-            Debug.LogError("a var is not assign");
+        if (mainColor == null || redSlider == null || greenSlider == null || blueSlider == null || scoreText == null || slowModeUi == null)
+            Debug.LogError($"a var is not assign: plr{plrId}");
     }
 
     void Update()
