@@ -25,7 +25,7 @@ public class Minigame4Mangeren : MonoBehaviour
 
     //configs
     private Vector2 potatoLifeTime = new Vector2(10, 19);
-    private Vector3 potatoOffet = new Vector3(0, 3, 0); //offset of being inside a player
+    private Vector3 potatoOffet = new Vector3(0, 2, 0); //offset of being inside a player
     const float potatoRotateSpeed = .8f;
     const float potatoGivingCooldown = .2f;
     const float plrImmunityDur = 1f; //time before the player can get the potato again
