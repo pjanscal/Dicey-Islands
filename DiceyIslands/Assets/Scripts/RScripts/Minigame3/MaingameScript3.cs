@@ -19,7 +19,7 @@ public class MaingameScript3 : MonoBehaviour
     private static bool resultsInitialized;
 
     private LokaalConnecter.PlayerController playerController;
-    private GameObject swordObject;
+    [SerializeField] private GameObject swordObject;
     private bool swordHitBlocked;
     private readonly Color normalDieColor = Color.clear;
 
@@ -57,7 +57,6 @@ public class MaingameScript3 : MonoBehaviour
             target = FindFirstObjectByType<TargetScript>();
         }
 
-        swordObject = FindSwordGameObject();
         if (swordObject != null)
         {
             swordObject.SetActive(true);
