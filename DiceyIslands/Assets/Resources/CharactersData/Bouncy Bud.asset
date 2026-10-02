@@ -13,5 +13,6 @@ MonoBehaviour:
   m_Name: Bouncy Bud
   m_EditorClassIdentifier: Assembly-CSharp::CharacterData
   character: {fileID: 7955029001842557225, guid: bdfeeda31f25f5a42bf2bfb1d3d18cac, type: 3}
-  preview: {fileID: 21300000, guid: 6c8460a075dd69f4e8ad2e4eccfcf61e, type: 3}
+  characterIcon: {fileID: 21300000, guid: a44ff117e8577f24e8649b69511e1ada, type: 3}
+  inGamePreview: {fileID: 0}
   charName: Dev

@@ -47,6 +47,8 @@ public class BoardManager : MonoBehaviour
     [SerializeField] private AudioClip tileStepSound;
     [SerializeField] private AudioClip turnStartSound;
     [SerializeField] private AudioClip turnSkippedSound;
+    [SerializeField] private AudioClip diceHitSound;
+    [SerializeField] private AudioClip diceResultSound;
 
     [SerializeField] private AudioClip roundEndSound;
     [SerializeField] private AudioClip minigamePopupSound;
@@ -154,6 +156,12 @@ public class BoardManager : MonoBehaviour
 
     private void Start()
     {
+        // Connect the dice result event to our result sound.
+        if (diceDisplay != null)
+        {
+            diceDisplay.OnResultShown += PlayDiceResultSound;
+        }
+
         if (turnOrder.Count == 0)
         {
             Debug.LogWarning(
@@ -300,6 +308,23 @@ public class BoardManager : MonoBehaviour
     // SETUP
     // =========================================================
 
+    private void PlayDiceHitSound()
+    {
+        if (movementAudioSource == null ||
+            diceHitSound == null)
+            return;
+
+        movementAudioSource.PlayOneShot(diceHitSound);
+    }
+
+    private void PlayDiceResultSound()
+    {
+        if (movementAudioSource == null ||
+            diceResultSound == null)
+            return;
+
+        movementAudioSource.PlayOneShot(diceResultSound);
+    }
     private void SetupWaypoints()
     {
         waypoints.Clear();
@@ -547,6 +572,12 @@ public class BoardManager : MonoBehaviour
 
             return;
         }
+        if (diceDisplay != null)
+        {
+            bool hasBonusDice = GetBonusDiceMax(player) > 0;
+            diceDisplay.ShowForTurn(hasBonusDice);
+        }
+
         PlayTurnStartSound();
 
         if (rollButton != null)
@@ -730,95 +761,67 @@ public class BoardManager : MonoBehaviour
         PlayerPiece player
     )
     {
-        int bonusDiceMax =
-            GetBonusDiceMax(player);
+        int bonusDiceMax = GetBonusDiceMax(player);
+        bool hasBonusDice = bonusDiceMax > 0;
 
-        bool hasBonusDice =
-            bonusDiceMax > 0;
+        // Decide the real roll first. The viewport animation only displays it.
+        int mainRoll = Random.Range(1, 7);
+        int bonusRoll = hasBonusDice
+            ? Random.Range(1, bonusDiceMax + 1)
+            : 0;
 
+        int totalRoll = mainRoll + bonusRoll;
+
+        Debug.Log(
+            "Player " + player.PlayerNumber +
+            " rolled " + mainRoll +
+            " + " + bonusRoll +
+            " = " + totalRoll
+        );
+
+        // These are revealed by DiceDisplayController only when the
+        // result animation has reached its final frame.
         if (rollNumberText != null)
-            rollNumberText.gameObject.SetActive(true);
+            rollNumberText.gameObject.SetActive(false);
 
         if (bonusRollNumberText != null)
-            bonusRollNumberText.gameObject.SetActive(hasBonusDice);
+            bonusRollNumberText.gameObject.SetActive(false);
 
-        float elapsed = 0f;
-
-        while (elapsed < diceAnimationDuration)
+        if (diceDisplay != null)
         {
-            int fakeMainRoll =
-                Random.Range(1, 7);
+            yield return StartCoroutine(
+                diceDisplay.PlayRoll(
+                    mainRoll,
+                    hasBonusDice,
+                    bonusRoll
+                )
+                );
 
+            // The hold at the final frame has now finished.
+            // Hide the dice exactly before board movement starts.
+            diceDisplay.HideForMovement();
+        }
+        else
+        {
+            // Fallback while setting the new viewport up.
             if (rollNumberText != null)
             {
-                rollNumberText.text =
-                    fakeMainRoll.ToString();
+                rollNumberText.text = mainRoll.ToString();
+                rollNumberText.gameObject.SetActive(true);
             }
 
-            if (hasBonusDice)
+            if (bonusRollNumberText != null)
             {
-                int fakeBonusRoll =
-                    Random.Range(
-                        1,
-                        bonusDiceMax + 1
-                    );
+                bonusRollNumberText.gameObject.SetActive(hasBonusDice);
 
-                if (bonusRollNumberText != null)
-                {
-                    bonusRollNumberText.text =
-                        fakeBonusRoll.ToString();
-                }
+                if (hasBonusDice)
+                    bonusRollNumberText.text = bonusRoll.ToString();
             }
 
             yield return new WaitForSecondsRealtime(
-                diceNumberChangeSpeed
+                finalRollDisplayTime
             );
-
-            elapsed +=
-                diceNumberChangeSpeed;
         }
-
-        int mainRoll =
-            Random.Range(1, 7);
-
-        int bonusRoll = 0;
-
-        if (hasBonusDice)
-        {
-            bonusRoll =
-                Random.Range(
-                    1,
-                    bonusDiceMax + 1
-                );
-        }
-
-        if (rollNumberText != null)
-            rollNumberText.text = mainRoll.ToString();
-
-        if (bonusRollNumberText != null &&
-            hasBonusDice)
-        {
-            bonusRollNumberText.text =
-                bonusRoll.ToString();
-        }
-
-        int totalRoll =
-            mainRoll + bonusRoll;
-
-        Debug.Log(
-            "Player " +
-            player.PlayerNumber +
-            " rolled " +
-            mainRoll +
-            " + " +
-            bonusRoll +
-            " = " +
-            totalRoll
-        );
-
-        yield return new WaitForSecondsRealtime(
-            finalRollDisplayTime
-        );
 
         int targetIndex =
             player.currentWaypointIndex +
@@ -841,9 +844,7 @@ public class BoardManager : MonoBehaviour
             yield break;
         }
 
-        yield return ResolveTileEffects(
-            player
-        );
+        yield return ResolveTileEffects(player);
 
         if (HasPlayerReachedEnd(player))
         {
@@ -1487,6 +1488,10 @@ public class BoardManager : MonoBehaviour
             rollButton.gameObject.SetActive(false);
         }
         PlayTurnSkippedSound();
+
+        if (diceDisplay != null)
+            diceDisplay.HideForMovement();
+
         if (rollNumberText != null)
             rollNumberText.gameObject.SetActive(false);
 
@@ -1627,6 +1632,9 @@ public class BoardManager : MonoBehaviour
 
         turnInProgress = true;
 
+        if (diceDisplay != null)
+            diceDisplay.HideForMovement();
+
         if (rollButton != null)
         {
             rollButton.interactable = false;
@@ -1733,6 +1741,10 @@ public class BoardManager : MonoBehaviour
 
         gameOver = true;
         turnInProgress = false;
+
+        if (diceDisplay != null)
+            diceDisplay.HideForMovement();
+
 
         Debug.Log(
             "PLAYER " +
@@ -1996,6 +2008,9 @@ public class BoardManager : MonoBehaviour
         }
 
         turnInProgress = true;
+
+        if (diceDisplay != null)
+            diceDisplay.HideForMovement();
 
         if (rollButton != null)
         {
