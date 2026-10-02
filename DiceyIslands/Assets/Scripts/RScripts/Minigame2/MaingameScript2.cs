@@ -3,6 +3,9 @@ using System.Text.RegularExpressions;
 using TMPro;
 using UnityEngine.UI;
 
+//shortcut
+using AnimationTriggerEvent = CharacterLoader.CharactersAnimationTriggerEvent;
+
 public class MaingameScript2 : MonoBehaviour
 {
     [SerializeField] int plrId;
@@ -16,6 +19,7 @@ public class MaingameScript2 : MonoBehaviour
     [SerializeField] TextMeshProUGUI pointsText;
     [SerializeField] RawImage readyColor;
     LokaalConnecter.PlayerController playerController;
+    private CharacterLoader animatorController;
     private Minigame2ResultBridge resultBridge;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -39,6 +43,8 @@ public class MaingameScript2 : MonoBehaviour
             LokaalConnecter.plrsController[plrId];
 
         GameMangeren.startMiniGame += Init;
+
+        animatorController = GameMangeren.GetCharacterLoaderFromId(plrId);
     }
 
     public void Init()
@@ -86,6 +92,10 @@ public class MaingameScript2 : MonoBehaviour
                     readyColor.color = Color.red;
                     return;
                 }
+
+                //animations
+                animatorController.UseAnimation(AnimationTriggerEvent.ActivePress);
+                //a possible bug it is overloading the animation :3 do a delay between presses
 
                 lastPressTime = Time.time;
                 if (!spawnObject.TryClaimObject(out GameObject claimedObject)) return;

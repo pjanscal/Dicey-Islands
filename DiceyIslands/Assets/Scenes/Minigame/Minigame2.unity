@@ -996,6 +996,7 @@ GameObject:
   m_Component:
   - component: {fileID: 277887357}
   - component: {fileID: 277887358}
+  - component: {fileID: 277887359}
   m_Layer: 0
   m_Name: Plr3
   m_TagString: Untagged
@@ -1012,7 +1013,7 @@ Transform:
   m_GameObject: {fileID: 277887356}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -7.8997, y: -0, z: -0.952}
+  m_LocalPosition: {x: 1.49, y: -1.726, z: -1.106}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1034,6 +1035,22 @@ MonoBehaviour:
   points: 0
   pointsText: {fileID: 1339766957}
   readyColor: {fileID: 1435823990}
+--- !u!114 &277887359
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 277887356}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7d127bb5cfe0ef443a746b73e0990262, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CharacterLoader
+  plrId: 3
+  animator: {fileID: 0}
+  canConnectToMangener: 1
+  autoCharacter: 1
 --- !u!1001 &278344502
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -6323,6 +6340,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1291651585}
   - component: {fileID: 1291651586}
+  - component: {fileID: 1291651587}
   m_Layer: 0
   m_Name: Plr1
   m_TagString: Untagged
@@ -6339,7 +6357,7 @@ Transform:
   m_GameObject: {fileID: 1291651584}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -7.8997, y: -0, z: -0.952}
+  m_LocalPosition: {x: -2.76, y: -1.726, z: -1.106}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -6361,6 +6379,22 @@ MonoBehaviour:
   points: 0
   pointsText: {fileID: 891437902}
   readyColor: {fileID: 2020571935}
+--- !u!114 &1291651587
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1291651584}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7d127bb5cfe0ef443a746b73e0990262, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CharacterLoader
+  plrId: 1
+  animator: {fileID: 0}
+  canConnectToMangener: 1
+  autoCharacter: 1
 --- !u!1 &1296948676
 GameObject:
   m_ObjectHideFlags: 0
@@ -6886,6 +6920,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1371368960}
   - component: {fileID: 1371368961}
+  - component: {fileID: 1371368962}
   m_Layer: 0
   m_Name: Plr2
   m_TagString: Untagged
@@ -6902,7 +6937,7 @@ Transform:
   m_GameObject: {fileID: 1371368959}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -7.8997, y: -0, z: -0.952}
+  m_LocalPosition: {x: -0.56, y: -1.726, z: -1.106}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -6924,6 +6959,22 @@ MonoBehaviour:
   points: 0
   pointsText: {fileID: 449851182}
   readyColor: {fileID: 708637224}
+--- !u!114 &1371368962
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1371368959}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7d127bb5cfe0ef443a746b73e0990262, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CharacterLoader
+  plrId: 2
+  animator: {fileID: 0}
+  canConnectToMangener: 1
+  autoCharacter: 1
 --- !u!1 &1383516433
 GameObject:
   m_ObjectHideFlags: 0
@@ -9639,6 +9690,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1758396694}
   - component: {fileID: 1758396695}
+  - component: {fileID: 1758396696}
   m_Layer: 0
   m_Name: Plr4
   m_TagString: Untagged
@@ -9655,7 +9707,7 @@ Transform:
   m_GameObject: {fileID: 1758396693}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -7.8997, y: -0, z: -0.952}
+  m_LocalPosition: {x: 3.64, y: -1.726, z: -1.106}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -9677,6 +9729,22 @@ MonoBehaviour:
   points: 0
   pointsText: {fileID: 2126380441}
   readyColor: {fileID: 1620514729}
+--- !u!114 &1758396696
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1758396693}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7d127bb5cfe0ef443a746b73e0990262, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CharacterLoader
+  plrId: 4
+  animator: {fileID: 0}
+  canConnectToMangener: 1
+  autoCharacter: 1
 --- !u!1 &1782114650
 GameObject:
   m_ObjectHideFlags: 0
