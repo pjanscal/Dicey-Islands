@@ -4,6 +4,9 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
+//shortcuts
+using AnimationBoolEvent = CharacterLoader.CharactersAnimationBooleanEvent;
+
 public class BoardManager : MonoBehaviour
 {
 
@@ -902,6 +905,10 @@ public class BoardManager : MonoBehaviour
                 ? 1
                 : -1;
 
+        //animations
+        CharacterLoader animatorController = GameMangeren.GetCharacterLoaderFromId(player.PlayerNumber); //could also make this inside the player
+        animatorController.SetAnimationBool(AnimationBoolEvent.IsRunning, true);
+
         while (
             player.currentWaypointIndex !=
             targetIndex
@@ -1038,6 +1045,9 @@ public class BoardManager : MonoBehaviour
                     );
             }
         }
+
+        //stop the animation
+        animatorController.SetAnimationBool(AnimationBoolEvent.IsRunning, false);
     }
 
 
