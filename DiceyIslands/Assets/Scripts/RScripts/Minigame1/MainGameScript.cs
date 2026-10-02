@@ -3,6 +3,8 @@ using UnityEngine;
 using UnityEngine.UI;
 using SceneManager = UnityEngine.SceneManagement.SceneManager;
 
+//shortcuts
+using AnimatorTriggerEvent = CharacterLoader.CharactersAnimationTriggerEvent;
 
 public class MainGameScript : MonoBehaviour
 {
@@ -12,6 +14,7 @@ public class MainGameScript : MonoBehaviour
     [SerializeField] TMP_Text timeText;
     [SerializeField] RawImage indicator;
     public float elapsed; //public so the cpu can check
+    private CharacterLoader animatorController;
     [SerializeField] public bool isRunning, firstTime, ready;
 
     [Header("Audio")]
@@ -36,6 +39,7 @@ public class MainGameScript : MonoBehaviour
             LokaalConnecter.plrsController[plrId];
 
         GameMangeren.startMiniGame += Init;
+        animatorController = GameMangeren.GetCharacterLoaderFromId(plrId);
     }
 
     public void Init()
@@ -75,6 +79,10 @@ public class MainGameScript : MonoBehaviour
          ))
                 {
                     isRunning = false;
+                    
+                    //animation
+                    animatorController.UseAnimation(AnimatorTriggerEvent.ActivePress);
+                    //bugs u get the result before pressing
 
                     indicator.color =
                         new Color32(34, 139, 34, 255);
