@@ -6,33 +6,55 @@ using SceneManager = UnityEngine.SceneManagement.SceneManager;
 
 public class MainGameScript : MonoBehaviour
 {
-
+    private MinigameResultBridge resultBridge;
     public LokaalConnecter.PlayerController playerController;
     [SerializeField] public int plrId;
     [SerializeField] TMP_Text timeText;
     [SerializeField] RawImage indicator;
     public float elapsed; //public so the cpu can check
     [SerializeField] public bool isRunning, firstTime, ready;
+
+    [Header("Audio")]
+    [SerializeField] private AudioSource sfxAudioSource;
+    [SerializeField] private AudioClip lockInSound;
     bool init;
     int seconds, centiseconds;
     TimeNeeded timeNeeded;
 
     void Start()
     {
-        timeNeeded = FindFirstObjectByType<TimeNeeded>();
+        timeNeeded =
+            FindFirstObjectByType<TimeNeeded>();
+
+        resultBridge =
+            FindFirstObjectByType<MinigameResultBridge>();
+
         firstTime = true;
         isRunning = false;
-        playerController = LokaalConnecter.plrsController[plrId];
+
+        playerController =
+            LokaalConnecter.plrsController[plrId];
+
         GameMangeren.startMiniGame += Init;
     }
 
-        public void Init()
+    public void Init()
     {
         init = true;
         StartCoroutine(StartTimer());
         if (MatchData.Instance != null) MatchData.Instance.playerOrderNumbers.Clear(); //clear it up and use this as a places var
     }
 
+    private void PlayLockInSound()
+    {
+        if (sfxAudioSource == null ||
+            lockInSound == null)
+            return;
+
+        sfxAudioSource.PlayOneShot(
+            lockInSound
+        );
+    }
     void Update()
     {
         if (!init) return;
@@ -41,12 +63,30 @@ public class MainGameScript : MonoBehaviour
         {
             if (playerController == null || !playerController.occuplied) return;
 
-            if (ready && isRunning && playerController.GetButtonDown(LokaalConnecter.InputType.x))
-            {
-                isRunning = false;
-                indicator.color = new Color32(34, 139, 34, 255);
-                Winner();
-            }
+            if (ready &&
+     isRunning &&
+     playerController.GetButtonDown(
+         LokaalConnecter.InputType.x
+     ))
+                if (ready &&
+         isRunning &&
+         playerController.GetButtonDown(
+             LokaalConnecter.InputType.x
+         ))
+                {
+                    isRunning = false;
+
+                    indicator.color =
+                        new Color32(34, 139, 34, 255);
+
+                    // Individual player lock-in sound.
+                    if (resultBridge != null)
+                    {
+                        resultBridge.PlayPlayerLockedSound();
+                    }
+
+                    Winner();
+                }
 
             if (isRunning) UpdateTimer();
         }

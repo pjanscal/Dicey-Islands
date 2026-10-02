@@ -16,6 +16,7 @@ public class MaingameScript2 : MonoBehaviour
     [SerializeField] TextMeshProUGUI pointsText;
     [SerializeField] RawImage readyColor;
     LokaalConnecter.PlayerController playerController;
+    private Minigame2ResultBridge resultBridge;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     public int PlayerId => plrId;
@@ -28,9 +29,15 @@ public class MaingameScript2 : MonoBehaviour
         gameOver;
     void Start()
     {
-        spawnObject = FindFirstObjectByType<SpawnObject>();
+        spawnObject =
+            FindFirstObjectByType<SpawnObject>();
 
-        playerController = LokaalConnecter.plrsController[plrId];
+        resultBridge =
+            FindFirstObjectByType<Minigame2ResultBridge>();
+
+        playerController =
+            LokaalConnecter.plrsController[plrId];
+
         GameMangeren.startMiniGame += Init;
     }
 
@@ -83,16 +90,46 @@ public class MaingameScript2 : MonoBehaviour
                 lastPressTime = Time.time;
                 if (!spawnObject.TryClaimObject(out GameObject claimedObject)) return;
 
-                Match pointMatch = Regex.Match(claimedObject.name, @"-?\d+");
+                Match pointMatch =
+                    Regex.Match(
+                        claimedObject.name,
+                        @"-?\d+"
+                    );
+
                 if (pointMatch.Success)
                 {
-                    points += int.Parse(pointMatch.Value);
+                    int pointValue =
+                        int.Parse(pointMatch.Value);
+
+                    // Add/subtract the pickup's points.
+                    points += pointValue;
+
+                    // Play the sound belonging to this pickup.
+                    if (resultBridge != null)
+                    {
+                        resultBridge.PlayStealSound(
+                            pointValue
+                        );
+                    }
 
                     if (points >= 10)
                     {
                         gameOver = true;
+
                         spawnObject.StopSpawning();
-                        Debug.Log("Player " + plrId + " wins with " + points + " points!");
+
+                        if (resultBridge != null)
+                        {
+                            resultBridge
+                                .PlayRequiredPointsReachedSound();
+                        }
+
+                        Debug.Log(
+                            "Player " + plrId +
+                            " wins with " +
+                            points +
+                            " points!"
+                        );
                     }
                 }
 

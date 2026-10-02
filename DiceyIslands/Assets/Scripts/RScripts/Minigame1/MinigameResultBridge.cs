@@ -10,6 +10,14 @@ public class MinigameResultBridge : MonoBehaviour
     [SerializeField]
     private float returnToBoardDelay = 3f;
 
+    [Header("Audio")]
+    [SerializeField] private AudioSource sfxAudioSource;
+    [SerializeField] private AudioSource musicAudioSource;
+
+    [SerializeField] private AudioClip playerLockedSound;
+    [SerializeField] private AudioClip allPlayersLockedSound;
+    [SerializeField] private AudioClip backgroundMusic;
+
     [SerializeField]
     private string boardSceneName =
         "BoardTestScene";
@@ -23,6 +31,40 @@ public class MinigameResultBridge : MonoBehaviour
     {
         timeNeeded =
             FindFirstObjectByType<TimeNeeded>();
+
+        // Start minigame background music.
+        if (musicAudioSource != null &&
+            backgroundMusic != null)
+        {
+            musicAudioSource.clip =
+                backgroundMusic;
+
+            musicAudioSource.loop = true;
+
+            musicAudioSource.Play();
+        }
+    }
+
+    public void PlayPlayerLockedSound()
+    {
+        if (sfxAudioSource == null ||
+            playerLockedSound == null)
+            return;
+
+        sfxAudioSource.PlayOneShot(
+            playerLockedSound
+        );
+    }
+
+    private void PlayAllPlayersLockedSound()
+    {
+        if (sfxAudioSource == null ||
+            allPlayersLockedSound == null)
+            return;
+
+        sfxAudioSource.PlayOneShot(
+            allPlayersLockedSound
+        );
     }
 
     private void Update()
@@ -100,7 +142,12 @@ public class MinigameResultBridge : MonoBehaviour
         }
 
         // Everybody has stopped.
+        // Everybody has stopped.
         resultsProcessed = true;
+
+        // Play the sound once when the final player
+        // has locked in.
+        PlayAllPlayersLockedSound();
 
         StartCoroutine(
             ProcessResults(activePlayers)

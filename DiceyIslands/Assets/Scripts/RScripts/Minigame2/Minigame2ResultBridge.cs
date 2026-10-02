@@ -14,7 +14,90 @@ public class Minigame2ResultBridge : MonoBehaviour
     private string boardSceneName =
         "BoardTestScene";
 
+    [Header("Audio")]
+    [SerializeField] private AudioSource sfxAudioSource;
+    [SerializeField] private AudioSource musicAudioSource;
+
+    [Header("Steal Sounds")]
+    [SerializeField] private AudioClip stealPlus1Sound;
+    [SerializeField] private AudioClip stealMinus1Sound;
+    [SerializeField] private AudioClip stealPlus3Sound;
+    [SerializeField] private AudioClip stealMinus3Sound;
+
+    [Header("Other Sounds")]
+    [SerializeField] private AudioClip pickupSpawnSound;
+    [SerializeField] private AudioClip requiredPointsReachedSound;
+    [SerializeField] private AudioClip backgroundMusic;
+
     private bool resultsProcessed = false;
+
+    private void Start()
+    {
+        if (musicAudioSource != null &&
+            backgroundMusic != null)
+        {
+            musicAudioSource.clip =
+                backgroundMusic;
+
+            musicAudioSource.loop = true;
+
+            musicAudioSource.Play();
+        }
+    }
+
+    public void PlayStealSound(int pointValue)
+    {
+        if (sfxAudioSource == null)
+            return;
+
+        AudioClip clip = null;
+
+        switch (pointValue)
+        {
+            case 1:
+                clip = stealPlus1Sound;
+                break;
+
+            case -1:
+                clip = stealMinus1Sound;
+                break;
+
+            case 3:
+                clip = stealPlus3Sound;
+                break;
+
+            case -3:
+                clip = stealMinus3Sound;
+                break;
+        }
+
+        if (clip != null)
+        {
+            sfxAudioSource.PlayOneShot(clip);
+        }
+    }
+
+    public void PlayPickupSpawnSound()
+    {
+        if (sfxAudioSource == null ||
+            pickupSpawnSound == null)
+            return;
+
+        sfxAudioSource.PlayOneShot(
+            pickupSpawnSound
+        );
+    }
+
+    public void PlayRequiredPointsReachedSound()
+    {
+        if (sfxAudioSource == null ||
+            requiredPointsReachedSound == null)
+            return;
+
+        sfxAudioSource.PlayOneShot(
+            requiredPointsReachedSound
+        );
+    }
 
     private void Update()
     {
