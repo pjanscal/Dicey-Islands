@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::MinigameTutorialConfigs
   minigameId: 3
   bg: {fileID: 21300000, guid: ad28cfaf7b7adc34c8155e56dada67c4, type: 3}
-  videoClip: {fileID: 0}
+  videoClip: {fileID: 32900000, guid: 952fc4ff0cd53374db7c8b3dac1748fa, type: 3}
   keyBindsInfo:
   - keybind: 1
     actionName: 'Throw:'
