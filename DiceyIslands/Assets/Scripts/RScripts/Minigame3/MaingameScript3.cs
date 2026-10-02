@@ -112,17 +112,47 @@ public class MaingameScript3 : MonoBehaviour
 
         if (hitPrefab != null)
         {
-            Quaternion rotation = Quaternion.FromToRotation(Vector3.down, surfaceNormal) * Quaternion.Euler(rotationOffset);
-            GameObject spawnedSword = Instantiate(hitPrefab, spawnPosition, rotation);
+            Quaternion rotation =
+                Quaternion.FromToRotation(
+                    Vector3.down,
+                    surfaceNormal
+                ) *
+                Quaternion.Euler(
+                    rotationOffset
+                );
+
+            GameObject spawnedSword =
+                Instantiate(
+                    hitPrefab,
+                    spawnPosition,
+                    rotation
+                );
+
             if (spawnParent != null)
             {
-                spawnedSword.transform.SetParent(spawnParent, true);
+                spawnedSword.transform.SetParent(
+                    spawnParent,
+                    true
+                );
             }
         }
         else
         {
-            Debug.LogError("Minigame 3 needs a sword prefab assigned to Hit Prefab.", this);
+            Debug.LogError(
+                "Minigame 3 needs a sword prefab " +
+                "assigned to Hit Prefab.",
+                this
+            );
         }
+
+        // Successful dagger throw.
+        if (Minigame3Audio.instance != null)
+        {
+            Minigame3Audio.instance
+                .PlayDaggerThrowSound();
+        }
+
+        OnSwordThrown();
 
         OnSwordThrown();
     }
@@ -137,6 +167,14 @@ public class MaingameScript3 : MonoBehaviour
         swordHitBlocked = true;
         hasThrownThisRound = true;
         canShoot = false;
+
+        // Player hit an existing dagger and is eliminated.
+        if (Minigame3Audio.instance != null)
+        {
+            Minigame3Audio.instance
+                .PlayPlayerEliminatedSound();
+        }
+
         if (!eliminatedPlayers.Contains(plrId))
         {
             eliminatedPlayers.Add(plrId);
