@@ -929,7 +929,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &134534140
 Transform:
   m_ObjectHideFlags: 0
@@ -938,14 +938,14 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 134534139}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.27059805, y: 0.6532815, z: -0.27059805, w: 0.6532815}
-  m_LocalPosition: {x: -3, y: 4, z: 0}
+  m_LocalRotation: {x: 0.2674053, y: -0.2617238, z: -0.6625725, w: 0.6488396}
+  m_LocalPosition: {x: 2.3600044, y: 1.39, z: -2.549994}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 647936443}
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 45, y: 90, z: 0}
+  m_LocalEulerAnglesHint: {x: 0.011, y: -43.946, z: -91.204}
 --- !u!114 &134534141
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -966,6 +966,7 @@ MonoBehaviour:
   hitPrefab: {fileID: 116000536}
   rotationOffset: {x: 0, y: 0, z: 0}
   dieIndicator: {fileID: 485932702}
+  target: {fileID: 0}
   canShoot: 1
   init: 0
   hasThrownThisRound: 0
@@ -3473,7 +3474,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &459077543
 Transform:
   m_ObjectHideFlags: 0
@@ -3482,14 +3483,14 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 459077542}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.27059805, y: -0.6532815, z: -0.27059805, w: 0.6532815}
-  m_LocalPosition: {x: 3, y: -1.5, z: 0}
+  m_LocalRotation: {x: 0.6488397, y: -0.66257256, z: 0.26172355, w: -0.267405}
+  m_LocalPosition: {x: -2.5800066, y: 1.39, z: 2.5699954}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1628989370}
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: -45, y: -90, z: 0}
+  m_LocalEulerAnglesHint: {x: -0.011, y: -223.946, z: -88.796}
 --- !u!114 &459077544
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3510,6 +3511,7 @@ MonoBehaviour:
   hitPrefab: {fileID: 116000536}
   rotationOffset: {x: 0, y: 0, z: 0}
   dieIndicator: {fileID: 585905973}
+  target: {fileID: 0}
   canShoot: 1
   init: 0
   hasThrownThisRound: 0
@@ -4862,7 +4864,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &608025756
 Transform:
   m_ObjectHideFlags: 0
@@ -4871,14 +4873,14 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 608025755}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.27059805, y: 0.6532815, z: 0.27059805, w: 0.6532815}
-  m_LocalPosition: {x: -3, y: -1.5, z: 0}
+  m_LocalRotation: {x: 0.27373338, y: -0.27942657, z: 0.6438651, w: -0.657593}
+  m_LocalPosition: {x: -2.67, y: 1.39, z: -2.46}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 579288432}
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: -45, y: 90, z: 0}
+  m_LocalEulerAnglesHint: {x: -0.011, y: -313.94598, z: -88.796}
 --- !u!114 &608025757
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4899,6 +4901,7 @@ MonoBehaviour:
   hitPrefab: {fileID: 116000536}
   rotationOffset: {x: 0, y: 0, z: 0}
   dieIndicator: {fileID: 216550223}
+  target: {fileID: 0}
   canShoot: 1
   init: 0
   hasThrownThisRound: 0
@@ -5963,7 +5966,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &902615174
 Transform:
   m_ObjectHideFlags: 0
@@ -5972,14 +5975,14 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 902615173}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.27059805, y: -0.6532815, z: 0.27059805, w: 0.6532815}
-  m_LocalPosition: {x: 3, y: 4, z: 0}
+  m_LocalRotation: {x: 0.65759325, y: -0.6438651, z: -0.2794263, w: 0.27373317}
+  m_LocalPosition: {x: 2.45, y: 1.39, z: 2.48}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1607547343}
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 45, y: -90, z: 0}
+  m_LocalEulerAnglesHint: {x: 0.011, y: -133.946, z: -91.204}
 --- !u!114 &902615175
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6000,6 +6003,7 @@ MonoBehaviour:
   hitPrefab: {fileID: 116000536}
   rotationOffset: {x: 0, y: 0, z: 0}
   dieIndicator: {fileID: 1110857179}
+  target: {fileID: 0}
   canShoot: 1
   init: 0
   hasThrownThisRound: 0
@@ -6400,7 +6404,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 396939891f650dd44af34ac6f9fba906, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 396939891f650dd44af34ac6f9fba906, type: 3}
       propertyPath: m_TagString
@@ -15570,12 +15574,13 @@ GameObject:
   - component: {fileID: 5655019080185318167}
   - component: {fileID: 4775802025637531968}
   - component: {fileID: 5910634355930215711}
+  - component: {fileID: 5910634355930215712}
   m_Layer: 0
   m_Name: Target
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 2147483647
+  m_StaticEditorFlags: 0
   m_IsActive: 1
 --- !u!114 &5910634355930215711
 MonoBehaviour:
@@ -15590,6 +15595,28 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TargetScript
   spinSpeed: 90
+--- !u!64 &5910634355930215712
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5910634355930215710}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 5
+  m_Convex: 0
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 2403435677658566425, guid: 3f228a64080b15847b99e020b79a73ae, type: 3}
 --- !u!1 &6770144127779624655
 GameObject:
   m_ObjectHideFlags: 0

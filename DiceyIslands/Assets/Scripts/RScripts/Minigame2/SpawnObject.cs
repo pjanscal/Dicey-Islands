@@ -50,6 +50,7 @@ public class SpawnObject : MonoBehaviour
         {
             child.gameObject.SetActive(false);
         }
+<<<<<<< Updated upstream
 
         Transform chosenChild =
             objectToSpawnParent.transform.GetChild(
@@ -62,6 +63,9 @@ public class SpawnObject : MonoBehaviour
         objectToActivate =
             chosenChild.gameObject;
 
+=======
+        objectToActivate = objectToSpawnParent.transform.GetChild(Random.Range(0, objectToSpawnParent.transform.childCount)).gameObject;
+>>>>>>> Stashed changes
         objectToActivate.SetActive(true);
 
         // Play pickup spawn SFX.
