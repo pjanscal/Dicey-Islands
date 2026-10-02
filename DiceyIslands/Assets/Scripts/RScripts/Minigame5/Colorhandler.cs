@@ -39,40 +39,18 @@ public class Colorhandler : MonoBehaviour
 
     void SetRandomColor()
     {
-        Color randomColor =
-            Random.ColorHSV();
+        Color randomColor = Random.ColorHSV();
 
-        randomColor.r =
-            Mathf.Max(
-                randomColor.r,
-                40f / 255f
-            );
+        randomColor.r = Mathf.Max(randomColor.r, 40f / 255f);
+        randomColor.g = Mathf.Max(randomColor.g, 40f / 255f);
+        randomColor.b = Mathf.Max(randomColor.b, 40f / 255f);
 
-        randomColor.g =
-            Mathf.Max(
-                randomColor.g,
-                40f / 255f
-            );
-
-        randomColor.b =
-            Mathf.Max(
-                randomColor.b,
-                40f / 255f
-            );
-
-        foreach (
-            RawImage mainColor
-            in mainColors
-        )
+        foreach (RawImage mainColor in mainColors)
         {
-            mainColor.color =
-                randomColor;
+            mainColor.color = randomColor;
         }
 
-        Debug.Log(
-            "Main color: " +
-            randomColor
-        );
+        Debug.Log($"Main color: {randomColor}");
     }
 
     public void PlayPlayerReadySound()

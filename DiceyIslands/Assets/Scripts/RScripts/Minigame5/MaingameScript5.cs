@@ -213,11 +213,7 @@ public class MaingameScript5 : MonoBehaviour
         playerColorConfirm = true;
         confirmedPlayers.Add(plrId);
         ChangeSliderColor(sliders[selectedSliderIndex], Color.white);
-        if (Colorhandler.instance != null)
-        {
-            Colorhandler.instance
-                .PlayPlayerReadySound();
-        }
+        Colorhandler.instance.PlayPlayerReadySound();
 
         int occupiedPlayerCount = 0;
         foreach (var controller in LokaalConnecter.plrsController.Values)
@@ -229,17 +225,8 @@ public class MaingameScript5 : MonoBehaviour
         if (confirmedPlayers.Count >= occupiedPlayerCount)
         {
             // Everybody has confirmed.
-            if (Colorhandler.instance != null)
-            {
-                Colorhandler.instance
-                    .PlayAllPlayersReadySound();
-            }
-
-            Debug.Log(
-                "Confirmed color: " +
-                targetColor.color
-            );
-
+            Colorhandler.instance.PlayAllPlayersReadySound();
+            Debug.Log($"Confirmed color: {targetColor.color}");
             ShowResult();
         }
     }
