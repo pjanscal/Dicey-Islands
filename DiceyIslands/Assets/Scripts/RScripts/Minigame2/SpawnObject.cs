@@ -43,6 +43,7 @@ public class SpawnObject : MonoBehaviour
 
     public void SpawnRandomObject()
     {
+        // Hide all pickups first.
         foreach (
             Transform child
             in objectToSpawnParent.transform
@@ -50,8 +51,8 @@ public class SpawnObject : MonoBehaviour
         {
             child.gameObject.SetActive(false);
         }
-<<<<<<< Updated upstream
 
+        // Pick one random pickup.
         Transform chosenChild =
             objectToSpawnParent.transform.GetChild(
                 Random.Range(
@@ -63,9 +64,7 @@ public class SpawnObject : MonoBehaviour
         objectToActivate =
             chosenChild.gameObject;
 
-=======
-        objectToActivate = objectToSpawnParent.transform.GetChild(Random.Range(0, objectToSpawnParent.transform.childCount)).gameObject;
->>>>>>> Stashed changes
+        // Show the pickup.
         objectToActivate.SetActive(true);
 
         // Play pickup spawn SFX.
