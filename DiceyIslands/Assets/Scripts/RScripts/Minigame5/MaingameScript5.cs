@@ -33,11 +33,6 @@ public class MaingameScript5 : MonoBehaviour
     [HideInInspector] public readonly Slider[] sliders = new Slider[3];
     private int selectedSliderIndex = 0;
 
-    private static readonly HashSet<int> confirmedPlayers = new(); //... why not mangeren
-    //private static bool colorPrinted = false; ...
-    private static readonly Dictionary<int, Slider[]> playersSliders = new(); //since it is all client i need this /:
-    private static readonly Dictionary<int, TextMeshProUGUI> playersScoreText = new();
-
     LokaalConnecter.PlayerController playerController;
 
     private bool sliderSlowMode = false; //say if it going slow or fast
@@ -83,8 +78,8 @@ public class MaingameScript5 : MonoBehaviour
         ApplyColorFromSliders();
         
         SelectSlider(0);
-        playersSliders.Add(plrId, sliders);
-        playersScoreText.Add(plrId, scoreText);
+        Colorhandler.instance.playersSliders.Add(plrId, sliders);
+        Colorhandler.instance.playersScoreText.Add(plrId, scoreText);
         targetColor = Colorhandler.instance.mainColors[0];
 
         //debug
@@ -211,7 +206,7 @@ public class MaingameScript5 : MonoBehaviour
             return;
 
         playerColorConfirm = true;
-        confirmedPlayers.Add(plrId);
+        Colorhandler.instance.confirmedPlayers.Add(plrId);
         ChangeSliderColor(sliders[selectedSliderIndex], Color.white);
         Colorhandler.instance.PlayPlayerReadySound();
 
@@ -222,7 +217,7 @@ public class MaingameScript5 : MonoBehaviour
                 occupiedPlayerCount++;
         }
 
-        if (confirmedPlayers.Count >= occupiedPlayerCount)
+        if (Colorhandler.instance.confirmedPlayers.Count >= occupiedPlayerCount)
         {
             // Everybody has confirmed.
             Colorhandler.instance.PlayAllPlayersReadySound();
@@ -240,7 +235,7 @@ public class MaingameScript5 : MonoBehaviour
         int redDistance = GetMainColorMaxDistance(0);
         int greenDistance = GetMainColorMaxDistance(1);
         int blueDistance = GetMainColorMaxDistance(2);
-        foreach (int plrId in confirmedPlayers)
+        foreach (int plrId in Colorhandler.instance.confirmedPlayers)
         {
             float totaleScore = 0f;
 
@@ -255,7 +250,7 @@ public class MaingameScript5 : MonoBehaviour
 
         //show the result
         //int placeIndex = 1;
-        foreach (TextMeshProUGUI text in playersScoreText.Values)
+        foreach (TextMeshProUGUI text in Colorhandler.instance.playersScoreText.Values)
         {
             text.enabled = true;
         }
@@ -269,7 +264,7 @@ public class MaingameScript5 : MonoBehaviour
             Tween tween = DOTween.To(() => currentScore, x =>
             {
                 currentScore = x;
-                playersScoreText[plrId].text = currentScore.ToString("F1");
+                Colorhandler.instance.playersScoreText[plrId].text = currentScore.ToString("F1");
             },
             score, duration);
             sequence.Join(tween);
@@ -319,7 +314,7 @@ public class MaingameScript5 : MonoBehaviour
     //ik the name
     float GetScoreOnAColor(int maxValue, int colorId, int plrId)
     {
-        Slider[] playerSliders = playersSliders[plrId];
+        Slider[] playerSliders = Colorhandler.instance.playersSliders[plrId];
         float playerValue = playerSliders[colorId].value;
         float playerDisant = math.abs(Mathf.Round(targetColor.color[colorId] * 255f) - playerValue);
         

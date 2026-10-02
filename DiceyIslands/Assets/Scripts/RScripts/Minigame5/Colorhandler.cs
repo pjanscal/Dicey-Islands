@@ -1,9 +1,13 @@
 using System.Collections;
+using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class Colorhandler : MonoBehaviour
 {
+    //this is my mangeren
+
     public static Colorhandler instance;
 
     public RawImage[] mainColors;
@@ -16,9 +20,15 @@ public class Colorhandler : MonoBehaviour
     [SerializeField] private AudioClip allPlayersReadySound;
     [SerializeField] private AudioClip backgroundMusic;
 
+    //all client use this
+    [HideInInspector] public HashSet<int> confirmedPlayers = new(); //... why not mangeren
+    [HideInInspector] public Dictionary<int, Slider[]> playersSliders = new(); //since it is all client i need this /:
+    [HideInInspector] public Dictionary<int, TextMeshProUGUI> playersScoreText = new();
+
     void Awake()
     {
         instance = this;
+        //Debug.Log($"Colorhandler Awake: {GetInstanceID()} | instance = {instance.GetInstanceID()}");
     }
 
     void Start()
