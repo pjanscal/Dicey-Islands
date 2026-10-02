@@ -21,6 +21,22 @@ public class Minigame4Mangeren : MonoBehaviour
     private bool canGivePotatoDebounce = true;
     private List<int> plrsPlaces = new(); //0 = last one 3 = first one //list have .indexOf so i don't have to find when debugging
 
+    [Header("Audio")]
+    [SerializeField] private AudioSource sfxAudioSource;
+    [SerializeField] private AudioSource musicAudioSource;
+    [SerializeField] private AudioSource tickingAudioSource;
+
+    [SerializeField] private AudioClip playerTaggedSound;
+    [SerializeField] private AudioClip explosionSound;
+    [SerializeField] private AudioClip backgroundMusic;
+    [SerializeField] private AudioClip tickingSound;
+
+    [Header("Ticking Settings")]
+    [SerializeField] private float tickingStartPitch = 0.8f;
+    [SerializeField] private float tickingEndPitch = 2.0f;
+
+
+
     public Transform camaraHolder;
 
     //configs
@@ -46,6 +62,36 @@ public class Minigame4Mangeren : MonoBehaviour
     void Start()
     {
         GameMangeren.startMiniGame += Init;
+
+        if (musicAudioSource != null &&
+            backgroundMusic != null)
+        {
+            musicAudioSource.clip = backgroundMusic;
+            musicAudioSource.loop = true;
+            musicAudioSource.Play();
+        }
+    }
+
+    private void PlayTaggedSound()
+    {
+        if (sfxAudioSource == null ||
+            playerTaggedSound == null)
+            return;
+
+        sfxAudioSource.PlayOneShot(
+            playerTaggedSound
+        );
+    }
+
+    private void PlayExplosionSound()
+    {
+        if (sfxAudioSource == null ||
+            explosionSound == null)
+            return;
+
+        sfxAudioSource.PlayOneShot(
+            explosionSound
+        );
     }
 
     //init when it start
@@ -61,32 +107,98 @@ public class Minigame4Mangeren : MonoBehaviour
     //wait for the potato to explode and do things when it explode
     IEnumerator PlayPotatoLifeTime()
     {
-        float rngTime = UnityEngine.Random.Range(potatoLifeTime.x, potatoLifeTime.y);
-        yield return new WaitForSeconds(rngTime);
+        float rngTime =
+            UnityEngine.Random.Range(
+                potatoLifeTime.x,
+                potatoLifeTime.y
+            );
 
-        //kill the one with potato
+        float elapsedTime = 0f;
+
+        // Start ticking.
+        if (tickingAudioSource != null &&
+            tickingSound != null)
+        {
+            tickingAudioSource.clip =
+                tickingSound;
+
+            tickingAudioSource.loop = true;
+
+            tickingAudioSource.pitch =
+                tickingStartPitch;
+
+            tickingAudioSource.Play();
+        }
+
+        // Count toward the explosion.
+        while (elapsedTime < rngTime)
+        {
+            elapsedTime += Time.deltaTime;
+
+            float progress =
+                Mathf.Clamp01(
+                    elapsedTime / rngTime
+                );
+
+            // Gradually speed up the ticking.
+            if (tickingAudioSource != null)
+            {
+                tickingAudioSource.pitch =
+                    Mathf.Lerp(
+                        tickingStartPitch,
+                        tickingEndPitch,
+                        progress
+                    );
+            }
+
+            yield return null;
+        }
+
+        // Explosion reached.
+        if (tickingAudioSource != null)
+        {
+            tickingAudioSource.Stop();
+            tickingAudioSource.pitch =
+                tickingStartPitch;
+        }
+
+        PlayExplosionSound();
+
+        // Kill the player holding the potato.
         int target = potatoTarget;
+
         canGivePotato = false;
+
         plrsIngame.Remove(target);
         plrsPlaces.Add(target);
 
-        bombVfx.transform.position = plrScripts[target].transform.position;
+        bombVfx.transform.position =
+            plrScripts[target].transform.position;
+
         bombVfx.Play();
+
         potato.SetActive(false);
         potato.transform.SetParent(transform);
-        plrScripts[target].gameObject.SetActive(false); //soon make it better
 
-        print($"player{potatoTarget} is out of the game");
+        plrScripts[target]
+            .gameObject.SetActive(false);
 
-        //check or new round u only one left
+        print(
+            $"player{potatoTarget} is out of the game"
+        );
+
+        // Check if only one player remains.
         if (plrsIngame.Count == 1)
         {
-            plrsPlaces.Add(plrsIngame.ElementAt(0));
+            plrsPlaces.Add(
+                plrsIngame.ElementAt(0)
+            );
+
             EndGame();
             yield break;
         }
 
-        yield return new WaitForSeconds(3); //debug
+        yield return new WaitForSeconds(3);
 
         GiveRandomPlrPotato();
     }
@@ -171,7 +283,11 @@ public class Minigame4Mangeren : MonoBehaviour
         }
 
         plrHittedPlr.Clear();
+
         GivePlrPotato(target);
+
+        // Potato successfully transferred.
+        PlayTaggedSound();
     }
 
     //give a random player a potato
