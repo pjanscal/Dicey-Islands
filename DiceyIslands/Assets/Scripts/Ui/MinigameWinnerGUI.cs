@@ -1,7 +1,10 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading.Tasks;
+using Unity.VectorGraphics;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class MinigameWinnerGUI : MonoBehaviour
@@ -24,8 +27,10 @@ public class MinigameWinnerGUI : MonoBehaviour
     [Header("UI")]
     [SerializeField] private WinnerSlot[] winnerSlots;
     [SerializeField] private CharacterLoader winnerCharacterLoader;
+    [SerializeField] private Light winnerLight;
 
     private Canvas canvas;
+    private Light dirLight;
     private Dictionary<int, Color> playerColors = new();
 
     //configs
@@ -43,12 +48,22 @@ public class MinigameWinnerGUI : MonoBehaviour
         {
             playerColors.Add(playerColorInfo.plrId, playerColorInfo.color);
         }
+
+        GetLighting();
+
+        //setup Connection
+        SceneManager.sceneLoaded += OnSceneChanged;
     }
 
     // Update is called once per frame
     void Update()
     {
         Testing();
+    }
+
+    void OnSceneChanged(UnityEngine.SceneManagement.Scene scene, LoadSceneMode sceneMode) //scene didn't work...
+    {
+        Task.Run(() => GetLighting());
     }
 
     void Testing()
@@ -65,6 +80,19 @@ public class MinigameWinnerGUI : MonoBehaviour
         else TurnOff();
     }
 
+    public void GetLighting()
+    {
+        Light[] allLighting = FindObjectsByType<Light>(FindObjectsSortMode.None);
+
+        foreach (Light light in allLighting)
+        {
+            if (light == winnerLight || light.type != LightType.Directional) continue;
+            dirLight = light;
+            print(dirLight);
+            return;
+        }
+    }
+
     void TurnOn(List<int> places)
     {
         GameMangeren.isShowingResult = true;
@@ -74,15 +102,17 @@ public class MinigameWinnerGUI : MonoBehaviour
             int plrId = places[winnerSlot.place - 1];
             winnerSlot.characterLoader.plrId = plrId;
             print($"place {winnerSlot.place} select new plr{plrId}");
-            winnerSlot.characterLoader.ReLoad(true);
+            winnerSlot.characterLoader.ReLoad();
 
             winnerSlot.background.color = playerColors[plrId];
         }
 
         winnerCharacterLoader.plrId = places[0]; //0 == first
-        winnerCharacterLoader.ReLoad(true);
+        winnerCharacterLoader.ReLoad();
 
         canvas.enabled = true;
+        winnerLight.enabled = true;
+        if (dirLight != null) dirLight.enabled = false;
         StartCoroutine(enumerator());
 
         IEnumerator enumerator()
@@ -102,5 +132,7 @@ public class MinigameWinnerGUI : MonoBehaviour
     {
         GameMangeren.isShowingResult = false;
         canvas.enabled = false;
+        dirLight = null;
+        winnerLight.enabled = false;
     }
 }
