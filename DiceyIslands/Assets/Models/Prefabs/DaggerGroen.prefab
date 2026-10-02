@@ -9,6 +9,18 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: 00181110a79afa149a378372d379295f, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 00181110a79afa149a378372d379295f, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 00181110a79afa149a378372d379295f, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 00181110a79afa149a378372d379295f, type: 3}
       propertyPath: m_LocalPosition.x
       value: 8.119
       objectReference: {fileID: 0}
@@ -48,6 +60,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 00181110a79afa149a378372d379295f, type: 3}
+      propertyPath: m_ConstrainProportionsScale
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: -7511558181221131132, guid: 00181110a79afa149a378372d379295f, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
@@ -55,6 +71,10 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: 00181110a79afa149a378372d379295f, type: 3}
       propertyPath: m_Name
       value: DaggerGroen
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 00181110a79afa149a378372d379295f, type: 3}
+      propertyPath: m_TagString
+      value: Sword
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -89,4 +109,4 @@ BoxCollider:
   m_Enabled: 1
   serializedVersion: 3
   m_Size: {x: 0.22248694, y: 1.213107, z: 0.15578824}
-  m_Center: {x: -0.000000011175871, y: 0.6065535, z: 0}
+  m_Center: {x: -0.000000011175871, y: 0, z: 0}
