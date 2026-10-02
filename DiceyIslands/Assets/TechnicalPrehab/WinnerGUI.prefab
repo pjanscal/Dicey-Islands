@@ -569,7 +569,7 @@ MeshRenderer:
   m_SmallMeshCulling: 1
   m_ForceMeshLod: -1
   m_MeshLodSelectionBias: 0
-  m_RenderingLayerMask: 1
+  m_RenderingLayerMask: 3
   m_RendererPriority: 0
   m_Materials:
   - {fileID: 2100000, guid: 008541be8ad8b3f42a5318e1c4a73d1c, type: 2}
@@ -1101,6 +1101,10 @@ PrefabInstance:
       propertyPath: m_SortingLayer
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5206684727662823703, guid: c0d3a2fa48aa25e43960220f1d3a8455, type: 3}
+      propertyPath: m_RenderingLayerMask
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 6562419930063740893, guid: c0d3a2fa48aa25e43960220f1d3a8455, type: 3}
       propertyPath: m_Name
       value: RockJungle (8)
@@ -1178,6 +1182,10 @@ PrefabInstance:
     - target: {fileID: 5206684727662823703, guid: c0d3a2fa48aa25e43960220f1d3a8455, type: 3}
       propertyPath: m_SortingLayer
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5206684727662823703, guid: c0d3a2fa48aa25e43960220f1d3a8455, type: 3}
+      propertyPath: m_RenderingLayerMask
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 6562419930063740893, guid: c0d3a2fa48aa25e43960220f1d3a8455, type: 3}
       propertyPath: m_Name
@@ -1257,6 +1265,10 @@ PrefabInstance:
       propertyPath: m_SortingLayer
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5206684727662823703, guid: c0d3a2fa48aa25e43960220f1d3a8455, type: 3}
+      propertyPath: m_RenderingLayerMask
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 6562419930063740893, guid: c0d3a2fa48aa25e43960220f1d3a8455, type: 3}
       propertyPath: m_Name
       value: RockJungle (5)
@@ -1334,6 +1346,10 @@ PrefabInstance:
     - target: {fileID: 5206684727662823703, guid: c0d3a2fa48aa25e43960220f1d3a8455, type: 3}
       propertyPath: m_SortingLayer
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5206684727662823703, guid: c0d3a2fa48aa25e43960220f1d3a8455, type: 3}
+      propertyPath: m_RenderingLayerMask
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 6562419930063740893, guid: c0d3a2fa48aa25e43960220f1d3a8455, type: 3}
       propertyPath: m_Name
@@ -1413,6 +1429,10 @@ PrefabInstance:
       propertyPath: m_SortingLayer
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4460213323300405368, guid: 9216ec39d6cd4ba4997e8ec156b216ec, type: 3}
+      propertyPath: m_RenderingLayerMask
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 5732165489466411379, guid: 9216ec39d6cd4ba4997e8ec156b216ec, type: 3}
       propertyPath: m_Name
       value: StairsGras (1)
@@ -1490,6 +1510,10 @@ PrefabInstance:
     - target: {fileID: 5206684727662823703, guid: c0d3a2fa48aa25e43960220f1d3a8455, type: 3}
       propertyPath: m_SortingLayer
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5206684727662823703, guid: c0d3a2fa48aa25e43960220f1d3a8455, type: 3}
+      propertyPath: m_RenderingLayerMask
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 6562419930063740893, guid: c0d3a2fa48aa25e43960220f1d3a8455, type: 3}
       propertyPath: m_Name
@@ -1569,6 +1593,10 @@ PrefabInstance:
       propertyPath: m_SortingLayer
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5206684727662823703, guid: c0d3a2fa48aa25e43960220f1d3a8455, type: 3}
+      propertyPath: m_RenderingLayerMask
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 6562419930063740893, guid: c0d3a2fa48aa25e43960220f1d3a8455, type: 3}
       propertyPath: m_Name
       value: RockJungle (13)
@@ -1647,6 +1675,10 @@ PrefabInstance:
       propertyPath: m_SortingLayer
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5206684727662823703, guid: c0d3a2fa48aa25e43960220f1d3a8455, type: 3}
+      propertyPath: m_RenderingLayerMask
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 6562419930063740893, guid: c0d3a2fa48aa25e43960220f1d3a8455, type: 3}
       propertyPath: m_Name
       value: RockJungle (12)
@@ -1724,6 +1756,10 @@ PrefabInstance:
     - target: {fileID: 5206684727662823703, guid: c0d3a2fa48aa25e43960220f1d3a8455, type: 3}
       propertyPath: m_SortingLayer
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5206684727662823703, guid: c0d3a2fa48aa25e43960220f1d3a8455, type: 3}
+      propertyPath: m_RenderingLayerMask
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 6562419930063740893, guid: c0d3a2fa48aa25e43960220f1d3a8455, type: 3}
       propertyPath: m_Name
@@ -2179,6 +2215,10 @@ PrefabInstance:
       propertyPath: m_SortingLayer
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5206684727662823703, guid: c0d3a2fa48aa25e43960220f1d3a8455, type: 3}
+      propertyPath: m_RenderingLayerMask
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 6562419930063740893, guid: c0d3a2fa48aa25e43960220f1d3a8455, type: 3}
       propertyPath: m_Name
       value: RockJungle (11)
@@ -2257,6 +2297,10 @@ PrefabInstance:
       propertyPath: m_SortingLayer
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5206684727662823703, guid: c0d3a2fa48aa25e43960220f1d3a8455, type: 3}
+      propertyPath: m_RenderingLayerMask
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 6562419930063740893, guid: c0d3a2fa48aa25e43960220f1d3a8455, type: 3}
       propertyPath: m_Name
       value: RockJungle (4)
@@ -2330,6 +2374,10 @@ PrefabInstance:
     - target: {fileID: 4460213323300405368, guid: 9216ec39d6cd4ba4997e8ec156b216ec, type: 3}
       propertyPath: m_SortingLayer
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4460213323300405368, guid: 9216ec39d6cd4ba4997e8ec156b216ec, type: 3}
+      propertyPath: m_RenderingLayerMask
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 5732165489466411379, guid: 9216ec39d6cd4ba4997e8ec156b216ec, type: 3}
       propertyPath: m_Name
@@ -2408,6 +2456,10 @@ PrefabInstance:
     - target: {fileID: 5206684727662823703, guid: c0d3a2fa48aa25e43960220f1d3a8455, type: 3}
       propertyPath: m_SortingLayer
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5206684727662823703, guid: c0d3a2fa48aa25e43960220f1d3a8455, type: 3}
+      propertyPath: m_RenderingLayerMask
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 6562419930063740893, guid: c0d3a2fa48aa25e43960220f1d3a8455, type: 3}
       propertyPath: m_Name
@@ -2695,6 +2747,10 @@ PrefabInstance:
       propertyPath: m_SortingLayer
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5206684727662823703, guid: c0d3a2fa48aa25e43960220f1d3a8455, type: 3}
+      propertyPath: m_RenderingLayerMask
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 6562419930063740893, guid: c0d3a2fa48aa25e43960220f1d3a8455, type: 3}
       propertyPath: m_Name
       value: RockJungle (3)
@@ -2720,6 +2776,10 @@ PrefabInstance:
     - target: {fileID: 792106476708403797, guid: 56ab3b1b51280434eae47600f0b99007, type: 3}
       propertyPath: m_SortingLayer
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 792106476708403797, guid: 56ab3b1b51280434eae47600f0b99007, type: 3}
+      propertyPath: m_RenderingLayerMask
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 5210352275278279525, guid: 56ab3b1b51280434eae47600f0b99007, type: 3}
       propertyPath: m_Name
@@ -2839,6 +2899,10 @@ PrefabInstance:
       propertyPath: m_SortingLayer
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5206684727662823703, guid: c0d3a2fa48aa25e43960220f1d3a8455, type: 3}
+      propertyPath: m_RenderingLayerMask
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 6562419930063740893, guid: c0d3a2fa48aa25e43960220f1d3a8455, type: 3}
       propertyPath: m_Name
       value: RockJungle (7)
@@ -2916,6 +2980,10 @@ PrefabInstance:
     - target: {fileID: 5206684727662823703, guid: c0d3a2fa48aa25e43960220f1d3a8455, type: 3}
       propertyPath: m_SortingLayer
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5206684727662823703, guid: c0d3a2fa48aa25e43960220f1d3a8455, type: 3}
+      propertyPath: m_RenderingLayerMask
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 6562419930063740893, guid: c0d3a2fa48aa25e43960220f1d3a8455, type: 3}
       propertyPath: m_Name

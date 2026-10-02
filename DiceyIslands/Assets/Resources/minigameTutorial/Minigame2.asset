@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::MinigameTutorialConfigs
   minigameId: 2
   bg: {fileID: 21300000, guid: ad28cfaf7b7adc34c8155e56dada67c4, type: 3}
-  videoClip: {fileID: 0}
+  videoClip: {fileID: 32900000, guid: 16756f825a1bf5a4296542de9fb3d829, type: 3}
   keyBindsInfo:
   - keybind: 1
-    actionName: 'Press:'
+    actionName: 'Steal:'
