@@ -522,6 +522,12 @@ public static class LokaalConnecter
         outOfMatchMaking?.Invoke(true); //send the event to sartschrem to load scene if it is not there then it won't switch scene
         GameMangeren.inGame = true; //it would be a prob to make true = true :3* if this is found
         GameMangeren.plrInGame = currentPlr;
+
+        //disable useless thing to reduce lag
+        foreach (LokaalCharSelectSlot charSelectSlot in allCharacterSlots.Values)
+        {
+            charSelectSlot.previewFrame.gameObject.SetActive(false);
+        }
     }
 
     //make the cpu on

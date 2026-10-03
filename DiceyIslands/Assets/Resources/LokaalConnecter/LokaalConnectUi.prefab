@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 6298236495708344393}
   - component: {fileID: 6500183058562729616}
   - component: {fileID: 940993532716193745}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: ButtonMove
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -87,7 +87,7 @@ GameObject:
   - component: {fileID: 6944662338266893072}
   - component: {fileID: 5794168443098661016}
   - component: {fileID: 7494966982470293721}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Exit
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -219,7 +219,7 @@ GameObject:
   - component: {fileID: 8105339154208039118}
   - component: {fileID: 5984569608861360901}
   - component: {fileID: 2780079893587012916}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: DiffucultyFrame
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -309,7 +309,7 @@ GameObject:
   - component: {fileID: 6169655613811917220}
   - component: {fileID: 8695119611077069316}
   - component: {fileID: 2076747219116619912}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: BG
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -522,7 +522,7 @@ GameObject:
   - component: {fileID: 4350625198867656399}
   - component: {fileID: 3039664113512926040}
   - component: {fileID: 3610919921990002899}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Exit
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -653,7 +653,7 @@ GameObject:
   - component: {fileID: 7218027788548721454}
   - component: {fileID: 7901091857248518821}
   - component: {fileID: 658828656391264797}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Tutorial
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -810,7 +810,7 @@ GameObject:
   - component: {fileID: 8151993919759720488}
   - component: {fileID: 2509050803179397002}
   - component: {fileID: 2526422313806746380}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: <
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -900,7 +900,7 @@ GameObject:
   - component: {fileID: 937921136908453485}
   - component: {fileID: 7878832069571813982}
   - component: {fileID: 5995049437445055638}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Text (TMP)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1116,7 +1116,7 @@ GameObject:
   - component: {fileID: 3839869204554534580}
   - component: {fileID: 8031740886954394709}
   - component: {fileID: 2626521481829595019}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: CPU Icon
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1191,7 +1191,7 @@ GameObject:
   - component: {fileID: 8487310433173971411}
   - component: {fileID: 9037846795566091504}
   - component: {fileID: 1926005926160758034}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: CharacterSelect
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1267,7 +1267,7 @@ GameObject:
   - component: {fileID: 3354577424152622821}
   - component: {fileID: 5035514129422141610}
   - component: {fileID: 2428689249474421900}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: ButtonX
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1343,7 +1343,7 @@ GameObject:
   - component: {fileID: 3623007576472608951}
   - component: {fileID: 7958135714389300746}
   - component: {fileID: 46382333480859018}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: '>'
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1435,7 +1435,7 @@ GameObject:
   - component: {fileID: 3326687105643950910}
   - component: {fileID: 7695221912187018449}
   - component: {fileID: 9056301588257937309}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: start
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1780,7 +1780,7 @@ GameObject:
   - component: {fileID: 5918875016116209087}
   - component: {fileID: 1284471963916984416}
   - component: {fileID: 99193033232142015}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: DifficultySelect
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1863,7 +1863,7 @@ GameObject:
   - component: {fileID: 4451617894192501440}
   - component: {fileID: 6563280412824139037}
   - component: {fileID: 8718529355476645452}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Text (TMP)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2004,7 +2004,7 @@ GameObject:
   - component: {fileID: 8536530149298153598}
   - component: {fileID: 2357656136486821609}
   - component: {fileID: 948543123991312625}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: ButtonMove
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2079,7 +2079,7 @@ GameObject:
   - component: {fileID: 3545315403325238245}
   - component: {fileID: 2200862926368214891}
   - component: {fileID: 1690013888874039141}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Text (TMP)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2349,7 +2349,7 @@ GameObject:
   - component: {fileID: 370123334516302078}
   - component: {fileID: 6360269903004137790}
   - component: {fileID: 5049267236266048352}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Tutorial
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2701,7 +2701,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2904095974808974096}
   - component: {fileID: 192674917297835456}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Dissconnected
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2753,7 +2753,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7549844383461716149}
   - component: {fileID: 2675350755762923159}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: CharSelect
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2806,7 +2806,7 @@ GameObject:
   - component: {fileID: 8782355696500690743}
   - component: {fileID: 5120547823491525848}
   - component: {fileID: 7674741292944963099}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Text (TMP)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2943,7 +2943,7 @@ GameObject:
   - component: {fileID: 6386628579858117107}
   - component: {fileID: 1202425774747329156}
   - component: {fileID: 4794050781385179395}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: ButtonB
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3018,7 +3018,7 @@ GameObject:
   - component: {fileID: 6845845648807413633}
   - component: {fileID: 8475024987601005059}
   - component: {fileID: 1004943591653893423}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: DiffucultyInfoHolder
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3095,7 +3095,7 @@ GameObject:
   - component: {fileID: 8706872443819579904}
   - component: {fileID: 3007120743894821186}
   - component: {fileID: 628282757186879515}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: ButtonB
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3245,7 +3245,7 @@ GameObject:
   - component: {fileID: 4756221657197023807}
   - component: {fileID: 3214560863177105680}
   - component: {fileID: 2247542447446689857}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: ButtonX
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3320,7 +3320,7 @@ GameObject:
   - component: {fileID: 2695390734875845143}
   - component: {fileID: 2985960430005546966}
   - component: {fileID: 5601288203748516235}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: CPUSelect
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3559,6 +3559,10 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: -302.55014
       objectReference: {fileID: 0}
+    - target: {fileID: 3039788417231126407, guid: 6a46df69a8367c140af71345b356429a, type: 3}
+      propertyPath: m_CullingMask.m_Bits
+      value: 32
+      objectReference: {fileID: 0}
     - target: {fileID: 3090399637608446313, guid: 6a46df69a8367c140af71345b356429a, type: 3}
       propertyPath: m_SizeDelta.x
       value: 152.69
@@ -3755,6 +3759,10 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 344
       objectReference: {fileID: 0}
+    - target: {fileID: 8939403977009026788, guid: 6a46df69a8367c140af71345b356429a, type: 3}
+      propertyPath: m_CullingMask.m_Bits
+      value: 32
+      objectReference: {fileID: 0}
     - target: {fileID: 9147335607429226383, guid: 6a46df69a8367c140af71345b356429a, type: 3}
       propertyPath: m_Enabled
       value: 1
@@ -3856,6 +3864,10 @@ PrefabInstance:
       propertyPath: m_TargetTexture
       value: 
       objectReference: {fileID: 8400000, guid: 7d13a8206833f3d459b8acfe86369e94, type: 2}
+    - target: {fileID: 3039788417231126407, guid: 6a46df69a8367c140af71345b356429a, type: 3}
+      propertyPath: m_CullingMask.m_Bits
+      value: 32
+      objectReference: {fileID: 0}
     - target: {fileID: 3090399637608446313, guid: 6a46df69a8367c140af71345b356429a, type: 3}
       propertyPath: m_SizeDelta.x
       value: 152.69
@@ -4084,6 +4096,10 @@ PrefabInstance:
       propertyPath: m_TargetTexture
       value: 
       objectReference: {fileID: 8400000, guid: 5db54dd4042335a4d8a0fe318e6d121c, type: 2}
+    - target: {fileID: 8939403977009026788, guid: 6a46df69a8367c140af71345b356429a, type: 3}
+      propertyPath: m_CullingMask.m_Bits
+      value: 32
+      objectReference: {fileID: 0}
     - target: {fileID: 9147335607429226383, guid: 6a46df69a8367c140af71345b356429a, type: 3}
       propertyPath: m_Sprite
       value: 
@@ -4409,6 +4425,10 @@ PrefabInstance:
       propertyPath: m_TargetTexture
       value: 
       objectReference: {fileID: 8400000, guid: 08be8335e09167d4b831dac238399e54, type: 2}
+    - target: {fileID: 3039788417231126407, guid: 6a46df69a8367c140af71345b356429a, type: 3}
+      propertyPath: m_CullingMask.m_Bits
+      value: 32
+      objectReference: {fileID: 0}
     - target: {fileID: 3090399637608446313, guid: 6a46df69a8367c140af71345b356429a, type: 3}
       propertyPath: m_SizeDelta.x
       value: 152.69
@@ -4637,6 +4657,10 @@ PrefabInstance:
       propertyPath: m_TargetTexture
       value: 
       objectReference: {fileID: 8400000, guid: 2a84471f6aa36634f9f3fa22f57c3d6f, type: 2}
+    - target: {fileID: 8939403977009026788, guid: 6a46df69a8367c140af71345b356429a, type: 3}
+      propertyPath: m_CullingMask.m_Bits
+      value: 32
+      objectReference: {fileID: 0}
     - target: {fileID: 9147335607429226383, guid: 6a46df69a8367c140af71345b356429a, type: 3}
       propertyPath: m_Sprite
       value: 
@@ -4742,6 +4766,10 @@ PrefabInstance:
       propertyPath: m_TargetTexture
       value: 
       objectReference: {fileID: 8400000, guid: f781dd1c036fa4e49ad7fab12a7897d1, type: 2}
+    - target: {fileID: 3039788417231126407, guid: 6a46df69a8367c140af71345b356429a, type: 3}
+      propertyPath: m_CullingMask.m_Bits
+      value: 32
+      objectReference: {fileID: 0}
     - target: {fileID: 3090399637608446313, guid: 6a46df69a8367c140af71345b356429a, type: 3}
       propertyPath: m_SizeDelta.x
       value: 152.69
@@ -4970,6 +4998,10 @@ PrefabInstance:
       propertyPath: m_TargetTexture
       value: 
       objectReference: {fileID: 8400000, guid: f3579acfdbf464a41bf5616ad90368ee, type: 2}
+    - target: {fileID: 8939403977009026788, guid: 6a46df69a8367c140af71345b356429a, type: 3}
+      propertyPath: m_CullingMask.m_Bits
+      value: 32
+      objectReference: {fileID: 0}
     - target: {fileID: 9147335607429226383, guid: 6a46df69a8367c140af71345b356429a, type: 3}
       propertyPath: m_Sprite
       value: 

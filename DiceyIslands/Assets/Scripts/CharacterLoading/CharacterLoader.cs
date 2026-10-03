@@ -22,6 +22,7 @@ public class CharacterLoader : MonoBehaviour
     private GameObject character; //help finding the char in a instant
     [HideInInspector] public Animator animator; //char animator
     private VisualeEffectAnimatorSupport vfxController;
+    private int layer; //the layer it gonna to be
 
     //configs
     [Header("Configs")]
@@ -31,6 +32,7 @@ public class CharacterLoader : MonoBehaviour
 
     void Awake()
     {
+        layer = gameObject.layer;
         if (canConnectToMangener) GameMangeren.AddCharLoader(plrId, this);
     }
 
@@ -111,11 +113,20 @@ public class CharacterLoader : MonoBehaviour
     void PlaceCharacterDown(GameObject newCharacter)
     {
         character = Instantiate(newCharacter, transform);
-
-        //set position good
-        character.transform.localPosition = Vector3.zero;
+        character.transform.localPosition = Vector3.zero; //set pos good
+        SetLayer(character); //reduce the lag if this is ui
 
         animator = character.GetComponent<Animator>();
         vfxController = character.GetComponent<VisualeEffectAnimatorSupport>();
+
+        void SetLayer(GameObject gameObject)
+        {
+            gameObject.layer = layer;
+            
+            foreach (Transform child in gameObject.transform)
+            {
+                SetLayer(child.gameObject);
+            }
+        }
     }
 }

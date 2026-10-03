@@ -17,7 +17,7 @@ public class LokaalCharSelectSlot : MonoBehaviour
     }
 
     [Header("ui")]
-    [SerializeField] private Transform previewFrame;
+    public Transform previewFrame;
     [SerializeField] private TextMeshProUGUI nameDisplay;
     [SerializeField] private Image[] arrows;
     [SerializeField] private Image downTutorial;
@@ -78,6 +78,7 @@ public class LokaalCharSelectSlot : MonoBehaviour
         }
         downTutorial.enabled = false;
         downReadyText.enabled = false;
+        previewFrame.gameObject.SetActive(false);
     }
 
     // Update is called once per frame

@@ -130,7 +130,14 @@ public class LokaalMatchingUi : MonoBehaviour
     {
         if (state)
         {
-            if (isCharSelect) EnableGui(charSelectGui, true);
+            if (isCharSelect)
+            {
+                foreach (LokaalCharSelectSlot charSelectSlot in LokaalConnecter.allCharacterSlots.Values)
+                {
+                    charSelectSlot.previewFrame.gameObject.SetActive(true);
+                }
+                EnableGui(charSelectGui, true);
+            }
             //else EnableGui(dissconnectGui, true);
         }
         else
@@ -175,9 +182,13 @@ public class LokaalMatchingUi : MonoBehaviour
         else
         {
             LokaalConnecter.SwitchMatchMaking(false);
-            LokaalConnecter.outOfMatchMaking(false);
+            LokaalConnecter.outOfMatchMaking?.Invoke(false);
 
             LokaalConnecter.ResetLokaal();
+            foreach (LokaalCharSelectSlot charSelectSlot in LokaalConnecter.allCharacterSlots.Values)
+            {
+                charSelectSlot.previewFrame.gameObject.SetActive(false);
+            }
         }
     }
 
@@ -241,28 +252,26 @@ public class LokaalMatchingUi : MonoBehaviour
     #if UNITY_EDITOR
     void TryConnectingKeyboard()
     {
-        #if UNITY_EDITOR
-            //get ur keyboard
-            Keyboard keyboard = Keyboard.current;
+        //get ur keyboard
+        Keyboard keyboard = Keyboard.current;
 
-            //check if it not being use again 
-            if (!ControllIsFree()) return; //in foreach statement else when added it won't count that
+        //check if it not being use again 
+        if (!ControllIsFree()) return; //in foreach statement else when added it won't count that
 
-            //check if it press join button
-            if (!keyboard[Key.P].wasPressedThisFrame) return;
+        //check if it press join button
+        if (!keyboard[Key.P].wasPressedThisFrame) return;
 
-            //loop until having a avible keyboardId
-            int keyboardId = 1;
-            for (; keyboardId <= LokaalConnecter.maxKeyboardTester; keyboardId++)
-            {
-                if (!LokaalConnecter.alrUsedKeyboardId.Contains(keyboardId)) break;
-            }
+        //loop until having a avible keyboardId
+        int keyboardId = 1;
+        for (; keyboardId <= LokaalConnecter.maxKeyboardTester; keyboardId++)
+        {
+            if (!LokaalConnecter.alrUsedKeyboardId.Contains(keyboardId)) break;
+        }
 
-            if (keyboardId > LokaalConnecter.maxKeyboardTester) return;
+        if (keyboardId > LokaalConnecter.maxKeyboardTester) return;
 
-            //connect it
-            LokaalConnecter.ConnectKeyboard(keyboard, keyboardId);
-        #endif
+        //connect it
+        LokaalConnecter.ConnectKeyboard(keyboard, keyboardId);
     }
 
     void TryForceLoadingLokaalMatch()

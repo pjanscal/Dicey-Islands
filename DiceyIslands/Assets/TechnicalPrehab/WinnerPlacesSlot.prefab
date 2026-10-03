@@ -51,7 +51,7 @@ MonoBehaviour:
   plrId: 0
   animator: {fileID: 0}
   canConnectToMangener: 0
-  autoCharacter: 1
+  autoCharacter: 0
 --- !u!1 &1095127291650706336
 GameObject:
   m_ObjectHideFlags: 0
@@ -292,7 +292,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &4847149088162781045
 RectTransform:
   m_ObjectHideFlags: 0
@@ -507,7 +507,7 @@ Camera:
   m_Depth: 0
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 32
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 8400000, guid: ece296827828b44458fde9c1657ba261, type: 2}
   m_TargetDisplay: 0
