@@ -64,11 +64,19 @@ public class CharacterLoader : MonoBehaviour
         PlaceCharacterDown(charData.character);
     }
 
-    public void ReLoad()
+    public void ReLoad(bool isLightLevelOne = false)
     {
         plrData = GameMangeren.GetPlrDataFromId(plrId);
         Destroy(character);
         SetUpCharacter();
+        
+        //set the lighting good
+        if (!isLightLevelOne) return;
+
+        foreach (SkinnedMeshRenderer skinnedMeshRenderer in character.GetComponentsInChildren<SkinnedMeshRenderer>())
+        {
+            skinnedMeshRenderer.renderingLayerMask = 1u << 1;
+        }
     }
 
     public void ReLoadCharacterId(int characterId)
