@@ -70,6 +70,7 @@ public class Minigame4Mangeren : MonoBehaviour
         }
     }
 
+    #region Audio
     private void PlayTaggedSound()
     {
         if (sfxAudioSource == null ||
@@ -91,6 +92,7 @@ public class Minigame4Mangeren : MonoBehaviour
             explosionSound
         );
     }
+    #endregion
 
     //init when it start
     public void Init()
@@ -185,6 +187,7 @@ public class Minigame4Mangeren : MonoBehaviour
         GameMangeren.MinigameWinner(plrsPlaces);
     }
 
+    #region Give Potato Logic
     //give the plr a potato
     void GivePlrPotato(int plrId)
     {
@@ -270,5 +273,5 @@ public class Minigame4Mangeren : MonoBehaviour
         //start it
         StartCoroutine(PlayPotatoLifeTime());
     }
-    
+    #endregion
 }

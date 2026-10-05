@@ -110,7 +110,7 @@ public class CPUMinigame5: CPUMangeren
         }
     }
 
-    //helper function
+    #region Helper Function
     Slider[] GetSliderFromPlrId(int plrId)
     {
         MaingameScript5 maingameScript5 = allMaingameScript5[plrId - 1];
@@ -124,4 +124,5 @@ public class CPUMinigame5: CPUMangeren
         int distance = colorValue < (255 / 2)? 255 - colorValue : colorValue; //255 is like the color things
         return distance;
     }
+    #endregion
 }

@@ -29,7 +29,7 @@ public class LoadingScreen : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
         if (!GameMangeren.isLoading) return;
 
@@ -39,7 +39,7 @@ public class LoadingScreen : MonoBehaviour
     //update the dot dot dot text
     void UpdateText()
     {
-        currentTimerBetweenTextUpdate += Time.deltaTime;
+        currentTimerBetweenTextUpdate += Time.fixedDeltaTime;
         if (currentTimerBetweenTextUpdate < timeBetweenTextUpdate) return; //wait until it get a other dot
 
         amountOfDot = (amountOfDot + 1) %(maxAmountOfDot + 1); //reset it when reaching 4
@@ -65,6 +65,7 @@ public class LoadingScreen : MonoBehaviour
     {
         canvas.enabled = true;
         GameMangeren.isLoading = true;
+        yield return null; //wait one frame for loading
 
         //setup
         AsyncOperation operation = SceneManager.LoadSceneAsync(sceneName);

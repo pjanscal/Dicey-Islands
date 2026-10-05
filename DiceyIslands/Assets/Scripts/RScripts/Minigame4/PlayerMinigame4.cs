@@ -51,6 +51,7 @@ public class PlayerMinigame4 : MonoBehaviour
         Move();
     }
 
+    #region Movement
     //move the player
     void Move()
     {
@@ -87,6 +88,7 @@ public class PlayerMinigame4 : MonoBehaviour
         
         transform.rotation = Quaternion.RotateTowards(transform.rotation, dir, 360 * rotateSpeed * Time.deltaTime);
     }
+    #endregion
 
     void OnControllerColliderHit(ControllerColliderHit hit)
     {
@@ -97,6 +99,7 @@ public class PlayerMinigame4 : MonoBehaviour
         Minigame4Mangeren.instance.plrHittedPlr.Add((plrId, playerMinigame4.plrId));
     }
 
+    #region helper funcion
     //get the speed based on ur movementType
     float GetSpeed()
     {
@@ -104,4 +107,5 @@ public class PlayerMinigame4 : MonoBehaviour
         else if (movementType == MovementType.potatoRunning) return potatoHoldSpeed;
         else return runSpeed;
     }
+    #endregion
 }

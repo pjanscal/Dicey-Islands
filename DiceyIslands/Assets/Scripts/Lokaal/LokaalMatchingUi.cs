@@ -78,6 +78,8 @@ public class LokaalMatchingUi : MonoBehaviour
         #endif
     }
 
+    #region DebugModes
+    #if UNITY_EDITOR
     //debug to delete all cpu if u wanna play alone to test one part
     void DeleteAllCpu()
     {
@@ -124,7 +126,20 @@ public class LokaalMatchingUi : MonoBehaviour
             }
         }
     }
+    
+    void TryForceLoadingLokaalMatch()
+    {  
+        if (LokaalConnecter.connectionType != LokaalConnecter.ConnectionTypes.nothing) return;
 
+        if (Keyboard.current[Key.LeftBracket].wasPressedThisFrame)
+        {
+            LokaalConnecter.SwitchMatchMaking(true);
+        }
+    }
+    #endif
+    #endregion
+
+    #region GUI Switch Logic
     //enable or disable the ui
     public void SwitchVisible(bool state, bool isCharSelect)
     {
@@ -170,6 +185,7 @@ public class LokaalMatchingUi : MonoBehaviour
         Gui.blocksRaycasts = state;
         Gui.interactable = state;
     }
+    #endregion
 
     //go exit it
     public void ExitLokaal()
@@ -192,6 +208,7 @@ public class LokaalMatchingUi : MonoBehaviour
         }
     }
 
+    #region Connection Logic
     //when smth happend where the ui need to be fix it is the function for it
     public void ChangeOutputUi(int plrId, ConnectionTypes connectionType)
     {
@@ -273,17 +290,6 @@ public class LokaalMatchingUi : MonoBehaviour
         //connect it
         LokaalConnecter.ConnectKeyboard(keyboard, keyboardId);
     }
-
-    void TryForceLoadingLokaalMatch()
-    {  
-        if (LokaalConnecter.connectionType != LokaalConnecter.ConnectionTypes.nothing) return;
-
-        if (Keyboard.current[Key.LeftBracket].wasPressedThisFrame)
-        {
-            LokaalConnecter.SwitchMatchMaking(true);
-        }
-    }
-
     #endif
 
     void TryConnectingControllers()
@@ -324,4 +330,5 @@ public class LokaalMatchingUi : MonoBehaviour
         //look or a id is inside the list
         return LokaalConnecter.alrUsedControllers.Contains(gamepad.deviceId);
     }
+    #endregion
 }

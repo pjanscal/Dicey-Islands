@@ -238,6 +238,7 @@ public class LokaalCharSelectSlot : MonoBehaviour
         return !LokaalConnecter.charLeft.Contains(charId);
     }
 
+    #region State Logic
     //init when a whole state is going to change
     public void SwitchState(LokaalConnecter.characterSelectState state) //3 state begin, selecting, ready
     {
@@ -251,7 +252,6 @@ public class LokaalCharSelectSlot : MonoBehaviour
         currentState = state;
     }
 
-    //--all of state function--//
     void SetupConnecting()
     {
         ToggleColor(bgImage, bgDisableColor);
@@ -311,7 +311,7 @@ public class LokaalCharSelectSlot : MonoBehaviour
             arrow.enabled = false;
         }
     }
-    //--ended--//
+    #endregion
 
     //change a image color to ur target color
     void ToggleColor(Graphic target, Color targetColor)
@@ -321,6 +321,7 @@ public class LokaalCharSelectSlot : MonoBehaviour
         .SetEase(Ease.OutSine).SetUpdate(true);
     }
 
+    #region Switching Preview Logic
     //helper function to get wich preview i am gonna change
     void SwitchCharacterPreviewUI(Vector2 dir)
     {
@@ -369,9 +370,9 @@ public class LokaalCharSelectSlot : MonoBehaviour
 
         previewPrimeSelected = !previewPrimeSelected;
     }
+    #endregion
 
     //init when going ready up
-    //beta
     void ToggleReadyUp(bool state)
     {
         isReadyUp = state;

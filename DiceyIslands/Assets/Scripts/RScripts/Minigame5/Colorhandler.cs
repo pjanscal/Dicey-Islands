@@ -63,6 +63,7 @@ public class Colorhandler : MonoBehaviour
         Debug.Log($"Main color: {randomColor}");
     }
 
+    #region Audio
     public void PlayPlayerReadySound()
     {
         if (sfxAudioSource == null ||
@@ -84,4 +85,5 @@ public class Colorhandler : MonoBehaviour
             allPlayersReadySound
         );
     }
+    #endregion
 }

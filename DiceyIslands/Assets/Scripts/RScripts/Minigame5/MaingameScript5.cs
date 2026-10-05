@@ -94,18 +94,12 @@ public class MaingameScript5 : MonoBehaviour
 
         HandleSliderControl();
         SlowMode();
-
-
-        if (playerController.GetButtonDown(LokaalConnecter.InputType.x))
-        {
-            ConfirmColor();
-        }
+        ConfirmColor();
     }
 
     void HandleSliderControl()
     {
-        if (playerController == null || !playerController.occuplied)
-            return;
+        if (!playerController.GetButtonDown(LokaalConnecter.InputType.x)) return;
 
         Vector2? moveDir = GetMoveDir(); //doing like this could make it so x is not use
         

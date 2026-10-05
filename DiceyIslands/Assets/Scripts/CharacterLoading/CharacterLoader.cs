@@ -66,19 +66,19 @@ public class CharacterLoader : MonoBehaviour
         PlaceCharacterDown(charData.character);
     }
 
-    public void ReLoad(bool isLightLevelOne = false)
+    public void ReLoad()
     {
         plrData = GameMangeren.GetPlrDataFromId(plrId);
         Destroy(character);
         SetUpCharacter();
         
-        //set the lighting good
+        /*set the lighting good
         if (!isLightLevelOne) return;
 
         foreach (SkinnedMeshRenderer skinnedMeshRenderer in character.GetComponentsInChildren<SkinnedMeshRenderer>())
         {
             skinnedMeshRenderer.renderingLayerMask = 1u << 1;
-        }
+        }*/
     }
 
     public void ReLoadCharacterId(int characterId)
@@ -88,8 +88,7 @@ public class CharacterLoader : MonoBehaviour
         PlaceCharacterDown(characterData.character);
     }
 
-    //--Animation--
-
+    #region Animation
     public void UseAnimation(CharactersAnimationTriggerEvent animationEvent)
     {
         if (!animator) {Debug.LogError($"no animator is in {character} or in plr{plrId}"); return;}
@@ -106,8 +105,7 @@ public class CharacterLoader : MonoBehaviour
         
         animator.SetBool(booleanEvent.ToString(), state);
     }
-
-    //--ended--
+    #endregion
 
     //so 2 function can use it*
     void PlaceCharacterDown(GameObject newCharacter)

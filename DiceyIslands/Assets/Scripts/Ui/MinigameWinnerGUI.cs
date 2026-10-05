@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class MinigameWinnerGUI : MonoBehaviour
@@ -26,8 +27,10 @@ public class MinigameWinnerGUI : MonoBehaviour
     [SerializeField] private WinnerSlot[] winnerSlots;
     [SerializeField] private CharacterLoader winnerCharacterLoader;
     [SerializeField] private GameObject winnerFrame; //reduce lag to disable it
+    [SerializeField] private Light guiLighting; //light of the gui
 
     private Canvas canvas;
+    private Light minigameLighting; //direction light of the minigame
     private Dictionary<int, Color> playerColors = new();
 
     //configs
@@ -45,6 +48,11 @@ public class MinigameWinnerGUI : MonoBehaviour
         {
             playerColors.Add(playerColorInfo.plrId, playerColorInfo.color);
         }
+
+        //debug
+        #if UNITY_EDITOR
+            GetSceneDirectionLighting();
+        #endif
     }
 
     // Update is called once per frame
@@ -63,7 +71,13 @@ public class MinigameWinnerGUI : MonoBehaviour
     }
     #endif
 
+    //on sceneLoad Init
+    public void OnSceneLoad()
+    {
+        GetSceneDirectionLighting();
+    }
 
+    #region Toggle Logic
     public void Toggle(bool state, List<int> places = null)
     {
         if (state) TurnOn(places);
@@ -76,7 +90,7 @@ public class MinigameWinnerGUI : MonoBehaviour
 
         winnerFrame.SetActive(true);
         winnerCharacterLoader.plrId = places[0]; //0 == first
-        winnerCharacterLoader.ReLoad(true);
+        winnerCharacterLoader.ReLoad();
 
         foreach (WinnerSlot winnerSlot in winnerSlots)
         {
@@ -84,7 +98,7 @@ public class MinigameWinnerGUI : MonoBehaviour
 
             int plrId = places[winnerSlot.place - 1];
             winnerSlot.characterLoader.plrId = plrId;
-            winnerSlot.characterLoader.ReLoad(true);
+            winnerSlot.characterLoader.ReLoad();
 
             winnerSlot.background.color = playerColors[plrId];
             print($"place {winnerSlot.place} select new plr{plrId}");
@@ -95,12 +109,14 @@ public class MinigameWinnerGUI : MonoBehaviour
         IEnumerator enumerator()
         {
             yield return null;
+            guiLighting.enabled = true;
+            if (minigameLighting != null) minigameLighting.enabled = false;
             canvas.enabled = true; //make sure that it loaded
 
             yield return new WaitForSeconds(lookTime);
 
             //go to BoardGame
-            if (MatchData.Instance == null) {Debug.LogError("no matchData to return to...");}
+            if (MatchData.Instance == null) {Debug.LogError("no matchData to return to..."); yield break;}
             MatchData.Instance.returningFromMinigame = true;
             GameMangeren.SwitchScene(GameMangeren.boardGameSceneName);
 
@@ -112,6 +128,7 @@ public class MinigameWinnerGUI : MonoBehaviour
     {
         GameMangeren.isShowingResult = false;
         canvas.enabled = false;
+        guiLighting.enabled = false;
 
         //reduce all lag what is not needed
         foreach (WinnerSlot winnerSlot in winnerSlots)
@@ -121,4 +138,20 @@ public class MinigameWinnerGUI : MonoBehaviour
 
         winnerFrame.SetActive(false);
     }
+    #endregion
+
+    #region Helper Function
+    void GetSceneDirectionLighting()
+    {
+        foreach (Light light in FindObjectsByType<Light>(FindObjectsSortMode.None))
+        {
+            if (light == guiLighting || light.type != LightType.Directional) continue;
+            minigameLighting = light;
+            return;
+        }
+
+        minigameLighting = null; //fail safe
+        Debug.LogWarning("no dir lighting");
+    }
+    #endregion
 }

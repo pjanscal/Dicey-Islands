@@ -24,23 +24,6 @@ public static class LokaalConnecter
     *u can use occupied to see if it already but it won't bug if u ask input it just return false or vector2.zero
     */
 
-    //yo DDD it is me DDD check soon what happend if u getbuttondown after a frame and before that it is asked can it be used? 
-    //btw cpu need to reset on reset do it torrmorrow
-
-    //must be outside here so the script can use it and the other one don't need to look inside playercontoller
-    public enum InputType //so u can ask for jump or movement and it return the thing
-    {
-        jump,
-        x,
-        secondAction, // o on ps5 idk the name
-        y,
-        Pause,
-        left,
-        right,
-        up,
-        down
-    }
-
     //so ik if u can't connect, canconnect or need to reconnect
     public enum ConnectionTypes
     {
@@ -56,6 +39,21 @@ public static class LokaalConnecter
         Connecting,
         Choosing,
         Finish
+    }
+
+    #region PlayerController
+    //must be outside here so the script can use it and the other one don't need to look inside playercontoller
+    public enum InputType //so u can ask for jump or movement and it return the thing
+    {
+        jump,
+        x,
+        secondAction, // o on ps5 idk the name
+        y,
+        Pause,
+        left,
+        right,
+        up,
+        down
     }
 
     public class PlayerController
@@ -233,7 +231,8 @@ public static class LokaalConnecter
             cpuButtonStateChanged.Remove(action);
         }
     }
-    
+    #endregion
+
     static public List<int> alrUsedControllers = new(); //remeber all controll that alr being used
     static public List<int> alrUsedKeyboardId = new(); //remeber all keyboard id that beind used
     //static private List<int> plrsDissconnected = new();
@@ -306,6 +305,7 @@ public static class LokaalConnecter
         currentPlr = 0;
     }
 
+    #region Connections
     // Init when a device stateChanged use for leaving
     static void OnDeviceStateChanged(InputDevice device, InputDeviceChange state)
     {
@@ -410,7 +410,9 @@ public static class LokaalConnecter
         Debug.LogWarning($"Plr{plrId} joined *with keyboard*");
     }
     #endif
+    #endregion
 
+    #region MatchMaking Logic
     //enable thing that it work
     static public void SwitchMatchMaking(bool state)
     {
@@ -556,7 +558,9 @@ public static class LokaalConnecter
         matchSlot.SwitchImage(LokaalMatchingUi.instance.cpuUi);
         matchSlot.SwitchColor(true);
     }
+    #endregion
 
+    #region helper function
     //find the first free plr slot to concent to
     static PlayerController GetFirstFreeSlot()
     {
@@ -595,4 +599,5 @@ public static class LokaalConnecter
         int plrId = plrsController.First(x => x.Value == plrData).Key; //look for the thing with same value
         return plrId;
     }
+    #endregion
 }

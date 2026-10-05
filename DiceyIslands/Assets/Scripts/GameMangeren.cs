@@ -110,6 +110,7 @@ public static class GameMangeren
         if (!IsMiniGame(scene.name)) return;
         int minigameId = GetMinigameIdFromScene(scene.name);
         minigameTutorial.Init(true, minigameId);
+        minigameWinnerGui.OnSceneLoad(); //say it new scene
     }
 
     static void SetInEventSystem()
@@ -121,7 +122,7 @@ public static class GameMangeren
         GameObject.Instantiate(gameMangerSettings.eventSystemUi);
     }
 
-    //help funtion
+    #region helperFunction
     static public void MinigameWinner(List<int> places)
     {
         minigameWinnerGui.Toggle(true, places);
@@ -176,4 +177,5 @@ public static class GameMangeren
         int charId = System.Array.IndexOf(charsData, charData);
         return charId;
     }
+    #endregion
 }
