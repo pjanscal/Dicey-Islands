@@ -29,7 +29,7 @@ public class LoadingScreen : MonoBehaviour
     }
 
     // Update is called once per frame
-    void FixedUpdate()
+    void Update()
     {
         if (!GameMangeren.isLoading) return;
 
@@ -39,7 +39,7 @@ public class LoadingScreen : MonoBehaviour
     //update the dot dot dot text
     void UpdateText()
     {
-        currentTimerBetweenTextUpdate += Time.fixedDeltaTime;
+        currentTimerBetweenTextUpdate += Time.deltaTime;
         if (currentTimerBetweenTextUpdate < timeBetweenTextUpdate) return; //wait until it get a other dot
 
         amountOfDot = (amountOfDot + 1) %(maxAmountOfDot + 1); //reset it when reaching 4
