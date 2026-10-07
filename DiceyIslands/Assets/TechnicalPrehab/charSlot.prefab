@@ -49,6 +49,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CharacterLoader
   plrId: 0
+  animator: {fileID: 0}
   canConnectToMangener: 0
   autoCharacter: 0
 --- !u!1 &2023998177104105472
@@ -278,7 +279,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 268.77, y: 554}
+  m_SizeDelta: {x: 368.77, y: 554}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &4244331495834192265
 CanvasRenderer:
@@ -444,7 +445,7 @@ Camera:
   m_Depth: 0
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 32
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 8400000, guid: 80ad549344e82c54591b84e3d8e78c6c, type: 2}
   m_TargetDisplay: 0
@@ -986,6 +987,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CharacterLoader
   plrId: 0
+  animator: {fileID: 0}
   canConnectToMangener: 0
   autoCharacter: 0
 --- !u!1 &7686474959165868997
@@ -1213,7 +1215,7 @@ Camera:
   m_Depth: 0
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 32
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 8400000, guid: ede80452c3c27984aa88d752e8e42d17, type: 2}
   m_TargetDisplay: 0
@@ -1306,7 +1308,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 268.77, y: 554}
+  m_SizeDelta: {x: 368.77, y: 554}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &7066219968206921606
 CanvasRenderer:
@@ -1475,7 +1477,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 65.494995}
-  m_SizeDelta: {x: -146.8, y: -212.27}
+  m_SizeDelta: {x: -46.800003, y: -212.27}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &3437903975326241789
 CanvasRenderer:

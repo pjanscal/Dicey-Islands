@@ -3559,10 +3559,6 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: -302.55014
       objectReference: {fileID: 0}
-    - target: {fileID: 3039788417231126407, guid: 6a46df69a8367c140af71345b356429a, type: 3}
-      propertyPath: m_CullingMask.m_Bits
-      value: 32
-      objectReference: {fileID: 0}
     - target: {fileID: 3090399637608446313, guid: 6a46df69a8367c140af71345b356429a, type: 3}
       propertyPath: m_SizeDelta.x
       value: 152.69
@@ -3758,10 +3754,6 @@ PrefabInstance:
     - target: {fileID: 8844568307012960372, guid: 6a46df69a8367c140af71345b356429a, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 344
-      objectReference: {fileID: 0}
-    - target: {fileID: 8939403977009026788, guid: 6a46df69a8367c140af71345b356429a, type: 3}
-      propertyPath: m_CullingMask.m_Bits
-      value: 32
       objectReference: {fileID: 0}
     - target: {fileID: 9147335607429226383, guid: 6a46df69a8367c140af71345b356429a, type: 3}
       propertyPath: m_Enabled
