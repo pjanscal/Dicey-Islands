@@ -7,7 +7,8 @@ public class CharacterLoader : MonoBehaviour
 {
     public enum CharactersAnimationTriggerEvent
     {
-        ActivePress
+        ActivePress,
+        ActiveJump
     }
 
     public enum CharactersAnimationBooleanEvent
