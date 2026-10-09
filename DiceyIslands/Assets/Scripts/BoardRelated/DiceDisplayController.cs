@@ -1,3 +1,5 @@
+
+using System;
 using System.Collections;
 using TMPro;
 using UnityEngine;
@@ -5,21 +7,12 @@ using UnityEngine.UI;
 
 public class DiceDisplayController : MonoBehaviour
 {
-    // =========================================================
-    // MAIN DIE
-    // =========================================================
-
     [Header("Main Dice")]
     [SerializeField] private GameObject mainDiceViewport;
     [SerializeField] private Transform mainDice;
     [SerializeField] private Animator mainDiceAnimator;
     [SerializeField] private RawImage mainDiceDisplay;
     [SerializeField] private TMP_Text rollNumberText;
-
-
-    // =========================================================
-    // BONUS DIE
-    // =========================================================
 
     [Header("Bonus Dice")]
     [SerializeField] private GameObject bonusDiceViewport;
@@ -28,22 +21,15 @@ public class DiceDisplayController : MonoBehaviour
     [SerializeField] private RawImage bonusDiceDisplay;
     [SerializeField] private TMP_Text bonusRollNumberText;
 
-
-    // =========================================================
-    // SETTINGS
-    // =========================================================
-
     [Header("Idle Animation")]
     [SerializeField] private float idleRotationSpeed = 120f;
     [SerializeField] private float directionChangeInterval = 0.35f;
 
     [Header("Roll Animation")]
     [SerializeField] private float finalFrameHoldTime = 0.75f;
+    [SerializeField] private float animationTimeout = 8f;
 
-
-    // =========================================================
-    // INTERNAL STATE
-    // =========================================================
+    public Action OnResultShown;
 
     private bool idleSpinning;
     private bool rolling;
@@ -53,15 +39,35 @@ public class DiceDisplayController : MonoBehaviour
 
     private float mainDirectionTimer;
     private float bonusDirectionTimer;
-    public System.Action OnResultShown;
-
-    // =========================================================
-    // UNITY
-    // =========================================================
 
     private void Awake()
     {
+        // Do not deactivate this controller GameObject.
+        // Only the dice viewports/displays are hidden.
         HideImmediately();
+
+        ConfigureAnimator(mainDiceAnimator);
+        ConfigureAnimator(bonusDiceAnimator);
+    }
+
+    private void Start()
+    {
+        if (mainDice == null)
+            Debug.LogError("DICE: Main Dice Transform is missing!", this);
+
+        if (mainDiceAnimator == null)
+            Debug.LogError("DICE: Main Dice Animator is missing!", this);
+
+        if (mainDiceViewport == null)
+            Debug.LogError("DICE: Main Dice Viewport is missing!", this);
+
+        if (bonusDice == null)
+            Debug.LogWarning("DICE: Bonus Dice Transform is missing!", this);
+
+        if (bonusDiceAnimator == null)
+            Debug.LogWarning("DICE: Bonus Dice Animator is missing!", this);
+
+        Debug.Log("DICE: DiceDisplayController started successfully.");
     }
 
     private void Update()
@@ -72,10 +78,20 @@ public class DiceDisplayController : MonoBehaviour
         SpinIdleDice();
     }
 
+    private void ConfigureAnimator(Animator animator)
+    {
+        if (animator == null)
+            return;
 
-    // =========================================================
-    // START OF TURN
-    // =========================================================
+        animator.enabled = true;
+        animator.updateMode = AnimatorUpdateMode.UnscaledTime;
+        animator.cullingMode = AnimatorCullingMode.AlwaysAnimate;
+        animator.speed = 0f;
+    }
+
+    // =====================================================
+    // SHOW DICE AT START OF TURN
+    // =====================================================
 
     public void ShowForTurn(bool hasBonusDice)
     {
@@ -84,20 +100,11 @@ public class DiceDisplayController : MonoBehaviour
         rolling = false;
         idleSpinning = true;
 
-        // -------------------------
-        // Show main die
-        // -------------------------
-
         if (mainDiceViewport != null)
             mainDiceViewport.SetActive(true);
 
         if (mainDiceDisplay != null)
             mainDiceDisplay.gameObject.SetActive(true);
-
-
-        // -------------------------
-        // Show bonus die if needed
-        // -------------------------
 
         if (bonusDiceViewport != null)
             bonusDiceViewport.SetActive(hasBonusDice);
@@ -105,63 +112,53 @@ public class DiceDisplayController : MonoBehaviour
         if (bonusDiceDisplay != null)
             bonusDiceDisplay.gameObject.SetActive(hasBonusDice);
 
-
-        // -------------------------
-        // Hide result numbers
-        // -------------------------
-
         if (rollNumberText != null)
             rollNumberText.gameObject.SetActive(false);
 
         if (bonusRollNumberText != null)
             bonusRollNumberText.gameObject.SetActive(false);
 
-
-        // -------------------------
-        // Disable Animators
-        //
-        // During idle spinning WE control
-        // the rotation, not the Animator.
-        // -------------------------
-
-        if (mainDiceAnimator != null)
-        {
-            mainDiceAnimator.speed = 1f;
-            mainDiceAnimator.enabled = false;
-        }
-
-        if (bonusDiceAnimator != null)
-        {
-            bonusDiceAnimator.speed = 1f;
-            bonusDiceAnimator.enabled = false;
-        }
-
-
-        // -------------------------
-        // Pick initial random
-        // spin directions
-        // -------------------------
+        PauseAnimator(mainDiceAnimator);
+        PauseAnimator(bonusDiceAnimator);
 
         mainSpinDirection = GetRandomDirection();
         bonusSpinDirection = GetRandomDirection();
 
         mainDirectionTimer = directionChangeInterval;
         bonusDirectionTimer = directionChangeInterval;
+
+        Debug.Log(
+            "DICE: ShowForTurn called. Bonus = " + hasBonusDice +
+            ", Controller active = " + gameObject.activeInHierarchy +
+            ", Main viewport active = " +
+            (mainDiceViewport != null && mainDiceViewport.activeInHierarchy)
+        );
     }
 
+    private void PauseAnimator(Animator animator)
+    {
+        if (animator == null)
+            return;
 
-    // =========================================================
+        animator.enabled = true;
+        animator.updateMode = AnimatorUpdateMode.UnscaledTime;
+        animator.cullingMode = AnimatorCullingMode.AlwaysAnimate;
+        animator.speed = 0f;
+    }
+
+    // =====================================================
     // IDLE SPIN
-    // =========================================================
+    // =====================================================
 
     private void SpinIdleDice()
     {
-        // MAIN DIE
+        float delta = Time.unscaledDeltaTime;
+
         if (mainDice != null &&
             mainDiceViewport != null &&
-            mainDiceViewport.activeSelf)
+            mainDiceViewport.activeInHierarchy)
         {
-            mainDirectionTimer -= Time.deltaTime;
+            mainDirectionTimer -= delta;
 
             if (mainDirectionTimer <= 0f)
             {
@@ -170,20 +167,16 @@ public class DiceDisplayController : MonoBehaviour
             }
 
             mainDice.Rotate(
-                mainSpinDirection *
-                idleRotationSpeed *
-                Time.deltaTime,
+                mainSpinDirection * idleRotationSpeed * delta,
                 Space.Self
             );
         }
 
-
-        // BONUS DIE
         if (bonusDice != null &&
             bonusDiceViewport != null &&
-            bonusDiceViewport.activeSelf)
+            bonusDiceViewport.activeInHierarchy)
         {
-            bonusDirectionTimer -= Time.deltaTime;
+            bonusDirectionTimer -= delta;
 
             if (bonusDirectionTimer <= 0f)
             {
@@ -192,48 +185,37 @@ public class DiceDisplayController : MonoBehaviour
             }
 
             bonusDice.Rotate(
-                bonusSpinDirection *
-                idleRotationSpeed *
-                Time.deltaTime,
+                bonusSpinDirection * idleRotationSpeed * delta,
                 Space.Self
             );
         }
     }
 
-
     private Vector3 GetRandomDirection()
     {
         Vector3 direction = new Vector3(
-            Random.Range(-1f, 1f),
-            Random.Range(-1f, 1f),
-            Random.Range(-1f, 1f)
+            UnityEngine.Random.Range(-1f, 1f),
+            UnityEngine.Random.Range(-1f, 1f),
+            UnityEngine.Random.Range(-1f, 1f)
         );
 
-        // Extremely unlikely, but prevents zero rotation.
         if (direction.sqrMagnitude < 0.001f)
             direction = Vector3.one;
 
         return direction.normalized;
     }
 
-
-    // =========================================================
+    // =====================================================
     // PLAY ROLL
-    // =========================================================
+    // =====================================================
 
     public IEnumerator PlayRoll(
         int mainResult,
         bool hasBonusDice,
-        int bonusResult
-    )
+        int bonusResult)
     {
         rolling = true;
         idleSpinning = false;
-
-
-        // =====================================================
-        // STOP RANDOM SPIN + RESET ROTATION
-        // =====================================================
 
         if (mainDice != null)
             mainDice.localRotation = Quaternion.identity;
@@ -241,39 +223,13 @@ public class DiceDisplayController : MonoBehaviour
         if (bonusDice != null)
             bonusDice.localRotation = Quaternion.identity;
 
-
-        // =====================================================
-        // START MAIN DIE ANIMATION
-        // =====================================================
-
-        StartDiceAnimation(
-            mainDiceAnimator,
-            mainResult,
-            "MAIN"
-        );
-
-
-        // =====================================================
-        // START BONUS DIE ANIMATION
-        // =====================================================
+        StartDiceAnimation(mainDiceAnimator, mainResult, "MAIN");
 
         if (hasBonusDice)
-        {
-            StartDiceAnimation(
-                bonusDiceAnimator,
-                bonusResult,
-                "BONUS"
-            );
-        }
+            StartDiceAnimation(bonusDiceAnimator, bonusResult, "BONUS");
 
-
-        // Give Unity one frame to enter DiceThrow.
+        // Allow the Animator to advance.
         yield return null;
-
-
-        // =====================================================
-        // WAIT FOR BOTH DICE
-        // =====================================================
 
         Coroutine mainWait = null;
         Coroutine bonusWait = null;
@@ -281,255 +237,215 @@ public class DiceDisplayController : MonoBehaviour
         if (mainDiceAnimator != null)
         {
             mainWait = StartCoroutine(
-                WaitForResultAnimation(
-                    mainDiceAnimator,
-                    mainResult
-                )
+                WaitForResultAnimation(mainDiceAnimator, mainResult)
             );
         }
 
-        if (hasBonusDice &&
-            bonusDiceAnimator != null)
+        if (hasBonusDice && bonusDiceAnimator != null)
         {
             bonusWait = StartCoroutine(
-                WaitForResultAnimation(
-                    bonusDiceAnimator,
-                    bonusResult
-                )
+                WaitForResultAnimation(bonusDiceAnimator, bonusResult)
             );
         }
 
-
-        // Wait for main die.
         if (mainWait != null)
             yield return mainWait;
 
-
-        // Wait for bonus die.
         if (bonusWait != null)
             yield return bonusWait;
 
-
-        // =====================================================
-        // SHOW NUMBERS
-        // =====================================================
-
+        // Show results only after both dice finish.
         if (rollNumberText != null)
         {
-            rollNumberText.text =
-                mainResult.ToString();
-
+            rollNumberText.text = mainResult.ToString();
             rollNumberText.gameObject.SetActive(true);
         }
-        OnResultShown?.Invoke();
 
         if (bonusRollNumberText != null)
         {
-            if (hasBonusDice)
-            {
-                bonusRollNumberText.text =
-                    bonusResult.ToString();
+            bonusRollNumberText.gameObject.SetActive(hasBonusDice);
 
-                bonusRollNumberText.gameObject.SetActive(true);
-            }
-            else
-            {
-                bonusRollNumberText.gameObject.SetActive(false);
-            }
+            if (hasBonusDice)
+                bonusRollNumberText.text = bonusResult.ToString();
         }
+
+        // Fire once, after both result texts are updated.
         OnResultShown?.Invoke();
 
-        // =====================================================
-        // HOLD FINAL FRAME
-        // =====================================================
-
-        yield return new WaitForSecondsRealtime(
-            finalFrameHoldTime
-        );
+        yield return new WaitForSecondsRealtime(finalFrameHoldTime);
 
         rolling = false;
     }
 
-
-    // =========================================================
-    // START ONE DIE
-    // =========================================================
+    // =====================================================
+    // START ANIMATION
+    // =====================================================
 
     private void StartDiceAnimation(
         Animator animator,
         int result,
-        string diceName
-    )
+        string diceName)
     {
         if (animator == null)
+        {
+            Debug.LogError("DICE: " + diceName + " Animator missing!");
             return;
+        }
 
-        // Turn Animator back on after idle spinning.
+        if (animator.runtimeAnimatorController == null)
+        {
+            Debug.LogError(
+                "DICE: " + diceName + " has no Animator Controller!"
+            );
+            return;
+        }
+
         animator.enabled = true;
-
-        // VERY IMPORTANT:
-        // Make sure it isn't still frozen from the previous roll.
+        animator.updateMode = AnimatorUpdateMode.UnscaledTime;
+        animator.cullingMode = AnimatorCullingMode.AlwaysAnimate;
         animator.speed = 1f;
 
+        int throwHash = Animator.StringToHash("Base Layer.DiceThrow");
 
-        // Set result BEFORE starting DiceThrow.
-        animator.SetInteger(
-            "RollResult",
-            result
-        );
+        if (!animator.HasState(0, throwHash))
+        {
+            Debug.LogError(
+                "DICE: " + diceName +
+                " cannot find DiceThrow in its Animator Controller!"
+            );
+            return;
+        }
 
-
-        Debug.Log(
-            diceName +
-            " DICE RESULT = " +
-            result
-        );
-
-
-        // Restart DiceThrow from the beginning.
-        animator.Play(
-            "DiceThrow",
-            0,
-            0f
-        );
-
-
-        // Force Unity to apply this immediately.
+        animator.SetInteger("RollResult", result);
+        animator.Play(throwHash, 0, 0f);
         animator.Update(0f);
 
-
         Debug.Log(
-            diceName +
-            " ANIMATOR RollResult = " +
-            animator.GetInteger("RollResult")
+            "DICE: " + diceName +
+            " started DiceThrow, result = " + result
         );
     }
 
-
-    // =========================================================
+    // =====================================================
     // WAIT FOR RESULT ANIMATION
-    // =========================================================
+    // =====================================================
 
     private IEnumerator WaitForResultAnimation(
         Animator animator,
-        int result
-    )
+        int result)
     {
-        if (animator == null)
+        if (animator == null ||
+            animator.runtimeAnimatorController == null)
             yield break;
 
-
-        string expectedState =
-            "DiceRolling" + result;
-
-
-        // =====================================================
-        // WAIT UNTIL DICETHROW ENTERS CORRECT RESULT STATE
-        // =====================================================
-
-        while (true)
-        {
-            AnimatorStateInfo state =
-                animator.GetCurrentAnimatorStateInfo(0);
-
-            if (state.IsName(expectedState))
-                break;
-
-            yield return null;
-        }
-
-
-        Debug.Log(
-            animator.gameObject.name +
-            " entered " +
-            expectedState
+        string expectedState = "DiceRolling" + result;
+        int resultHash = Animator.StringToHash(
+            "Base Layer." + expectedState
         );
 
+        if (!animator.HasState(0, resultHash))
+        {
+            Debug.LogError(
+                "DICE: Missing animation state " + expectedState,
+                animator
+            );
+            yield break;
+        }
 
-        // =====================================================
-        // WAIT UNTIL RESULT ANIMATION REACHES END
-        // =====================================================
+        float startTime = Time.realtimeSinceStartup;
+        bool enteredResultState = false;
 
-        while (true)
+        while (Time.realtimeSinceStartup - startTime < animationTimeout)
         {
             AnimatorStateInfo state =
                 animator.GetCurrentAnimatorStateInfo(0);
 
-            if (state.IsName(expectedState) &&
-                state.normalizedTime >= 1f)
+            if (state.fullPathHash == resultHash)
             {
+                enteredResultState = true;
                 break;
             }
 
             yield return null;
         }
 
+        if (!enteredResultState)
+        {
+            Debug.LogError(
+                "DICE: Timed out waiting for " + expectedState +
+                " on " + animator.gameObject.name
+            );
 
-        // =====================================================
-        // FORCE EXACT FINAL FRAME
-        // =====================================================
+            // Fallback: display the expected result pose.
+            animator.Play(resultHash, 0, 1f);
+            animator.Update(0f);
+            animator.speed = 0f;
+            yield break;
+        }
 
-        animator.Play(
-            expectedState,
-            0,
-            1f
-        );
+        startTime = Time.realtimeSinceStartup;
+        bool finished = false;
 
+        while (Time.realtimeSinceStartup - startTime < animationTimeout)
+        {
+            AnimatorStateInfo state =
+                animator.GetCurrentAnimatorStateInfo(0);
+
+            if (state.fullPathHash == resultHash &&
+                state.normalizedTime >= 1f)
+            {
+                finished = true;
+                break;
+            }
+
+            yield return null;
+        }
+
+        if (!finished)
+        {
+            Debug.LogWarning(
+                "DICE: Result animation timed out: " +
+                expectedState
+            );
+        }
+
+        // Force the final frame.
+        animator.Play(resultHash, 0, 1f);
         animator.Update(0f);
-
-
-        // =====================================================
-        // FREEZE
-        // =====================================================
-
         animator.speed = 0f;
 
-
         Debug.Log(
-            animator.gameObject.name +
-            " froze on final frame of " +
-            expectedState
+            "DICE: " + animator.gameObject.name +
+            " finished " + expectedState
         );
     }
 
-
-    // =========================================================
-    // PLAYER STARTS MOVING
-    // =========================================================
+    // =====================================================
+    // HIDE FOR MOVEMENT
+    // =====================================================
 
     public void HideForMovement()
     {
-        idleSpinning = false;
-        rolling = false;
-
         StopAllCoroutines();
 
+        rolling = false;
+        idleSpinning = false;
 
-        // Reset Animator speeds for next turn.
-        if (mainDiceAnimator != null)
-            mainDiceAnimator.speed = 1f;
+        PauseAnimator(mainDiceAnimator);
+        PauseAnimator(bonusDiceAnimator);
 
-        if (bonusDiceAnimator != null)
-            bonusDiceAnimator.speed = 1f;
-
-
-        // Hide numbers.
         if (rollNumberText != null)
             rollNumberText.gameObject.SetActive(false);
 
         if (bonusRollNumberText != null)
             bonusRollNumberText.gameObject.SetActive(false);
 
-
-        // Hide displays.
         if (mainDiceDisplay != null)
             mainDiceDisplay.gameObject.SetActive(false);
 
         if (bonusDiceDisplay != null)
             bonusDiceDisplay.gameObject.SetActive(false);
 
-
-        // Hide viewport parents.
         if (mainDiceViewport != null)
             mainDiceViewport.SetActive(false);
 
@@ -537,30 +453,14 @@ public class DiceDisplayController : MonoBehaviour
             bonusDiceViewport.SetActive(false);
     }
 
-
-    // =========================================================
+    // =====================================================
     // INITIAL HIDE
-    // =========================================================
+    // =====================================================
 
     private void HideImmediately()
     {
         idleSpinning = false;
         rolling = false;
-
-
-        if (mainDiceAnimator != null)
-            mainDiceAnimator.speed = 1f;
-
-        if (bonusDiceAnimator != null)
-            bonusDiceAnimator.speed = 1f;
-
-
-        if (mainDiceDisplay != null)
-            mainDiceDisplay.gameObject.SetActive(false);
-
-        if (bonusDiceDisplay != null)
-            bonusDiceDisplay.gameObject.SetActive(false);
-
 
         if (rollNumberText != null)
             rollNumberText.gameObject.SetActive(false);
@@ -568,6 +468,11 @@ public class DiceDisplayController : MonoBehaviour
         if (bonusRollNumberText != null)
             bonusRollNumberText.gameObject.SetActive(false);
 
+        if (mainDiceDisplay != null)
+            mainDiceDisplay.gameObject.SetActive(false);
+
+        if (bonusDiceDisplay != null)
+            bonusDiceDisplay.gameObject.SetActive(false);
 
         if (mainDiceViewport != null)
             mainDiceViewport.SetActive(false);
