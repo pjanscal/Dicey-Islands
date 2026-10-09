@@ -5,6 +5,9 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
+//shortcuts
+using AnimationTriggers = CharacterLoader.CharactersAnimationTriggerEvent;
+
 public class MinigameWinnerGUI : MonoBehaviour
 {
     [Serializable]
@@ -91,6 +94,7 @@ public class MinigameWinnerGUI : MonoBehaviour
         winnerFrame.SetActive(true);
         winnerCharacterLoader.plrId = places[0]; //0 == first
         winnerCharacterLoader.ReLoad();
+        winnerCharacterLoader.UseAnimation(AnimationTriggers.ActiveJump);
 
         foreach (WinnerSlot winnerSlot in winnerSlots)
         {

@@ -198,6 +198,10 @@ public class LokaalCharSelectSlot : MonoBehaviour
         target.character.ReLoadCharacterId(charId);
         oldCharId = currentCharSelected;
         currentCharSelected = charId;
+
+        Animator animator = target.character.animator;
+        if (animator == null) {Debug.LogError($"no animator in char{charId}"); return;}
+        animator.updateMode = AnimatorUpdateMode.UnscaledTime; //make it play idle in gui
     }
 
     //set the color alright when it happend
