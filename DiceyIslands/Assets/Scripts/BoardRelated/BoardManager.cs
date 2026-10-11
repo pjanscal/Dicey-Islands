@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using DG.Tweening;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -88,14 +89,20 @@ public class BoardManager : MonoBehaviour
 
 
     [Header("Minigame")]
-    [SerializeField] private TMP_Text minigameText;
-    [SerializeField] private float minigameNameChangeSpeed = 0.1f;
+    [SerializeField] private GameObject minigameDisplay;
+    [SerializeField] private TMP_Text minigameName;
+    [SerializeField] private Image minigameBackground;
+    [SerializeField] private RectTransform minigameNameFrame; //the boundries for the text
+
+    private TMP_Text minigameNameSecondary; // the second one for the switching
+    private Image minigameBackgroundSeconday; // the second one for the switching
+    private bool minigamePrimeSelected = true;
+
+    [SerializeField] private float minigameChangeSpeed = 0.1f;
     [SerializeField] private float minigameAnimationDuration = 1.5f;
     [SerializeField] private float minigameSelectedDisplayTime = 1.5f;
 
-    private readonly List<string> availableMinigames =
-        new List<string>();
-
+    private MinigameInfo[] availableMinigames;
 
     [Header("Camera")]
     [SerializeField] private PlayerCamera playerCamera;
@@ -152,7 +159,7 @@ public class BoardManager : MonoBehaviour
 
     private void Awake()
     {
-        FindMinigameScenes();
+        SetUpMinigameShowcase();
         SetupWaypoints();
         SetupPlayers();
     }
@@ -250,8 +257,8 @@ public class BoardManager : MonoBehaviour
         if (roundText != null)
             roundText.gameObject.SetActive(false);
 
-        if (minigameText != null)
-            minigameText.gameObject.SetActive(false);
+        if (minigameDisplay != null)
+            minigameDisplay.SetActive(false);
 
         if (swapText != null)
             swapText.gameObject.SetActive(false);
@@ -1777,8 +1784,8 @@ public class BoardManager : MonoBehaviour
         if (roundText != null)
             roundText.gameObject.SetActive(false);
 
-        if (minigameText != null)
-            minigameText.gameObject.SetActive(false);
+        if (minigameDisplay != null)
+            minigameDisplay.SetActive(false);
 
         if (swapText != null)
             swapText.gameObject.SetActive(false);
@@ -1857,8 +1864,18 @@ public class BoardManager : MonoBehaviour
     // MINIGAMES
     // =========================================================
 
-    private void FindMinigameScenes()
+    private void SetUpMinigameShowcase()
     {
+        availableMinigames = Resources.LoadAll<MinigameInfo>("MinigameInfos");
+
+        //set in the secondary objects
+        minigameNameSecondary = Instantiate(minigameName, minigameNameFrame);
+        minigameNameSecondary.rectTransform.localPosition = new Vector2(0, minigameNameFrame.rect.height);
+
+        minigameBackgroundSeconday = Instantiate(minigameBackground, minigameBackground.transform.parent);
+        minigameBackgroundSeconday.rectTransform.localPosition = new Vector2(0, minigameBackground.rectTransform.rect.height);
+
+        /* not needed when using a script to get info
         availableMinigames.Clear();
 
         int sceneCount =
@@ -1897,6 +1914,7 @@ public class BoardManager : MonoBehaviour
             availableMinigames.Count +
             " minigames."
         );
+        */
     }
 
     /// <summary>
@@ -1997,7 +2015,7 @@ public class BoardManager : MonoBehaviour
 
     private IEnumerator StartMinigameSequence()
     {
-        if (availableMinigames.Count == 0)
+        if (availableMinigames.Length == 0)
         {
             Debug.LogError(
                 "No minigame scenes were found. " +
@@ -2034,12 +2052,18 @@ public class BoardManager : MonoBehaviour
         if (bonusRollNumberText != null)
             bonusRollNumberText.gameObject.SetActive(false);
 
-        if (minigameText != null)
+        if (minigameDisplay != null)
         {
-            minigameText.text =
-                "MINIGAME";
+            MinigameInfo randomMinigame =
+         availableMinigames[
+             Random.Range(
+                 0,
+                 availableMinigames.Length
+             )
+         ];
+            SwitchMinigameUiShowcase(randomMinigame);
 
-            minigameText.gameObject.SetActive(true);
+            minigameDisplay.SetActive(true);
             PlayMinigamePopupSound();
         }
 
@@ -2055,44 +2079,40 @@ public class BoardManager : MonoBehaviour
 
         while (elapsed < minigameAnimationDuration)
         {
-            string randomName =
-                availableMinigames[
-                    Random.Range(
-                        0,
-                        availableMinigames.Count
-                    )
-                ];
+            MinigameInfo randomMinigame =
+         availableMinigames[
+             Random.Range(
+                 0,
+                 availableMinigames.Length
+             )
+         ];
             PlayMinigameRouletteTickSound();
 
-            if (minigameText != null)
-                minigameText.text = randomName;
-
-            yield return new WaitForSecondsRealtime(
-                minigameNameChangeSpeed
-            );
+            if (minigameDisplay != null)
+                yield return StartCoroutine(SwitchMinigameUiTween(randomMinigame));
 
             elapsed +=
-                minigameNameChangeSpeed;
+                minigameChangeSpeed;
         }
 
-        string selectedMinigame =
+        MinigameInfo selectedMinigame =
      availableMinigames[
          Random.Range(
              0,
-             availableMinigames.Count
+             availableMinigames.Length
          )
      ];
 
         Debug.Log(
             "Selected minigame: " +
-            selectedMinigame
+            "minigame" + selectedMinigame.minigameId
         );
 
-        if (minigameText != null)
-            minigameText.text = selectedMinigame;
+        if (minigameDisplay != null)
+            yield return StartCoroutine(SwitchMinigameUiTween(selectedMinigame, Ease.OutQuad));
 
         MatchData.Instance.selectedMinigameScene =
-            selectedMinigame;
+            selectedMinigame.GetSceneName();
 
 
         // =========================================
@@ -2115,6 +2135,70 @@ public class BoardManager : MonoBehaviour
         GameMangeren.SwitchScene(
             MatchData.Instance.selectedMinigameScene
         );
+    }
+
+    //set the info on the minigameDisplay right
+    void SwitchMinigameUiShowcase(MinigameInfo minigame, Image background = null, TMP_Text text = null)
+    {
+        //info
+        if (background == null) background = GetMinigameBackgroundSelected(true);
+        if (text == null) text = GetMinigameTextSelected(true);
+
+        //setting it up
+        background.sprite = minigame.minigameShowcaseBackground;
+        text.text = minigame.minigameName;
+    }
+
+    //switch the preview base on the dir u want
+    IEnumerator SwitchMinigameUiTween(MinigameInfo minigame, Ease ease = Ease.Linear)
+    {
+        Vector2 dir = Vector2.down; //dir the tween is going
+        bool isComplete = false;
+
+        //get the info's
+        Image newBackground = GetMinigameBackgroundSelected(false);
+        TMP_Text newText = GetMinigameTextSelected(false);
+        SwitchMinigameUiShowcase(minigame, newBackground, newText); //set the new one up;
+
+        RectTransform selectedBackground = GetMinigameBackgroundSelected(true).rectTransform;
+        RectTransform newSelectedBackground = newBackground.rectTransform;
+        RectTransform selectedText = GetMinigameTextSelected(true).rectTransform;
+        RectTransform newSelectedText = newText.rectTransform;
+
+        Vector2 backgroundTargetPos = new Vector2(minigameBackground.rectTransform.rect.width, minigameBackground.rectTransform.rect.height) * dir;
+        newSelectedBackground.localPosition = backgroundTargetPos * -1; //get to the - side to start
+
+        Vector2 textTargetPos = new Vector2(minigameNameFrame.rect.width, minigameNameFrame.rect.height) * dir;
+        newSelectedText.localPosition = textTargetPos * -1; //get to the - side to start
+
+        //make the tweens
+        Sequence tween = DOTween.Sequence() //so it can start all at the exact same time
+        .Join(selectedBackground.DOLocalMove(backgroundTargetPos, minigameChangeSpeed))
+        .Join(newSelectedBackground.DOLocalMove(Vector2.zero, minigameChangeSpeed))
+        .Join(selectedText.DOLocalMove(textTargetPos, minigameChangeSpeed))
+        .Join(newSelectedText.DOLocalMove(Vector2.zero, minigameChangeSpeed))
+        .SetEase(ease) //settings
+        .OnComplete(() =>
+        {
+            isComplete = true;
+        });
+        
+        tween.Play();
+        minigamePrimeSelected = !minigamePrimeSelected; //make sure that it update the new one because now the new one is the selected one
+        yield return new WaitUntil(() => isComplete);
+    }
+
+    //get the minigameUi's that is visible on screen or not
+    Image GetMinigameBackgroundSelected(bool isVisible)
+    {
+        bool target = isVisible? minigamePrimeSelected : !minigamePrimeSelected;
+        return target? minigameBackground : minigameBackgroundSeconday;
+    }
+
+    TMP_Text GetMinigameTextSelected(bool isVisible)
+    {
+        bool target = isVisible? minigamePrimeSelected : !minigamePrimeSelected;
+        return target? minigameName : minigameNameSecondary;
     }
 
     /// <summary>

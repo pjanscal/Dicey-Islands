@@ -591,6 +591,159 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 3892758598819076900, guid: c2fd32fbd03112041a98c1f8c506a662, type: 3}
   m_PrefabInstance: {fileID: 4329898220589606608}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &101415816
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 101415817}
+  - component: {fileID: 101415820}
+  - component: {fileID: 101415819}
+  - component: {fileID: 101415818}
+  m_Layer: 5
+  m_Name: minigamePrimeText
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &101415817
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 101415816}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1904249685}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 0.6}
+  m_SizeDelta: {x: 207.1, y: 50}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &101415818
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 101415816}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cfabb0440166ab443bba8876756fdfa9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Shadow
+  m_EffectColor: {r: 0, g: 0, b: 0, a: 0.5}
+  m_EffectDistance: {x: 5, y: -5}
+  m_UseGraphicAlpha: 1
+--- !u!114 &101415819
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 101415816}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.TextMeshPro::TMPro.TextMeshProUGUI
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_text: Steal diamand
+  m_isRightToLeft: 0
+  m_fontAsset: {fileID: 11400000, guid: ee6db24287841284787d82d0fe205a5d, type: 2}
+  m_sharedMaterial: {fileID: -1165105583250435765, guid: ee6db24287841284787d82d0fe205a5d, type: 2}
+  m_fontSharedMaterials: []
+  m_fontMaterial: {fileID: 0}
+  m_fontMaterials: []
+  m_fontColor32:
+    serializedVersion: 2
+    rgba: 4294967295
+  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
+  m_enableVertexGradient: 0
+  m_colorMode: 3
+  m_fontColorGradient:
+    topLeft: {r: 1, g: 1, b: 1, a: 1}
+    topRight: {r: 1, g: 1, b: 1, a: 1}
+    bottomLeft: {r: 1, g: 1, b: 1, a: 1}
+    bottomRight: {r: 1, g: 1, b: 1, a: 1}
+  m_fontColorGradientPreset: {fileID: 0}
+  m_spriteAsset: {fileID: 0}
+  m_tintAllSprites: 0
+  m_StyleSheet: {fileID: 0}
+  m_TextStyleHashCode: -1183493901
+  m_overrideHtmlColors: 0
+  m_faceColor:
+    serializedVersion: 2
+    rgba: 4294967295
+  m_fontSize: 58.29
+  m_fontSizeBase: 58.29
+  m_fontWeight: 400
+  m_enableAutoSizing: 0
+  m_fontSizeMin: 18
+  m_fontSizeMax: 72
+  m_fontStyle: 0
+  m_HorizontalAlignment: 2
+  m_VerticalAlignment: 512
+  m_textAlignment: 65535
+  m_characterSpacing: 0
+  m_characterHorizontalScale: 1
+  m_wordSpacing: 0
+  m_lineSpacing: 0
+  m_lineSpacingMax: 0
+  m_paragraphSpacing: 0
+  m_charWidthMaxAdj: 0
+  m_TextWrappingMode: 1
+  m_wordWrappingRatios: 0.4
+  m_overflowMode: 0
+  m_linkedTextComponent: {fileID: 0}
+  parentLinkedComponent: {fileID: 0}
+  m_enableKerning: 0
+  m_ActiveFontFeatures: 6e72656b
+  m_enableExtraPadding: 0
+  checkPaddingRequired: 0
+  m_isRichText: 1
+  m_EmojiFallbackSupport: 1
+  m_parseCtrlCharacters: 1
+  m_isOrthographic: 1
+  m_isCullingEnabled: 0
+  m_horizontalMapping: 0
+  m_verticalMapping: 0
+  m_uvLineOffset: 0
+  m_geometrySortingOrder: 0
+  m_IsTextObjectScaleStatic: 0
+  m_VertexBufferAutoSizeReduction: 0
+  m_useMaxVisibleDescender: 1
+  m_pageToDisplay: 1
+  m_margin: {x: -219.6955, y: -43.3808, z: -218.02686, w: -43.380768}
+  m_isUsingLegacyAnimationComponent: 0
+  m_isVolumetricText: 0
+  m_hasFontAssetChanged: 0
+  m_baseMaterial: {fileID: 0}
+  m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!222 &101415820
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 101415816}
+  m_CullTransparentMesh: 1
 --- !u!1 &137681667
 GameObject:
   m_ObjectHideFlags: 0
@@ -853,9 +1006,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 12bf04e650e74a044aae28d6b9015616, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Waypoint
-  waypointNumber: 7
   tileType: 0
-  effectAmount: 0
+  movementAmount: 3
+  subWaypoints: []
 --- !u!1 &254575743
 GameObject:
   m_ObjectHideFlags: 0
@@ -873,7 +1026,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &254575744
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1040,9 +1193,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 12bf04e650e74a044aae28d6b9015616, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Waypoint
-  waypointNumber: 22
   tileType: 1
-  effectAmount: 4
+  movementAmount: 3
+  subWaypoints: []
 --- !u!65 &298088524
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1182,6 +1335,96 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7e429399089239e46b1bd539e26a6e0a, type: 3}
+--- !u!1 &332412969
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 332412970}
+  - component: {fileID: 332412973}
+  - component: {fileID: 332412972}
+  - component: {fileID: 332412971}
+  m_Layer: 5
+  m_Name: primePreview
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &332412970
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 332412969}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1322960609}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: -2}
+  m_SizeDelta: {x: 1410, y: 372}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &332412971
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 332412969}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3312d7739989d2b4e91e6319e9a96d76, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.RectMask2D
+  m_Padding: {x: 0, y: 0, z: 0, w: 0}
+  m_Softness: {x: 0, y: 0}
+--- !u!114 &332412972
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 332412969}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Sprite: {fileID: 21300000, guid: 8b0b2e9b85e11d941a32c3c02e7b5829, type: 3}
+  m_Type: 0
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
+--- !u!222 &332412973
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 332412969}
+  m_CullTransparentMesh: 1
 --- !u!1 &401003045
 GameObject:
   m_ObjectHideFlags: 0
@@ -1229,9 +1472,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 12bf04e650e74a044aae28d6b9015616, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Waypoint
-  waypointNumber: 16
   tileType: 0
-  effectAmount: 0
+  movementAmount: 3
+  subWaypoints: []
 --- !u!65 &401003048
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1340,6 +1583,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BoardManager
   waypointParent: {fileID: 593684988}
+  diceDisplay: {fileID: 0}
   playerSlots:
   - {fileID: 1551995281}
   - {fileID: 1267487526}
@@ -1354,6 +1598,8 @@ MonoBehaviour:
   tileStepSound: {fileID: 8300000, guid: d7ef633918a44e840b5c07c249e73bb5, type: 3}
   turnStartSound: {fileID: 8300000, guid: 8b09e917b46e2a640a5b3351b2d3a701, type: 3}
   turnSkippedSound: {fileID: 8300000, guid: df4b4783dea51ed4e9850df51747d12d, type: 3}
+  diceHitSound: {fileID: 0}
+  diceResultSound: {fileID: 0}
   roundEndSound: {fileID: 8300000, guid: d01e96e1e8a0a6b4ba21308279ce7de0, type: 3}
   minigamePopupSound: {fileID: 8300000, guid: 539bdf3f375fdba489adea2d5633ecc0, type: 3}
   minigameRouletteTickSound: {fileID: 8300000, guid: 5064eaa220458db418210e3e44c937a8, type: 3}
@@ -1374,8 +1620,11 @@ MonoBehaviour:
   skippedText: {fileID: 912147200}
   turnOrderText: {fileID: 137681670}
   skippedDisplayDuration: 1.2
-  minigameText: {fileID: 63487821}
-  minigameNameChangeSpeed: 0.1
+  minigameDisplay: {fileID: 997539396}
+  minigameName: {fileID: 101415819}
+  minigameBackground: {fileID: 332412972}
+  minigameNameFrame: {fileID: 1904249685}
+  minigameChangeSpeed: 0.1
   minigameAnimationDuration: 1.5
   minigameSelectedDisplayTime: 1.5
   playerCamera: {fileID: 1858341837}
@@ -1445,9 +1694,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 12bf04e650e74a044aae28d6b9015616, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Waypoint
-  waypointNumber: 25
   tileType: 5
-  effectAmount: 0
+  movementAmount: 3
+  subWaypoints: []
 --- !u!65 &447254405
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1788,9 +2037,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 12bf04e650e74a044aae28d6b9015616, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Waypoint
-  waypointNumber: 2
   tileType: 2
-  effectAmount: 5
+  movementAmount: 3
+  subWaypoints: []
 --- !u!1 &559284540
 GameObject:
   m_ObjectHideFlags: 0
@@ -2056,9 +2305,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 12bf04e650e74a044aae28d6b9015616, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Waypoint
-  waypointNumber: 29
   tileType: 0
-  effectAmount: 0
+  movementAmount: 3
+  subWaypoints: []
 --- !u!65 &579725297
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -2323,9 +2572,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 12bf04e650e74a044aae28d6b9015616, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Waypoint
-  waypointNumber: 9
   tileType: 0
-  effectAmount: 0
+  movementAmount: 3
+  subWaypoints: []
 --- !u!114 &679593882 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 1478037271591001095, guid: 4a070339aee93d044900dd08365e1b5d, type: 3}
@@ -2462,9 +2711,85 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 12bf04e650e74a044aae28d6b9015616, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Waypoint
-  waypointNumber: 5
   tileType: 5
-  effectAmount: 0
+  movementAmount: 3
+  subWaypoints: []
+--- !u!1 &844015405
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 844015406}
+  - component: {fileID: 844015408}
+  - component: {fileID: 844015407}
+  m_Layer: 5
+  m_Name: TextBorder
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &844015406
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 844015405}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 1904249685}
+  m_Father: {fileID: 997539397}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 822, y: 158}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &844015407
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 844015405}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Sprite: {fileID: 21300000, guid: 16177f7f57a54c44f84427f3d980e94a, type: 3}
+  m_Type: 0
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
+--- !u!222 &844015408
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 844015405}
+  m_CullTransparentMesh: 1
 --- !u!1 &887796613
 GameObject:
   m_ObjectHideFlags: 0
@@ -2512,9 +2837,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 12bf04e650e74a044aae28d6b9015616, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Waypoint
-  waypointNumber: 15
   tileType: 0
-  effectAmount: 0
+  movementAmount: 3
+  subWaypoints: []
 --- !u!65 &887796616
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -2730,6 +3055,44 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!1 &997539396
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 997539397}
+  m_Layer: 5
+  m_Name: MinigameRoller
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &997539397
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 997539396}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 1322960609}
+  - {fileID: 844015406}
+  - {fileID: 1724448492}
+  m_Father: {fileID: 1375743846}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 100, y: 100}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1050592403
 GameObject:
   m_ObjectHideFlags: 0
@@ -2777,9 +3140,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 12bf04e650e74a044aae28d6b9015616, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Waypoint
-  waypointNumber: 28
   tileType: 5
-  effectAmount: 0
+  movementAmount: 3
+  subWaypoints: []
 --- !u!65 &1050592406
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -2983,9 +3346,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 12bf04e650e74a044aae28d6b9015616, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Waypoint
-  waypointNumber: 10
   tileType: 3
-  effectAmount: 0
+  movementAmount: 3
+  subWaypoints: []
 --- !u!1 &1072553369
 GameObject:
   m_ObjectHideFlags: 0
@@ -3294,9 +3657,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 12bf04e650e74a044aae28d6b9015616, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Waypoint
-  waypointNumber: 8
   tileType: 1
-  effectAmount: 4
+  movementAmount: 3
+  subWaypoints: []
 --- !u!1 &1258697576
 GameObject:
   m_ObjectHideFlags: 0
@@ -3457,9 +3820,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 12bf04e650e74a044aae28d6b9015616, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Waypoint
-  waypointNumber: 20
   tileType: 0
-  effectAmount: 0
+  movementAmount: 3
+  subWaypoints: []
 --- !u!65 &1313151034
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -3538,6 +3901,97 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1313151031}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1 &1322960608
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1322960609}
+  - component: {fileID: 1322960612}
+  - component: {fileID: 1322960611}
+  - component: {fileID: 1322960610}
+  m_Layer: 5
+  m_Name: bgFrame
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &1322960609
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1322960608}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 332412970}
+  m_Father: {fileID: 997539397}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 1410, y: 372}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1322960610
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1322960608}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3312d7739989d2b4e91e6319e9a96d76, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.RectMask2D
+  m_Padding: {x: 0, y: 0, z: 0, w: 0}
+  m_Softness: {x: 0, y: 0}
+--- !u!114 &1322960611
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1322960608}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
+  m_Material: {fileID: 0}
+  m_Color: {r: 0, g: 1, b: 0.12156868, a: 1}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Sprite: {fileID: 0}
+  m_Type: 0
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
+--- !u!222 &1322960612
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1322960608}
+  m_CullTransparentMesh: 1
 --- !u!1 &1333785936
 GameObject:
   m_ObjectHideFlags: 0
@@ -3585,9 +4039,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 12bf04e650e74a044aae28d6b9015616, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Waypoint
-  waypointNumber: 18
   tileType: 0
-  effectAmount: 0
+  movementAmount: 3
+  subWaypoints: []
 --- !u!65 &1333785939
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -3764,9 +4218,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 12bf04e650e74a044aae28d6b9015616, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Waypoint
-  waypointNumber: 21
   tileType: 0
-  effectAmount: 0
+  movementAmount: 3
+  subWaypoints: []
 --- !u!65 &1338913135
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -3939,6 +4393,7 @@ RectTransform:
   m_LocalScale: {x: 0, y: 0, z: 0}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 997539397}
   - {fileID: 1721567531}
   - {fileID: 1611089495}
   - {fileID: 254575746}
@@ -4003,9 +4458,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 12bf04e650e74a044aae28d6b9015616, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Waypoint
-  waypointNumber: 24
   tileType: 0
-  effectAmount: 0
+  movementAmount: 3
+  subWaypoints: []
 --- !u!65 &1381661211
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -4209,9 +4664,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 12bf04e650e74a044aae28d6b9015616, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Waypoint
-  waypointNumber: 4
   tileType: 0
-  effectAmount: 0
+  movementAmount: 3
+  subWaypoints: []
 --- !u!1 &1473748993
 GameObject:
   m_ObjectHideFlags: 0
@@ -4259,9 +4714,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 12bf04e650e74a044aae28d6b9015616, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Waypoint
-  waypointNumber: 26
   tileType: 0
-  effectAmount: 0
+  movementAmount: 3
+  subWaypoints: []
 --- !u!65 &1473748996
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -4465,9 +4920,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 12bf04e650e74a044aae28d6b9015616, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Waypoint
-  waypointNumber: 12
   tileType: 4
-  effectAmount: 0
+  movementAmount: 3
+  subWaypoints: []
 --- !u!1 &1548900367
 GameObject:
   m_ObjectHideFlags: 0
@@ -4910,9 +5365,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 12bf04e650e74a044aae28d6b9015616, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Waypoint
-  waypointNumber: 14
   tileType: 2
-  effectAmount: 4
+  movementAmount: 3
+  subWaypoints: []
 --- !u!1 &1721567530
 GameObject:
   m_ObjectHideFlags: 0
@@ -5045,6 +5500,81 @@ CanvasRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1721567530}
+  m_CullTransparentMesh: 1
+--- !u!1 &1724448491
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1724448492}
+  - component: {fileID: 1724448494}
+  - component: {fileID: 1724448493}
+  m_Layer: 5
+  m_Name: border
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &1724448492
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1724448491}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 997539397}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 1865, y: 564}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1724448493
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1724448491}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Sprite: {fileID: 21300000, guid: de92dfdf9c41b794896a16ea31d90d21, type: 3}
+  m_Type: 0
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
+--- !u!222 &1724448494
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1724448491}
   m_CullTransparentMesh: 1
 --- !u!1 &1806168690
 GameObject:
@@ -5587,9 +6117,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 12bf04e650e74a044aae28d6b9015616, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Waypoint
-  waypointNumber: 13
   tileType: 0
-  effectAmount: 0
+  movementAmount: 3
+  subWaypoints: []
 --- !u!1 &1878517943
 GameObject:
   m_ObjectHideFlags: 0
@@ -5715,9 +6245,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 12bf04e650e74a044aae28d6b9015616, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Waypoint
-  waypointNumber: 6
   tileType: 4
-  effectAmount: 0
+  movementAmount: 3
+  subWaypoints: []
 --- !u!1 &1883941322
 GameObject:
   m_ObjectHideFlags: 0
@@ -5843,9 +6373,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 12bf04e650e74a044aae28d6b9015616, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Waypoint
-  waypointNumber: 15
   tileType: 0
-  effectAmount: 30
+  movementAmount: 3
+  subWaypoints: []
 --- !u!1 &1898032299
 GameObject:
   m_ObjectHideFlags: 0
@@ -5971,9 +6501,100 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 12bf04e650e74a044aae28d6b9015616, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Waypoint
-  waypointNumber: 3
   tileType: 0
-  effectAmount: 0
+  movementAmount: 3
+  subWaypoints: []
+--- !u!1 &1904249684
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1904249685}
+  - component: {fileID: 1904249688}
+  - component: {fileID: 1904249687}
+  - component: {fileID: 1904249686}
+  m_Layer: 5
+  m_Name: textframe
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &1904249685
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1904249684}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 101415817}
+  m_Father: {fileID: 844015406}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 8.6}
+  m_SizeDelta: {x: 641.75, y: 140.4}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1904249686
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1904249684}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3312d7739989d2b4e91e6319e9a96d76, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.RectMask2D
+  m_Padding: {x: 0, y: 0, z: 0, w: 0}
+  m_Softness: {x: 0, y: 0}
+--- !u!114 &1904249687
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1904249684}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
+  m_Material: {fileID: 0}
+  m_Color: {r: 0, g: 1, b: 0.18514824, a: 0}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Sprite: {fileID: 0}
+  m_Type: 0
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
+--- !u!222 &1904249688
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1904249684}
+  m_CullTransparentMesh: 1
 --- !u!1 &1904539778
 GameObject:
   m_ObjectHideFlags: 0
@@ -6021,9 +6642,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 12bf04e650e74a044aae28d6b9015616, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Waypoint
-  waypointNumber: 17
   tileType: 4
-  effectAmount: 0
+  movementAmount: 3
+  subWaypoints: []
 --- !u!65 &1904539781
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -6149,9 +6770,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 12bf04e650e74a044aae28d6b9015616, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Waypoint
-  waypointNumber: 27
   tileType: 3
-  effectAmount: 0
+  movementAmount: 3
+  subWaypoints: []
 --- !u!65 &1905984065
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -6567,9 +7188,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 12bf04e650e74a044aae28d6b9015616, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Waypoint
-  waypointNumber: 23
   tileType: 4
-  effectAmount: 0
+  movementAmount: 3
+  subWaypoints: []
 --- !u!65 &2079922338
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -6695,9 +7316,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 12bf04e650e74a044aae28d6b9015616, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Waypoint
-  waypointNumber: 19
   tileType: 1
-  effectAmount: 4
+  movementAmount: 3
+  subWaypoints: []
 --- !u!65 &2102123651
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -6901,9 +7522,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 12bf04e650e74a044aae28d6b9015616, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Waypoint
-  waypointNumber: 11
   tileType: 0
-  effectAmount: 0
+  movementAmount: 3
+  subWaypoints: []
 --- !u!1001 &1792025540725562004
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -6993,9 +7614,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 12bf04e650e74a044aae28d6b9015616, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Waypoint
-  waypointNumber: 1
   tileType: 0
-  effectAmount: 0
+  movementAmount: 3
+  subWaypoints: []
 --- !u!1001 &3488759148599889607
 PrefabInstance:
   m_ObjectHideFlags: 0
