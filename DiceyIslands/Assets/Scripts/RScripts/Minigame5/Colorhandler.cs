@@ -21,8 +21,8 @@ public class Colorhandler : MonoBehaviour
     [SerializeField] private AudioClip backgroundMusic;
 
     //all client use this
-    [HideInInspector] public HashSet<int> confirmedPlayers = new(); //... why not mangeren
-    [HideInInspector] public Dictionary<int, Slider[]> playersSliders = new(); //since it is all client i need this /:
+    [HideInInspector] public HashSet<int> confirmedPlayers = new();
+    [HideInInspector] public Dictionary<int, Slider[]> playersSliders = new();
     [HideInInspector] public Dictionary<int, TextMeshProUGUI> playersScoreText = new();
 
     void Awake()

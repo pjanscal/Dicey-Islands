@@ -89,7 +89,7 @@ public class MaingameScript5 : MonoBehaviour
 
     void Update()
     {
-        if (!isActive || playerColorConfirm || playerController == null || !playerController.occuplied)
+        if (!isActive || playerColorConfirm || !playerController.occuplied)
             return;
 
         HandleSliderControl();
@@ -99,8 +99,6 @@ public class MaingameScript5 : MonoBehaviour
 
     void HandleSliderControl()
     {
-        if (!playerController.GetButtonDown(LokaalConnecter.InputType.x)) return;
-
         Vector2? moveDir = GetMoveDir(); //doing like this could make it so x is not use
         
         if (moveDir == null) return;
@@ -196,8 +194,7 @@ public class MaingameScript5 : MonoBehaviour
 
     void ConfirmColor()
     {
-        if (playerColorConfirm || !playerController.occuplied)
-            return;
+        if (!playerController.GetButtonDown(LokaalConnecter.InputType.x)) return;
 
         playerColorConfirm = true;
         Colorhandler.instance.confirmedPlayers.Add(plrId);
