@@ -47,6 +47,7 @@ public class Minigame4Mangeren : MonoBehaviour
     const float potatoGivingCooldown = .2f;
     const float plrImmunityDur = 1f; //time before the player can get the potato again
     const float bombLightSwitchDur = .1f;
+    const float timeBeforeEnding = .8f;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Awake()
@@ -204,7 +205,13 @@ public class Minigame4Mangeren : MonoBehaviour
             Debug.Log($"MINIGAME RESULT - Place {1 + plrsPlaces.IndexOf(plrId)}: Player {plrId}");    
         }
 
-        GameMangeren.MinigameWinner(plrsPlaces);
+        StartCoroutine(Enumerator());
+
+        IEnumerator Enumerator()
+        {
+            yield return new WaitForSeconds(timeBeforeEnding);
+            GameMangeren.MinigameWinner(plrsPlaces);
+        }
     }
 
     #region Give Potato Logic
