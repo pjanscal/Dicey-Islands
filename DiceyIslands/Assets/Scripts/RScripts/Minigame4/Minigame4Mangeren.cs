@@ -10,6 +10,7 @@ public class Minigame4Mangeren : MonoBehaviour
 
     [SerializeField] private GameObject potato;
     [SerializeField] private ParticleSystem bombVfx;
+    private Light bombLighting;
 
     [HideInInspector] public bool isActive = false;
     [HideInInspector] public HashSet<(int, int)> plrHittedPlr = new(); //here go all the collision check that is going to happend so a void don't happend at the exact same time
@@ -21,6 +22,7 @@ public class Minigame4Mangeren : MonoBehaviour
     private bool canGivePotatoDebounce = true;
     private List<int> plrsPlaces = new(); //0 = last one 3 = first one //list have .indexOf so i don't have to find when debugging
     public Transform camaraHolder;
+    private float bombLightInstensty = 0;
 
     [Header("Audio")]
     [SerializeField] private AudioSource sfxAudioSource;
@@ -39,10 +41,12 @@ public class Minigame4Mangeren : MonoBehaviour
     //configs
     private Vector2 potatoLifeTime = new Vector2(10, 19);
     private Vector3 potatoOffet = new Vector3(0, 2, 0); //offset of being inside a player
+    private Vector3 bombVfxOffset = new Vector3(0, .9f, 0);
     const float timeBeforeGivingARandomBomb = 3f;
     const float potatoRotateSpeed = .8f;
     const float potatoGivingCooldown = .2f;
     const float plrImmunityDur = 1f; //time before the player can get the potato again
+    const float bombLightSwitchDur = .1f;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Awake()
@@ -68,6 +72,9 @@ public class Minigame4Mangeren : MonoBehaviour
             musicAudioSource.loop = true;
             musicAudioSource.Play();
         }
+
+        bombLighting = bombVfx.GetComponent<Light>();
+        bombLightInstensty = bombLighting.intensity;
     }
 
     #region Audio
@@ -148,8 +155,10 @@ public class Minigame4Mangeren : MonoBehaviour
 
         plrsIngame.Remove(target);
         plrsPlaces.Add(target);
-        bombVfx.transform.position = plrScripts[target].transform.position;
+        bombVfx.transform.position = plrScripts[target].transform.position + bombVfxOffset;
         bombVfx.Play();
+        bombLighting.enabled = true;
+        StartCoroutine(WhenVFXIsDone());
         potato.SetActive(false);
         potato.transform.SetParent(transform);
         plrScripts[target].gameObject.SetActive(false); //soon make it better
@@ -167,6 +176,17 @@ public class Minigame4Mangeren : MonoBehaviour
         yield return new WaitForSeconds(timeBeforeGivingARandomBomb);
 
         GiveRandomPlrPotato();
+
+        IEnumerator WhenVFXIsDone()
+        {
+            yield return new WaitForSeconds(bombVfx.main.duration * 3);
+            bombLighting.DOIntensity(0, bombLightSwitchDur)
+            .OnComplete(() =>
+            {
+                bombLighting.enabled = false;
+                bombLighting.intensity = bombLightInstensty;
+            });
+        }
     }
 
     //the game ended show result and send him back to board

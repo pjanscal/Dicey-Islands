@@ -67,7 +67,7 @@ public class MinigameWinnerGUI : MonoBehaviour
 
     void Testing()
     {
-        if (!Input.GetKeyDown(KeyCode.Equals)) return;
+        if (!Input.GetKeyDown(KeyCode.Minus)) return;
 
         List<int> places= new() {2, 1, 3, 4};
         Toggle(true, places);
