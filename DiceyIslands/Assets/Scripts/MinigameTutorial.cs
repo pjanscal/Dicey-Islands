@@ -24,6 +24,7 @@ public class MinigameTutorial : MonoBehaviour
     [SerializeField] private Transform keybindsFrame;
     [SerializeField] private TextMeshProUGUI keybindsTypeText;
     [SerializeField] private GameObject keybindImageTemplate;
+    private RawImage videoOutputFrame;
     private Canvas canvas;
 
     private bool isActive = false;
@@ -52,6 +53,7 @@ public class MinigameTutorial : MonoBehaviour
         
         //getting obj/ setting value's
         canvas = GetComponent<Canvas>();
+        videoOutputFrame = videoPlayer.GetComponent<RawImage>();
 
         //set up the color
         foreach (PlayerSlotInfo playerSlotInfo in playerSlotInfos)
@@ -107,10 +109,21 @@ public class MinigameTutorial : MonoBehaviour
             index += 1;
         }
         canvas.enabled = true;
-        videoPlayer.Play();
+
+        //load the first frame
+        StartCoroutine(PlayAfterVideoIsLoaded());
 
         isActive = true;
         StartCoroutine(CPUTryToReadyUp());
+
+        IEnumerator PlayAfterVideoIsLoaded()
+        {
+            videoPlayer.Play();
+
+            yield return new WaitForEndOfFrame();
+            yield return new WaitForSecondsRealtime(.4f);
+            videoOutputFrame.color = Color.white;
+        }
     }
 
     // Update is called once per frame
@@ -198,6 +211,7 @@ public class MinigameTutorial : MonoBehaviour
             canvas.enabled = false;
             videoPlayer.Stop();
             videoPlayer.clip = null;
+            videoOutputFrame.color = Color.black;
             keybindsTypeText.text = "";
             
             foreach (GameObject keybindImage in allKeybindImages)
