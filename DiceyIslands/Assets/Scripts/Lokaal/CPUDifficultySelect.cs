@@ -106,7 +106,7 @@ public class CPUDifficultySelect : MonoBehaviour
         {
             LokaalConnecter.PlayerController playerController = LokaalConnecter.plrsController[plrId];
 
-            if (!playerController.occuplied || playerController.isCPU) return; //idk want cpu to do things here
+            if (!playerController.occuplied || playerController.isCPU) continue; //idk want cpu to do things here
 
             var (succes, dir) = GetLeftRight(playerController.GetMoveDir());
             if (!succes) continue;
@@ -128,7 +128,7 @@ public class CPUDifficultySelect : MonoBehaviour
         {
             LokaalConnecter.PlayerController playerController = LokaalConnecter.plrsController[plrId];
 
-            if (!playerController.occuplied || playerController.isCPU) return; //idk want cpu to do things here
+            if (!playerController.occuplied || playerController.isCPU) continue; //idk want cpu to do things here
 
             if (!playerController.GetButtonDown(LokaalConnecter.InputType.x)) continue;
 
@@ -146,7 +146,7 @@ public class CPUDifficultySelect : MonoBehaviour
         {
             LokaalConnecter.PlayerController playerController = LokaalConnecter.plrsController[plrId];
 
-            if (!playerController.occuplied || playerController.isCPU) return; //idk want cpu to do things here
+            if (!playerController.occuplied || playerController.isCPU) continue; //idk want cpu to do things here
 
             if (!playerController.GetButtonDown(LokaalConnecter.InputType.secondAction)) continue;
 
