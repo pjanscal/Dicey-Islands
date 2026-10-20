@@ -7844,18 +7844,18 @@ MonoBehaviour:
   - difficulty: 0
     minRoundToSurvive: 2
     chanceToDie: 65
-    checkingRange: 1
-    checkingAfterRange: 0.5
+    checkingRange: 0.6
+    checkingAfterRange: 0.4
   - difficulty: 1
     minRoundToSurvive: 3
     chanceToDie: 45
-    checkingRange: 1
-    checkingAfterRange: 0.5
+    checkingRange: 0.6
+    checkingAfterRange: 0.4
   - difficulty: 2
     minRoundToSurvive: 4
     chanceToDie: 40
-    checkingRange: 0.6
-    checkingAfterRange: 0.4
+    checkingRange: 0.5
+    checkingAfterRange: 0.3
 --- !u!4 &1116495553
 Transform:
   m_ObjectHideFlags: 0

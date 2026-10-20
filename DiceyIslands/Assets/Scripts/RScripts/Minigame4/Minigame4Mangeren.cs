@@ -45,7 +45,7 @@ public class Minigame4Mangeren : MonoBehaviour
     const float timeBeforeGivingARandomBomb = 3f;
     const float potatoRotateSpeed = .8f;
     const float potatoGivingCooldown = .2f;
-    const float plrImmunityDur = 1f; //time before the player can get the potato again
+    const float plrImmunityDur = 1.5f; //time before the player can get the potato again
     const float bombLightSwitchDur = .1f;
     const float timeBeforeEnding = .8f;
 
