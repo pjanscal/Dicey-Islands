@@ -28,13 +28,13 @@ public class MinigameWinnerGUI : MonoBehaviour
 
     [Header("UI")]
     [SerializeField] private WinnerSlot[] winnerSlots;
-    [SerializeField] private CharacterLoader winnerCharacterLoader;
-    [SerializeField] private GameObject winnerFrame; //reduce lag to disable it
-    [SerializeField] private Light guiLighting; //light of the gui
+    [SerializeField] protected CharacterLoader winnerCharacterLoader;
+    [SerializeField] protected GameObject winnerFrame; //reduce lag to disable it
+    [SerializeField] protected Light guiLighting; //light of the gui
 
-    private Canvas canvas;
-    private Light minigameLighting; //direction light of the minigame
-    private Dictionary<int, Color> playerColors = new();
+    protected Canvas canvas;
+    protected Light minigameLighting; //direction light of the minigame
+    protected Dictionary<int, Color> playerColors = new();
 
     //configs
     [SerializeField] private List<PlayerColorInfo> playerColorInfos; 
@@ -65,7 +65,7 @@ public class MinigameWinnerGUI : MonoBehaviour
         Testing();
     }
 
-    void Testing()
+    protected virtual void Testing()
     {
         if (!Input.GetKeyDown(KeyCode.Minus)) return;
 
@@ -108,24 +108,24 @@ public class MinigameWinnerGUI : MonoBehaviour
             print($"place {winnerSlot.place} select new plr{plrId}");
         }
 
-        StartCoroutine(enumerator());
+        StartCoroutine(DelayToTurnOffAndLoad());
+    }
 
-        IEnumerator enumerator()
-        {
-            yield return null;
-            guiLighting.enabled = true;
-            if (minigameLighting != null) minigameLighting.enabled = false;
-            canvas.enabled = true; //make sure that it loaded
+    protected virtual IEnumerator DelayToTurnOffAndLoad() //so the other script have acces
+    {
+        yield return null;
+        guiLighting.enabled = true;
+        if (minigameLighting != null) minigameLighting.enabled = false;
+        canvas.enabled = true; //make sure that it loaded
 
-            yield return new WaitForSeconds(lookTime);
+        yield return new WaitForSeconds(lookTime);
 
-            //go to BoardGame
-            if (MatchData.Instance == null) {Debug.LogError("no matchData to return to..."); yield break;}
-            MatchData.Instance.returningFromMinigame = true;
-            GameMangeren.SwitchScene(GameMangeren.boardGameSceneName);
+        //go to BoardGame
+        if (MatchData.Instance == null) {Debug.LogError("no matchData to return to..."); yield break;}
+        MatchData.Instance.returningFromMinigame = true;
+        GameMangeren.SwitchScene(GameMangeren.boardGameSceneName);
 
-            TurnOff();
-        }
+        TurnOff();
     }
 
     void TurnOff()
