@@ -1,4 +1,5 @@
 using UnityEngine;
+using System.Collections;
 using System.Text.RegularExpressions;
 using TMPro;
 using UnityEngine.UI;
@@ -9,6 +10,7 @@ using AnimationTriggerEvent = CharacterLoader.CharactersAnimationTriggerEvent;
 public class MaingameScript2 : MonoBehaviour
 {
     [SerializeField] int plrId;
+    [SerializeField] float claimDelay;
     SpawnObject spawnObject;
     public int points;
     bool gameOver, init;
@@ -33,6 +35,7 @@ public class MaingameScript2 : MonoBehaviour
         gameOver;
     void Start()
     {
+        claimDelay = 0.5f;
         spawnObject =
             FindFirstObjectByType<SpawnObject>();
 
@@ -67,11 +70,11 @@ public class MaingameScript2 : MonoBehaviour
                 return;
             }
 
-            if (playerController.GetButtonDown(LokaalConnecter.InputType.y) && IsGameOver())
+            /* if (playerController.GetButtonDown(LokaalConnecter.InputType.y) && IsGameOver())
             {
                 RestartGame();
                 return;
-            }
+            } */
 
             if (gameOver) return;
 
@@ -100,48 +103,7 @@ public class MaingameScript2 : MonoBehaviour
                 lastPressTime = Time.time;
                 if (!spawnObject.TryClaimObject(out GameObject claimedObject)) return;
 
-                Match pointMatch =
-                    Regex.Match(
-                        claimedObject.name,
-                        @"-?\d+"
-                    );
-
-                if (pointMatch.Success)
-                {
-                    int pointValue =
-                        int.Parse(pointMatch.Value);
-
-                    // Add/subtract the pickup's points.
-                    points += pointValue;
-
-                    // Play the sound belonging to this pickup.
-                    if (resultBridge != null)
-                    {
-                        resultBridge.PlayStealSound(
-                            pointValue
-                        );
-                    }
-
-                    if (points >= 10)
-                    {
-                        gameOver = true;
-
-                        spawnObject.StopSpawning();
-
-                        if (resultBridge != null)
-                        {
-                            resultBridge
-                                .PlayRequiredPointsReachedSound();
-                        }
-
-                        Debug.Log(
-                            "Player " + plrId +
-                            " wins with " +
-                            points +
-                            " points!"
-                        );
-                    }
-                }
+                StartCoroutine(ResolveClaimedObject(claimedObject));
 
             }
 
@@ -149,7 +111,59 @@ public class MaingameScript2 : MonoBehaviour
         }
     }
 
-    
+
+    System.Collections.IEnumerator ResolveClaimedObject(GameObject claimedObject)
+    {
+        yield return new WaitForSeconds(claimDelay);
+
+        if (claimedObject == null)
+            yield break;
+
+        claimedObject.SetActive(false);
+
+        Match pointMatch =
+            Regex.Match(
+                claimedObject.name,
+                @"-?\d+"
+            );
+
+        if (pointMatch.Success)
+        {
+            int pointValue =
+                int.Parse(pointMatch.Value);
+
+            // Add/subtract the pickup's points.
+            points += pointValue;
+
+            // Play the sound belonging to this pickup.
+            if (resultBridge != null)
+            {
+                resultBridge.PlayStealSound(
+                    pointValue
+                );
+            }
+
+            if (points >= 10)
+            {
+                gameOver = true;
+
+                spawnObject.StopSpawning();
+
+                if (resultBridge != null)
+                {
+                    resultBridge
+                        .PlayRequiredPointsReachedSound();
+                }
+
+                Debug.Log(
+                    "Player " + plrId +
+                    " wins with " +
+                    points +
+                    " points!"
+                );
+            }
+        }
+    }
 
     bool IsGameOver()
     {
