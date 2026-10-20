@@ -29,6 +29,29 @@ public class DiceDisplayController : MonoBehaviour
     [SerializeField] private float finalFrameHoldTime = 0.75f;
     [SerializeField] private float animationTimeout = 8f;
 
+    [Header("Dice UI Layout")]
+    [SerializeField] private RectTransform mainDiceDisplayRect;
+    [SerializeField] private RectTransform bonusDiceDisplayRect;
+
+    [SerializeField] private RectTransform rollNumberRect;
+    [SerializeField] private RectTransform bonusRollNumberRect;
+
+    [Header("Layout Positions")]
+    [SerializeField]
+    private Vector2 singleDicePosition =
+        new Vector2(0f, 0f);
+
+    [SerializeField]
+    private Vector2 mainDiceSplitPosition =
+        new Vector2(-160f, 0f);
+
+    [SerializeField]
+    private Vector2 bonusDiceSplitPosition =
+        new Vector2(160f, 0f);
+
+    [Header("Layout Animation")]
+    [SerializeField] private float layoutMoveSpeed = 8f;
+
     public Action OnResultShown;
 
     private bool idleSpinning;
@@ -39,6 +62,8 @@ public class DiceDisplayController : MonoBehaviour
 
     private float mainDirectionTimer;
     private float bonusDirectionTimer;
+
+
 
     private void Awake()
     {
@@ -70,6 +95,117 @@ public class DiceDisplayController : MonoBehaviour
         Debug.Log("DICE: DiceDisplayController started successfully.");
     }
 
+    private void UpdateDiceLayout(bool hasBonusDice)
+    {
+        Vector2 mainPosition = hasBonusDice
+            ? mainDiceSplitPosition
+            : singleDicePosition;
+
+        Vector2 bonusPosition = bonusDiceSplitPosition;
+
+        StopCoroutineIfRunning();
+
+        layoutCoroutine = StartCoroutine(
+            AnimateDiceLayout(mainPosition, bonusPosition)
+        );
+    }
+
+    private Coroutine layoutCoroutine;
+
+    private void StopCoroutineIfRunning()
+    {
+        if (layoutCoroutine != null)
+        {
+            StopCoroutine(layoutCoroutine);
+            layoutCoroutine = null;
+        }
+    }
+
+    private IEnumerator AnimateDiceLayout(
+        Vector2 mainTarget,
+        Vector2 bonusTarget)
+    {
+        while (true)
+        {
+            bool finished = true;
+
+            if (mainDiceDisplayRect != null)
+            {
+                mainDiceDisplayRect.anchoredPosition =
+                    Vector2.Lerp(
+                        mainDiceDisplayRect.anchoredPosition,
+                        mainTarget,
+                        layoutMoveSpeed * Time.unscaledDeltaTime
+                    );
+
+                if (Vector2.Distance(
+                    mainDiceDisplayRect.anchoredPosition,
+                    mainTarget) > 0.1f)
+                {
+                    finished = false;
+                }
+            }
+
+            if (bonusDiceDisplayRect != null)
+            {
+                bonusDiceDisplayRect.anchoredPosition =
+                    Vector2.Lerp(
+                        bonusDiceDisplayRect.anchoredPosition,
+                        bonusTarget,
+                        layoutMoveSpeed * Time.unscaledDeltaTime
+                    );
+
+                if (Vector2.Distance(
+                    bonusDiceDisplayRect.anchoredPosition,
+                    bonusTarget) > 0.1f)
+                {
+                    finished = false;
+                }
+            }
+
+            if (rollNumberRect != null)
+            {
+                rollNumberRect.anchoredPosition =
+                    Vector2.Lerp(
+                        rollNumberRect.anchoredPosition,
+                        mainTarget,
+                        layoutMoveSpeed * Time.unscaledDeltaTime
+                    );
+
+                if (Vector2.Distance(
+                    rollNumberRect.anchoredPosition,
+                    mainTarget) > 0.1f)
+                {
+                    finished = false;
+                }
+            }
+
+            if (bonusRollNumberRect != null)
+            {
+                bonusRollNumberRect.anchoredPosition =
+                    Vector2.Lerp(
+                        bonusRollNumberRect.anchoredPosition,
+                        bonusTarget,
+                        layoutMoveSpeed * Time.unscaledDeltaTime
+                    );
+
+                if (Vector2.Distance(
+                    bonusRollNumberRect.anchoredPosition,
+                    bonusTarget) > 0.1f)
+                {
+                    finished = false;
+                }
+            }
+
+            if (finished)
+                break;
+
+            yield return null;
+        }
+
+        layoutCoroutine = null;
+    }
+
     private void Update()
     {
         if (!idleSpinning || rolling)
@@ -99,6 +235,7 @@ public class DiceDisplayController : MonoBehaviour
 
         rolling = false;
         idleSpinning = true;
+        UpdateDiceLayout(hasBonusDice);
 
         if (mainDiceViewport != null)
             mainDiceViewport.SetActive(true);
