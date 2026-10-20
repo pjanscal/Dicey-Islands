@@ -111,6 +111,13 @@ public static class GameMangeren
         int minigameId = GetMinigameIdFromScene(scene.name);
         minigameTutorial.Init(true, minigameId);
         minigameWinnerGui.OnSceneLoad(); //say it new scene
+
+        //set the cpu movement normale
+        foreach (LokaalConnecter.PlayerController playerController in LokaalConnecter.plrsController.Values)
+        {
+            if (!playerController.isCPU) continue;
+            playerController.cpuMoveDir = Vector2.zero;
+        }
     }
 
     static void SetInEventSystem()
