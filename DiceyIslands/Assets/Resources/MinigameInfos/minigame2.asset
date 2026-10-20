@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: minigame2
   m_EditorClassIdentifier: Assembly-CSharp::MinigameInfo
   minigameId: 2
-  minigameName: Steal
+  minigameName: Steal Minigame
   minigameShowcaseBackground: {fileID: 21300000, guid: 29f93f7f771136e4698d449470077c4f, type: 3}

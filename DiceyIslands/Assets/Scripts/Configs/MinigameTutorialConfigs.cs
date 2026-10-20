@@ -17,4 +17,5 @@ public class MinigameTutorialConfigs : ScriptableObject
     public Sprite bg; //background of it
     public VideoClip videoClip;
     public KeybindsShowCaseInfo[] keyBindsInfo;
+    [TextArea(3, 10)] public string description;
 }

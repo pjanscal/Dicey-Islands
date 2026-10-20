@@ -19,23 +19,17 @@ public class MaingameScript5 : MonoBehaviour
     
     [Header("UI")]
     [SerializeField] RawImage mainColor;
-    [SerializeField] private Image slowModeUi;
     [SerializeField] Slider redSlider;
     [SerializeField] Slider greenSlider;
     [SerializeField] Slider blueSlider;
     [SerializeField] TextMeshProUGUI scoreText;
     private RawImage targetColor;// => Colorhandler.instance.mainColors[0];
 
-    [Header("Asset")]
-    [Tooltip("Change in script folder")] [SerializeField] private Sprite slowModeOnSprite;
-    [Tooltip("Change in script folder")] [SerializeField] private Sprite slowModeOffSprite;
-
     [HideInInspector] public readonly Slider[] sliders = new Slider[3];
     private int selectedSliderIndex = 0;
 
     LokaalConnecter.PlayerController playerController;
 
-    private bool sliderSlowMode = false; //say if it going slow or fast
     private float sliderBetweenValue = 0; //help to not send .5 but instead wait until this is above
     private bool isActive = false;
     private bool canSwitchSlider = true;
@@ -43,7 +37,6 @@ public class MaingameScript5 : MonoBehaviour
 
     //configs
     const float defaultSliderSpeed = 130f; //to get there fast
-    const float slowSliderSpeed = 10f; //if u wanna do the final tweeks
     const float timeBetweenSwitchingSlider = .2f;
     const float timeBeforeShowingResult = .5f;
     const float timeBeforeShowingWinner = 1.8f;
@@ -83,7 +76,7 @@ public class MaingameScript5 : MonoBehaviour
         targetColor = Colorhandler.instance.mainColors[0];
 
         //debug
-        if (mainColor == null || redSlider == null || greenSlider == null || blueSlider == null || scoreText == null || slowModeUi == null)
+        if (mainColor == null || redSlider == null || greenSlider == null || blueSlider == null || scoreText == null)
             Debug.LogError($"a var is not assign: plr{plrId}");
     }
 
@@ -93,7 +86,7 @@ public class MaingameScript5 : MonoBehaviour
             return;
 
         HandleSliderControl();
-        SlowMode();
+        //SlowMode();
         ConfirmColor();
     }
 
@@ -184,13 +177,13 @@ public class MaingameScript5 : MonoBehaviour
         mainColor.color = new Color(r, g, b, 1f);
     }
     
-    void SlowMode()
+    /*void SlowMode() deleted feature
     {
         if (!playerController.GetButtonDown(LokaalConnecter.InputType.jump)) return;
 
         sliderSlowMode = !sliderSlowMode;
         slowModeUi.sprite = sliderSlowMode? slowModeOnSprite : slowModeOffSprite;
-    }
+    }*/
 
     void ConfirmColor()
     {
@@ -284,9 +277,9 @@ public class MaingameScript5 : MonoBehaviour
     //get the next value based on speed/ mode/ time/ moveDir
     int GetSliderNextValue()
     {
-        float sliderSpeed = !sliderSlowMode? defaultSliderSpeed : slowSliderSpeed;
+        //float sliderSpeed = !sliderSlowMode? defaultSliderSpeed : slowSliderSpeed;
         float moveDirSpeed = math.abs(playerController.GetMoveDir().x);
-        float sliderAdjust = sliderSpeed * moveDirSpeed * Time.deltaTime;
+        float sliderAdjust = defaultSliderSpeed * moveDirSpeed * Time.deltaTime;
 
         sliderBetweenValue += sliderAdjust;
         sliderAdjust = math.floor(sliderBetweenValue);

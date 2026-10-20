@@ -83,9 +83,7 @@ public class SpawnObject : MonoBehaviour
         if (claimedObject == null ||
             !claimedObject.activeSelf)
             return false;
-
-        claimedObject.SetActive(false);
-
+ 
         objectToActivate = null;
 
         return true;

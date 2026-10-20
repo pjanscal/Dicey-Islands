@@ -51,6 +51,7 @@ public class CPUMinigame5: CPUMangeren
     {
         DifficultyCPUConfigs config = difficultiesConfigs[GameMangeren.cPUDifficulty];
         LokaalConnecter.PlayerController playerController = LokaalConnecter.plrsController[plrId];
+        //playerController.cpuMoveDir = Vector2.up; //make sure it won't go down when finishing a minigame
 
         float rngStartWaitDur = UnityEngine.Random.Range(startTime.x, startTime.y) + plrId / 10; //make a little delay
         yield return new WaitUntil(() => isActive);
@@ -60,7 +61,7 @@ public class CPUMinigame5: CPUMangeren
         Vector3Int targetColor = GetTargetColorWithOffset(rightTargetColor);
         Slider[] sliders = GetSliderFromPlrId(plrId);
         //target offset color btw
-
+        
         //go do it one by one
         for (int axis = 0; axis <= 2; axis++)
         {
@@ -69,6 +70,7 @@ public class CPUMinigame5: CPUMangeren
             //bool rightSide = UnityEngine.Random.Range(0, 2) == 0? false : true;
             //int offSet = UnityEngine.Random.Range(fastDistanceOffset.x, fastDistanceOffset.y + 1) * (rightSide? 1 : -1);
             int target = math.clamp(targetColor[axis], 0, 255);
+            Debug.LogWarning($"plr{plrId} is getting {target} on axis: {axis}");
 
             yield return new WaitUntil(() => HavePassedSlider());
             playerController.cpuMoveDir = Vector2.zero;
