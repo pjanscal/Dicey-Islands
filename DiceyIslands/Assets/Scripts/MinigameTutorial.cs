@@ -24,6 +24,7 @@ public class MinigameTutorial : MonoBehaviour
     [SerializeField] private Transform keybindsFrame;
     [SerializeField] private TextMeshProUGUI keybindsTypeText;
     [SerializeField] private GameObject keybindImageTemplate;
+    [SerializeField] private TextMeshProUGUI description;
     private RawImage videoOutputFrame;
     private Canvas canvas;
 
@@ -93,6 +94,7 @@ public class MinigameTutorial : MonoBehaviour
         //set the scene up
         MinigameTutorialConfigs config = minigameTutorialConfigs[minigameId];
         backgroundUi.sprite = config.bg;
+        description.text = config.description;
         videoPlayer.clip = config.videoClip;
 
         int index = 0; //help with the offset
@@ -213,6 +215,7 @@ public class MinigameTutorial : MonoBehaviour
             videoPlayer.clip = null;
             videoOutputFrame.color = Color.black;
             keybindsTypeText.text = "";
+            description.text = "";
             
             foreach (GameObject keybindImage in allKeybindImages)
             {
