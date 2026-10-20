@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: minigame1
   m_EditorClassIdentifier: Assembly-CSharp::MinigameInfo
   minigameId: 1
-  minigameName: Untiteld
+  minigameName: Timer Minigame
   minigameShowcaseBackground: {fileID: 21300000, guid: 8b0b2e9b85e11d941a32c3c02e7b5829, type: 3}
