@@ -67,6 +67,7 @@ public class LokaalMatchingUi : MonoBehaviour
 
         //connectcontrolls
         TryConnectingControllers();
+        PlayerWannaLeaveMatchMaking();
 
         #if UNITY_EDITOR
             //keyboard Testing connector
@@ -141,7 +142,7 @@ public class LokaalMatchingUi : MonoBehaviour
 
     #region GUI Switch Logic
     //enable or disable the ui
-    public void SwitchVisible(bool state, bool isCharSelect)
+    public void SwitchVisible(bool state, bool isCharSelect = true)
     {
         if (state)
         {
@@ -195,7 +196,7 @@ public class LokaalMatchingUi : MonoBehaviour
         {
             Debug.LogError("return to menu and reset everything need to be make");
         }
-        else
+        else if (LokaalConnecter.connectionType == LokaalConnecter.ConnectionTypes.matchConnect) //stop insta leaving
         {
             LokaalConnecter.SwitchMatchMaking(false);
             LokaalConnecter.outOfMatchMaking?.Invoke(false);
@@ -331,4 +332,23 @@ public class LokaalMatchingUi : MonoBehaviour
         return LokaalConnecter.alrUsedControllers.Contains(gamepad.deviceId);
     }
     #endregion
+
+    void PlayerWannaLeaveMatchMaking()
+    {
+        if (LokaalConnecter.connectionType != LokaalConnecter.ConnectionTypes.matchConnect) return;
+
+        foreach(Gamepad gamepad in Gamepad.all)
+        {
+            //check or it is not alr connected
+            if (ControllAlrBeingUsed(gamepad)) continue;
+
+            //check if it not being use again 
+            if (!ControllIsFree()) return; //in foreach statement else when added it won't count that
+
+            //check if it press join button
+            if (!gamepad.buttonEast.wasPressedThisFrame) continue;
+
+            ExitLokaal();
+        }
+    }
 }

@@ -420,10 +420,17 @@ public static class LokaalConnecter
         {
             Time.timeScale = 0; //if a minigame that play with timescale get old one like make a var to remeber;
 
-            if (!GameMangeren.inGame) connectionType = ConnectionTypes.matchConnect; //make sure it not doing it when it should not
-            else connectionType = ConnectionTypes.reConnecting;
+            //if (!GameMangeren.inGame) connectionType = ConnectionTypes.matchConnect; //make sure it not doing it when it should not
+            //else connectionType = ConnectionTypes.reConnecting;
 
-            LokaalMatchingUi.instance.SwitchVisible(true, connectionType == ConnectionTypes.matchConnect);
+            LokaalMatchingUi.instance.StartCoroutine(enumerator());
+            LokaalMatchingUi.instance.SwitchVisible(true);
+
+            IEnumerator enumerator()
+            {
+                yield return null;
+                connectionType = ConnectionTypes.matchConnect;
+            }
         }
         else
         {
