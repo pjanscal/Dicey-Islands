@@ -16,10 +16,12 @@ public class MainGameScript : MonoBehaviour
     public float elapsed; //public so the cpu can check
     private CharacterLoader animatorController;
     [SerializeField] public bool isRunning, firstTime, ready;
+    private bool stopRevealComplete;
 
     [Header("Audio")]
     [SerializeField] private AudioSource sfxAudioSource;
     [SerializeField] private AudioClip lockInSound;
+    private const float stopRevealDelay = 0.5f;
     bool init;
     int seconds, centiseconds;
     TimeNeeded timeNeeded;
@@ -68,33 +70,15 @@ public class MainGameScript : MonoBehaviour
             if (playerController == null || !playerController.occuplied) return;
 
             if (ready &&
-     isRunning &&
-     playerController.GetButtonDown(
-         LokaalConnecter.InputType.x
-     ))
-                if (ready &&
-         isRunning &&
-         playerController.GetButtonDown(
-             LokaalConnecter.InputType.x
-         ))
-                {
-                    isRunning = false;
-                    
-                    //animation
-                    animatorController.UseAnimation(AnimatorTriggerEvent.ActivePress);
-                    //bugs u get the result before pressing
+                isRunning &&
+                elapsed >= 3f &&
+                playerController.GetButtonDown(LokaalConnecter.InputType.x))
+            {
+                isRunning = false;
 
-                    indicator.color =
-                        new Color32(34, 139, 34, 255);
-
-                    // Individual player lock-in sound.
-                    if (resultBridge != null)
-                    {
-                        resultBridge.PlayPlayerLockedSound();
-                    }
-
-                    Winner();
-                }
+                animatorController.UseAnimation(AnimatorTriggerEvent.ActivePress);
+                StartCoroutine(RevealStoppedTime());
+            }
 
             if (isRunning) UpdateTimer();
         }
@@ -121,10 +105,24 @@ public class MainGameScript : MonoBehaviour
             {
                 t.ready = true;
                 t.isRunning = true;
+                t.stopRevealComplete = false;
             }
         }
 
         yield break;
+    }
+
+    System.Collections.IEnumerator RevealStoppedTime()
+    {
+        yield return new WaitForSeconds(stopRevealDelay);
+
+        indicator.color = new Color32(34, 139, 34, 255);
+
+        if (resultBridge != null)
+            resultBridge.PlayPlayerLockedSound();
+
+        stopRevealComplete = true;
+        Winner();
     }
 
     void Winner()
@@ -134,7 +132,9 @@ public class MainGameScript : MonoBehaviour
 
         foreach (var t in all)
         {
-            if (t.playerController != null && t.playerController.occuplied && t.isRunning)
+            if (t.playerController != null &&
+                t.playerController.occuplied &&
+                (t.isRunning || !t.stopRevealComplete))
             {
                 Debug.Log("Winner: waiting for all players to stop");
                 return;
