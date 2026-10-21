@@ -212,6 +212,7 @@ GameObject:
   - component: {fileID: 956347937482664701}
   - component: {fileID: 92686110650608490}
   - component: {fileID: 7791180334525897024}
+  - component: {fileID: 2479154971955698877}
   m_Layer: 5
   m_Name: Info
   m_TagString: Untagged
@@ -279,6 +280,18 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!225 &2479154971955698877
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1231992209835792194}
+  m_Enabled: 1
+  m_Alpha: 0
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &1739674170971995478
 GameObject:
   m_ObjectHideFlags: 0
@@ -842,6 +855,8 @@ GameObject:
   - component: {fileID: 7988615160181386137}
   - component: {fileID: 7512143205863192292}
   - component: {fileID: 6023040224577007460}
+  - component: {fileID: 607397778331228447}
+  - component: {fileID: 1767550940940142197}
   m_Layer: 5
   m_Name: ChampionGUI
   m_TagString: Untagged
@@ -877,7 +892,7 @@ Canvas:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5942842913763937316}
-  m_Enabled: 0
+  m_Enabled: 1
   serializedVersion: 3
   m_RenderMode: 0
   m_Camera: {fileID: 0}
@@ -891,7 +906,7 @@ Canvas:
   m_AdditionalShaderChannelsFlag: 25
   m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 1
   m_TargetDisplay: 0
 --- !u!114 &7988615160181386137
 MonoBehaviour:
@@ -971,7 +986,63 @@ MonoBehaviour:
   - plrId: 4
     color: {r: 0.90588236, g: 0.9411765, b: 0, a: 1}
   startNavigation: {fileID: 6314792363659980247}
-  chartFrame: {fileID: 0}
+  chartFrame: {fileID: 872244554792480969}
+  infoOverlay: {fileID: 2479154971955698877}
+  lineThickness: 5
+  pointSize: 12
+  chartPlayerColors:
+  - {r: 0, g: 0, b: 1, a: 1}
+  - {r: 1, g: 0, b: 0, a: 1}
+  - {r: 0, g: 1, b: 0, a: 1}
+  - {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+  playerPieces:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  totalWaypoints: 120
+--- !u!225 &607397778331228447
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5942842913763937316}
+  m_Enabled: 1
+  m_Alpha: 0
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
+--- !u!114 &1767550940940142197
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5942842913763937316}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e52de21a22b6dd44c9cc19f810c65059, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.Timeline::UnityEngine.Timeline.SignalReceiver
+  m_Events:
+    m_Signals:
+    - {fileID: 11400000, guid: 93dcfb2f99c78b548a042de7d5154599, type: 2}
+    m_Events:
+    - m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 6023040224577007460}
+          m_TargetAssemblyTypeName: ChampionGui, Assembly-CSharp
+          m_MethodName: Init
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
 --- !u!1 &6202984296002900138
 GameObject:
   m_ObjectHideFlags: 0

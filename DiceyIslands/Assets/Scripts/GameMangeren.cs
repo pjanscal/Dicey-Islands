@@ -91,6 +91,15 @@ public static class GameMangeren
         ResetAll();
     }
 
+    static public void Reset()
+    {
+        //delete the info of the game
+        if (!MatchData.Instance) Debug.LogError("no mmatchData found");
+        GameObject.DestroyImmediate(MatchData.Instance);
+
+        SwitchScene(boardGameSceneName);
+    }
+
     static void ResetAll()
     {
         //reset value's
