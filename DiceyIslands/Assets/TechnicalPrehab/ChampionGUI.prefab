@@ -892,7 +892,7 @@ Canvas:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5942842913763937316}
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 3
   m_RenderMode: 0
   m_Camera: {fileID: 0}
@@ -985,9 +985,12 @@ MonoBehaviour:
     color: {r: 0, g: 1, b: 0.07450981, a: 1}
   - plrId: 4
     color: {r: 0.90588236, g: 0.9411765, b: 0, a: 1}
-  startNavigation: {fileID: 6314792363659980247}
+  startNavigation: {fileID: 915751930267217136}
   chartFrame: {fileID: 872244554792480969}
   infoOverlay: {fileID: 2479154971955698877}
+  cutsceneFinish: {fileID: 0}
+  character: {fileID: 0}
+  cameraFollowScript: {fileID: 0}
   lineThickness: 5
   pointSize: 12
   chartPlayerColors:
@@ -995,12 +998,6 @@ MonoBehaviour:
   - {r: 1, g: 0, b: 0, a: 1}
   - {r: 0, g: 1, b: 0, a: 1}
   - {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
-  playerPieces:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  totalWaypoints: 120
 --- !u!225 &607397778331228447
 CanvasGroup:
   m_ObjectHideFlags: 0

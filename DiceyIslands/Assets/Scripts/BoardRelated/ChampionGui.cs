@@ -4,6 +4,7 @@ using DG.Tweening;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.Playables;
 using UnityEngine.UI;
 
 public class ChampionGui : MinigameWinnerGUI
@@ -13,6 +14,11 @@ public class ChampionGui : MinigameWinnerGUI
     [SerializeField] protected RectTransform chartFrame;
     [SerializeField] private CanvasGroup infoOverlay;
     protected CanvasGroup canvasGroup;
+
+    [Header("Cutscene")]
+    [SerializeField] private PlayableDirector cutsceneFinish;
+    [SerializeField] private CharacterLoader character;
+    [SerializeField] private PlayerCamera cameraFollowScript;
 
     [Header("Chart Appearance")]
     [SerializeField] private float lineThickness = 5f;
@@ -31,12 +37,12 @@ public class ChampionGui : MinigameWinnerGUI
         new List<GameObject>();
 
     //info for places
-    [SerializeField] private List<PlayerPiece> playerPieces;
-    [HideInInspector] public int totalWaypoints = 120;
+    private List<PlayerPiece> playerPieces;
+    private int totalWaypoints = 120;
 
     //configs
     const float guiSwitchingDur = 1.2f;
-    const float lookTime = 2f;
+    const float lookTime = 5f;
 
     protected override IEnumerator DelayToTurnOffAndLoad()
     {
@@ -78,6 +84,27 @@ public class ChampionGui : MinigameWinnerGUI
 
         Toggle(true, places);
         DrawChart(playerPieces, totalWaypoints);
+    }
+
+    public void StartCutscene(List<PlayerPiece> allPlayerPieces, int totalTiles, Tween fadeOutEffect)
+    {
+        playerPieces = allPlayerPieces;
+        playerPieces.Sort((a, b) => b.currentWaypointIndex.CompareTo(a.currentWaypointIndex)); //get first place at top
+        totalWaypoints = totalTiles;
+
+        foreach (PlayerPiece playerPiece in allPlayerPieces)
+        {
+            playerPiece.gameObject.SetActive(false);
+        }
+
+        cameraFollowScript.enabled = false;
+        Time.timeScale = 0; //pause it so it can be undone
+        character.plrId = playerPieces[0].PlayerNumber;
+        character.ReLoad();
+        cutsceneFinish.Play();
+
+        fadeOutEffect.Play();
+        fadeOutEffect.OnComplete(() => {Time.timeScale = 1;});
     }
 
     protected override void Testing()

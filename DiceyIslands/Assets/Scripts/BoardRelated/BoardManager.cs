@@ -115,9 +115,11 @@ public class BoardManager : MonoBehaviour
     private int currentRound = 1;
 
 
-    [Header("Match Results")]
-    [SerializeField] private MatchResultsUI matchResultsUI;
-
+    [Header("Finish")]
+    [SerializeField] private ChampionGui championGui;
+    [SerializeField] private Image cutsceneBlackFadeUi;
+    [SerializeField] const float fadeInEffectDur = .8f;
+    [SerializeField] const float fadeOutEffectDur = .2f; 
 
     [HideInInspector] public bool turnInProgress = false;
     private bool gameOver = false;
@@ -1758,6 +1760,8 @@ public class BoardManager : MonoBehaviour
 
         gameOver = true;
         turnInProgress = false;
+        GameMangeren.isShowingResult = true;
+        Tween fadeInEffect = cutsceneBlackFadeUi.DOFade(1, fadeInEffectDur);
 
         if (diceDisplay != null)
             diceDisplay.HideForMovement();
@@ -1793,25 +1797,36 @@ public class BoardManager : MonoBehaviour
         if (skippedText != null)
             skippedText.gameObject.SetActive(false);
 
+        if (tilesLeftText != null)
+            tilesLeftText.gameObject.SetActive(false);
+
+        if (turnOrderText != null)
+            turnOrderText.gameObject.SetActive(false);
+
         RecordFinalPositions();
 
-        foreach (PlayerPiece player in turnOrder)
-            player.SetActiveTurnVisual(true);
+        //foreach (PlayerPiece player in turnOrder)
+            //player.SetActiveTurnVisual(true);
 
-        if (matchResultsUI != null)
+        fadeInEffect.OnComplete(() =>
         {
-            matchResultsUI.ShowResults(
-                winner,
-                turnOrder,
-                waypoints.Count
-            );
-        }
-        else
-        {
-            Debug.LogWarning(
-                "No MatchResultsUI has been assigned to BoardManager."
-            );
-        }
+            if (championGui != null)
+            {
+                Tween fadeOutEffect = cutsceneBlackFadeUi.DOFade(0, fadeOutEffectDur)
+                .SetUpdate(true).Pause(); //settings
+                championGui.StartCutscene(
+                    turnOrder,
+                    waypoints.Count,
+                    fadeOutEffect
+                );
+            }
+            else
+            {
+                Debug.LogWarning(
+                    "No championGui has been assigned to BoardManager."
+                );
+            }
+        });
     }
 
     // =========================================================

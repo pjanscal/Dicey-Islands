@@ -97,6 +97,8 @@ public static class GameMangeren
         if (!MatchData.Instance) Debug.LogError("no mmatchData found");
         GameObject.DestroyImmediate(MatchData.Instance);
 
+        isShowingResult = false;
+        Time.timeScale = 1;
         SwitchScene(boardGameSceneName);
     }
 
