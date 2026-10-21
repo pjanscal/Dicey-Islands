@@ -11,7 +11,7 @@ using AnimationTriggers = CharacterLoader.CharactersAnimationTriggerEvent;
 public class MinigameWinnerGUI : MonoBehaviour
 {
     [Serializable]
-    private class WinnerSlot
+    protected class WinnerSlot
     {
         public int place;
         public CharacterLoader characterLoader;
@@ -20,14 +20,14 @@ public class MinigameWinnerGUI : MonoBehaviour
     }
 
     [Serializable]
-    private class PlayerColorInfo
+    protected class PlayerColorInfo
     {
         public int plrId;
         public Color color;
     }
 
     [Header("UI")]
-    [SerializeField] private WinnerSlot[] winnerSlots;
+    [SerializeField] protected WinnerSlot[] winnerSlots;
     [SerializeField] protected CharacterLoader winnerCharacterLoader;
     [SerializeField] protected GameObject winnerFrame; //reduce lag to disable it
     [SerializeField] protected Light guiLighting; //light of the gui
@@ -37,11 +37,11 @@ public class MinigameWinnerGUI : MonoBehaviour
     protected Dictionary<int, Color> playerColors = new();
 
     //configs
-    [SerializeField] private List<PlayerColorInfo> playerColorInfos; 
+    [SerializeField] protected List<PlayerColorInfo> playerColorInfos; 
     const float lookTime = 4f;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    protected virtual void Start()
     {
         DontDestroyOnLoad(gameObject);
         canvas = GetComponent<Canvas>();
@@ -145,7 +145,7 @@ public class MinigameWinnerGUI : MonoBehaviour
     #endregion
 
     #region Helper Function
-    void GetSceneDirectionLighting()
+    protected void GetSceneDirectionLighting()
     {
         foreach (Light light in FindObjectsByType<Light>(FindObjectsSortMode.None))
         {

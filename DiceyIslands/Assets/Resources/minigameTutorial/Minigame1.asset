@@ -18,3 +18,9 @@ MonoBehaviour:
   keyBindsInfo:
   - keybind: 1
     actionName: 'Stop:'
+  description: 'Description:
+
+
+    In this minigame you need to get as close as posible
+    to the time that is shown on the board. After 3 seconds the time on your station
+    disappears, you need to count on from that point. Press X to lock in your time.'

@@ -22,10 +22,14 @@ MonoBehaviour:
     actionName: 'Done:'
   - keybind: 0
     actionName: 'Slowmode:'
-  description: 'idk blablabla
-
-    yoyoyoy
+  description: 'Description:
 
 
-    this is a test how longggggggggggggggggg
-    ggggggggggg ggggggggg ggggggg'
+    In this game you need to match your color to the
+    main objects color.
+
+    You do that by selecting and sliding the RGB sliders
+    using your joystick.
+
+    After you''ve done all the sliders press X to confirm
+    your color.'
