@@ -18,3 +18,9 @@ MonoBehaviour:
   keyBindsInfo:
   - keybind: 1
     actionName: 'Throw:'
+  description: 'Description:
+
+
+    In this minigame the goal is to throw the knifes.
+    But not to hit the other knifes. The target spins and the more knifes thrown
+    the harder it gets.'

@@ -18,3 +18,13 @@ MonoBehaviour:
   keyBindsInfo:
   - keybind: 5
     actionName: 'Move:'
+  description: 'Description:
+
+
+    In this minigame the goal is not to explode.
+
+    You
+    run around and pass the bomb to other players.
+
+    The bomb has a random timer,
+    so when you hold it and it explodes you lose.'

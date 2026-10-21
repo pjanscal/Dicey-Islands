@@ -18,3 +18,20 @@ MonoBehaviour:
   keyBindsInfo:
   - keybind: 1
     actionName: 'Steal:'
+  description: 'Description:
+
+
+    In this minigame you need to steal the diamonds.
+
+    The
+    gold diamond is +3 points,
+
+    The blue diamond is +1 point,
+
+    The red diamond
+    is -1 point,
+
+    The black diamond is -3 points.
+
+    The first person to get
+    to 10 points wins.'
