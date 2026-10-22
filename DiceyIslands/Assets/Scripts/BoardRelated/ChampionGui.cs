@@ -33,6 +33,9 @@ public class ChampionGui : MinigameWinnerGUI
         Color.yellow
     };
 
+    [Header("VFX")]
+    [SerializeField] private ParticleSystem[] confetties;
+
     private List<GameObject> generatedChartObjects =
         new List<GameObject>();
 
@@ -53,6 +56,11 @@ public class ChampionGui : MinigameWinnerGUI
         
         yield return canvasGroup.DOFade(1, guiSwitchingDur)
         .WaitForCompletion();
+
+        foreach (ParticleSystem particleSystem in confetties)
+        {
+            particleSystem.Play();
+        }
 
         yield return new WaitForSecondsRealtime(lookTime);
         infoOverlay.DOFade(1, guiSwitchingDur); 
@@ -133,7 +141,6 @@ public class ChampionGui : MinigameWinnerGUI
         int totalWaypoints
     )
     {
-        Debug.LogWarning("i am here");
         if (players.Count == 0)
             {Debug.LogError("no players"); return;}
 
@@ -149,7 +156,6 @@ public class ChampionGui : MinigameWinnerGUI
 
         if (roundCount == 0)
             {Debug.LogError("no History"); return;}
-        Debug.LogWarning("bypass the check");
 
         float width = chartFrame.rect.width;
         float height = chartFrame.rect.height;
@@ -224,8 +230,6 @@ public class ChampionGui : MinigameWinnerGUI
                 playerColor
             );
         }
-
-        Debug.LogError("finish");
     }
 
     private void DrawPoint(
