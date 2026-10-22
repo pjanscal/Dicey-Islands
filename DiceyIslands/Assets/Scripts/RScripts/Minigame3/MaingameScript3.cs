@@ -11,6 +11,8 @@ public class MaingameScript3 : MonoBehaviour
     [SerializeField] private Vector3 rotationOffset;
     [SerializeField] private RawImage dieIndicator;
     [SerializeField] private TargetScript target;
+    [SerializeField] private ParticleSystem woodHitVfx;
+    [SerializeField] private ParticleSystem swordHitVfx;
 
     private static readonly HashSet<MaingameScript3> activeMinigames = new();
     private static readonly HashSet<int> thrownPlayersThisRound = new();
@@ -101,6 +103,19 @@ public class MaingameScript3 : MonoBehaviour
         if (foundHit && IsSwordHit(hit))
         {
             BlockPlayerFromThrowing();
+
+            //spawn in the vfx
+            Quaternion rotation =
+                Quaternion.FromToRotation(
+                    Vector3.down,
+                    hit.normal
+                ) *
+                Quaternion.Euler(
+                    rotationOffset
+                );
+
+            ParticleSystem hitVfx = Instantiate(swordHitVfx, hit.point, rotation);
+            Destroy(hitVfx, swordHitVfx.main.duration + swordHitVfx.main.startLifetime.constantMax);
             return;
         }
 
@@ -135,6 +150,9 @@ public class MaingameScript3 : MonoBehaviour
                     true
                 );
             }
+
+            ParticleSystem hitVfx = Instantiate(woodHitVfx, spawnPosition, rotation);
+            Destroy(hitVfx, woodHitVfx.main.duration + woodHitVfx.main.startLifetime.constantMax);
         }
         else
         {

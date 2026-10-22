@@ -990,6 +990,8 @@ MonoBehaviour:
   rotationOffset: {x: 0, y: 0, z: 0}
   dieIndicator: {fileID: 485932702}
   target: {fileID: 0}
+  woodHitVfx: {fileID: 6087329699137382298, guid: b9c7f5aa75a17db429b2f8c0177dc77c, type: 3}
+  swordHitVfx: {fileID: 9037267618232760971, guid: 06b9486404352b140882faaee1e4b3f9, type: 3}
   swordObject: {fileID: 1026382580}
   canShoot: 1
   init: 0
@@ -3455,6 +3457,8 @@ MonoBehaviour:
   rotationOffset: {x: 0, y: 0, z: 0}
   dieIndicator: {fileID: 346726834}
   target: {fileID: 0}
+  woodHitVfx: {fileID: 6087329699137382298, guid: b9c7f5aa75a17db429b2f8c0177dc77c, type: 3}
+  swordHitVfx: {fileID: 9037267618232760971, guid: 06b9486404352b140882faaee1e4b3f9, type: 3}
   swordObject: {fileID: 267844289}
   canShoot: 1
   init: 0
@@ -4783,6 +4787,8 @@ MonoBehaviour:
   rotationOffset: {x: 0, y: 0, z: 0}
   dieIndicator: {fileID: 1765481467}
   target: {fileID: 0}
+  woodHitVfx: {fileID: 6087329699137382298, guid: b9c7f5aa75a17db429b2f8c0177dc77c, type: 3}
+  swordHitVfx: {fileID: 9037267618232760971, guid: 06b9486404352b140882faaee1e4b3f9, type: 3}
   swordObject: {fileID: 2015906635}
   canShoot: 1
   init: 0
@@ -5985,6 +5991,8 @@ MonoBehaviour:
   rotationOffset: {x: 0, y: 0, z: 0}
   dieIndicator: {fileID: 1018559208}
   target: {fileID: 0}
+  woodHitVfx: {fileID: 6087329699137382298, guid: b9c7f5aa75a17db429b2f8c0177dc77c, type: 3}
+  swordHitVfx: {fileID: 9037267618232760971, guid: 06b9486404352b140882faaee1e4b3f9, type: 3}
   swordObject: {fileID: 145148963}
   canShoot: 1
   init: 0
