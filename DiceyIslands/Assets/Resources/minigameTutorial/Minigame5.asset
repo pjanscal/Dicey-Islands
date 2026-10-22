@@ -20,8 +20,6 @@ MonoBehaviour:
     actionName: 'Move:'
   - keybind: 1
     actionName: 'Done:'
-  - keybind: 0
-    actionName: 'Slowmode:'
   description: 'Description:
 
 

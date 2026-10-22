@@ -994,10 +994,10 @@ MonoBehaviour:
   lineThickness: 5
   pointSize: 12
   chartPlayerColors:
-  - {r: 0, g: 0, b: 1, a: 1}
+  - {r: 0, g: 0.1882353, b: 1, a: 1}
   - {r: 1, g: 0, b: 0, a: 1}
-  - {r: 0, g: 1, b: 0, a: 1}
-  - {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+  - {r: 0, g: 1, b: 0.07450981, a: 1}
+  - {r: 0.90588236, g: 0.9411765, b: 0, a: 1}
   confetties:
   - {fileID: 6817698139753941213}
   - {fileID: 4320708967194831428}
