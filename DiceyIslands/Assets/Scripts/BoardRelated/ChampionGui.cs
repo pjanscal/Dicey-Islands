@@ -24,15 +24,6 @@ public class ChampionGui : MinigameWinnerGUI
     [SerializeField] private float lineThickness = 5f;
     [SerializeField] private float pointSize = 12f;
 
-    [SerializeField]
-    private Color[] chartPlayerColors =
-    {
-        Color.blue,
-        Color.red,
-        Color.green,
-        Color.yellow
-    };
-
     [Header("VFX")]
     [SerializeField] private ParticleSystem[] confetties;
 
@@ -217,9 +208,7 @@ public class ChampionGui : MinigameWinnerGUI
                 players[playerIndex];
 
             Color playerColor =
-                chartPlayerColors[
-                    playerIndex % chartPlayerColors.Length
-                ];
+                playerColors[player.PlayerNumber];
 
             DrawPlayerLine(
                 player,

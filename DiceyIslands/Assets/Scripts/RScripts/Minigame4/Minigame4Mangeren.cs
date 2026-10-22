@@ -23,6 +23,7 @@ public class Minigame4Mangeren : MonoBehaviour
     private List<int> plrsPlaces = new(); //0 = last one 3 = first one //list have .indexOf so i don't have to find when debugging
     public Transform camaraHolder;
     private float bombLightInstensty = 0;
+    private bool isPaused;
 
     [Header("Audio")]
     [SerializeField] private AudioSource sfxAudioSource;
@@ -76,9 +77,34 @@ public class Minigame4Mangeren : MonoBehaviour
 
         bombLighting = bombVfx.GetComponent<Light>();
         bombLightInstensty = bombLighting.intensity;
+
+        ToggleSoundBaseOnSound();
     }
 
     #region Audio
+    //stop the sound if it go pause
+    private void ToggleSoundBaseOnSound()
+    {
+        UpdateSoundPitch();
+        StartCoroutine(enumerator());
+
+        IEnumerator enumerator()
+        {
+            while (true)
+            {
+                yield return new WaitUntil(() => isPaused != GameMangeren.isPaused);
+                UpdateSoundPitch();
+            }
+        }
+
+        void UpdateSoundPitch()
+        {
+            isPaused = GameMangeren.isPaused;
+            if (isPaused) tickingAudioSource.Pause();
+            else tickingAudioSource.UnPause();
+        }
+    }
+
     private void PlayTaggedSound()
     {
         if (sfxAudioSource == null ||

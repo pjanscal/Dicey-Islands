@@ -70,7 +70,7 @@ public class CPUMinigame5: CPUMangeren
             //bool rightSide = UnityEngine.Random.Range(0, 2) == 0? false : true;
             //int offSet = UnityEngine.Random.Range(fastDistanceOffset.x, fastDistanceOffset.y + 1) * (rightSide? 1 : -1);
             int target = math.clamp(targetColor[axis], 0, 255);
-            Debug.LogWarning($"plr{plrId} is getting {target} on axis: {axis}");
+            //Debug.LogWarning($"plr{plrId} is getting {target} on axis: {axis}");
 
             yield return new WaitUntil(() => HavePassedSlider());
             playerController.cpuMoveDir = Vector2.zero;

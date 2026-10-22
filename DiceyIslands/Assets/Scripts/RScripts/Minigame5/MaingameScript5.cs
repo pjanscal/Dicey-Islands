@@ -6,6 +6,7 @@ using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using DG.Tweening;
 using TMPro;
+using System.Linq;
 
 public class MaingameScript5 : MonoBehaviour
 {
@@ -263,6 +264,7 @@ public class MaingameScript5 : MonoBehaviour
         {
             //send back the winner and go to the boardscene
             if (MatchData.Instance == null) {Debug.LogError("no matchData found"); return;}
+            MatchData.Instance.playerOrderNumbers.Clear();
 
             foreach (var (_, plrId) in places)
             {
