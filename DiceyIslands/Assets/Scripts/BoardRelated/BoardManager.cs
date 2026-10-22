@@ -41,6 +41,7 @@ public class BoardManager : MonoBehaviour
 
     [Tooltip("Tiny pause after reaching each waypoint.")]
     [SerializeField] private float pauseBetweenSpaces = 0.08f;
+    [SerializeField] private float finalTileTurnDelay = 0.6f;
     [Header("Player Turn Positioning")]
     [SerializeField] private float inactivePlayerSideOffset = 0.6f;
     [SerializeField] private float playerShiftSpeed = 5f;
@@ -77,12 +78,14 @@ public class BoardManager : MonoBehaviour
     [Header("UI")]
     [SerializeField] private Button rollButton;
     [SerializeField] private TMP_Text tilesLeftText;
+    [SerializeField] private GameObject tilesLeftDisplay; // Background image
     [SerializeField] private TMP_Text rollNumberText;
     [SerializeField] private TMP_Text bonusRollNumberText;
     [SerializeField] private TMP_Text roundText;
     [SerializeField] private TMP_Text swapText;
     [SerializeField] private TMP_Text skippedText;
     [SerializeField] private TMP_Text turnOrderText;
+
 
     [Header("Skip Turn")]
     [SerializeField] private float skippedDisplayDuration = 1.5f;
@@ -119,7 +122,7 @@ public class BoardManager : MonoBehaviour
     [SerializeField] private ChampionGui championGui;
     [SerializeField] private Image cutsceneBlackFadeUi;
     [SerializeField] const float fadeInEffectDur = .8f;
-    [SerializeField] const float fadeOutEffectDur = .2f; 
+    [SerializeField] const float fadeOutEffectDur = .2f;
 
     [HideInInspector] public bool turnInProgress = false;
     private bool gameOver = false;
@@ -250,6 +253,7 @@ public class BoardManager : MonoBehaviour
 
     private void HideGameplayUI()
     {
+        SetTilesLeftVisible(false);
         if (rollNumberText != null)
             rollNumberText.gameObject.SetActive(false);
 
@@ -564,6 +568,7 @@ public class BoardManager : MonoBehaviour
         }
 
         UpdateTilesLeftText();
+        SetTilesLeftVisible(true);
 
         if (rollNumberText != null)
             rollNumberText.gameObject.SetActive(false);
@@ -603,6 +608,8 @@ public class BoardManager : MonoBehaviour
     {
         if (gameOver)
             return;
+
+        SetTilesLeftVisible(false);
 
         currentTurnIndex++;
 
@@ -864,7 +871,9 @@ public class BoardManager : MonoBehaviour
             yield break;
         }
 
-        turnInProgress = false;
+        // Keep input locked while the player views their landing tile.
+        if (finalTileTurnDelay > 0f)
+            yield return new WaitForSecondsRealtime(finalTileTurnDelay);
 
         if (extraRollGranted)
         {
@@ -1553,6 +1562,17 @@ public class BoardManager : MonoBehaviour
     // TILES LEFT UI
     // =========================================================
 
+    private void SetTilesLeftVisible(bool visible)
+    {
+        // The background should be the parent of the text in the Canvas.
+        // A separate Inspector reference also supports separate UI objects.
+        if (tilesLeftDisplay != null)
+            tilesLeftDisplay.SetActive(visible);
+
+        if (tilesLeftText != null)
+            tilesLeftText.gameObject.SetActive(visible);
+    }
+
     private void UpdateTilesLeftText()
     {
         if (tilesLeftText == null)
@@ -1648,6 +1668,8 @@ public class BoardManager : MonoBehaviour
     {
         if (gameOver)
             yield break;
+
+        SetTilesLeftVisible(false);
 
         turnInProgress = true;
 
@@ -1760,6 +1782,7 @@ public class BoardManager : MonoBehaviour
 
         gameOver = true;
         turnInProgress = false;
+        SetTilesLeftVisible(false);
         GameMangeren.isShowingResult = true;
         Tween fadeInEffect = cutsceneBlackFadeUi.DOFade(1, fadeInEffectDur);
 
@@ -1797,16 +1820,13 @@ public class BoardManager : MonoBehaviour
         if (skippedText != null)
             skippedText.gameObject.SetActive(false);
 
-        if (tilesLeftText != null)
-            tilesLeftText.gameObject.SetActive(false);
-
         if (turnOrderText != null)
             turnOrderText.gameObject.SetActive(false);
 
         RecordFinalPositions();
 
         //foreach (PlayerPiece player in turnOrder)
-            //player.SetActiveTurnVisual(true);
+        //player.SetActiveTurnVisual(true);
 
         fadeInEffect.OnComplete(() =>
         {
@@ -2030,6 +2050,7 @@ public class BoardManager : MonoBehaviour
 
     private IEnumerator StartMinigameSequence()
     {
+        SetTilesLeftVisible(false);
         if (availableMinigames.Length == 0)
         {
             Debug.LogError(
@@ -2197,7 +2218,7 @@ public class BoardManager : MonoBehaviour
         {
             isComplete = true;
         });
-        
+
         tween.Play();
         minigamePrimeSelected = !minigamePrimeSelected; //make sure that it update the new one because now the new one is the selected one
         yield return new WaitUntil(() => isComplete);
@@ -2206,14 +2227,14 @@ public class BoardManager : MonoBehaviour
     //get the minigameUi's that is visible on screen or not
     Image GetMinigameBackgroundSelected(bool isVisible)
     {
-        bool target = isVisible? minigamePrimeSelected : !minigamePrimeSelected;
-        return target? minigameBackground : minigameBackgroundSeconday;
+        bool target = isVisible ? minigamePrimeSelected : !minigamePrimeSelected;
+        return target ? minigameBackground : minigameBackgroundSeconday;
     }
 
     TMP_Text GetMinigameTextSelected(bool isVisible)
     {
-        bool target = isVisible? minigamePrimeSelected : !minigamePrimeSelected;
-        return target? minigameName : minigameNameSecondary;
+        bool target = isVisible ? minigamePrimeSelected : !minigamePrimeSelected;
+        return target ? minigameName : minigameNameSecondary;
     }
 
     /// <summary>
