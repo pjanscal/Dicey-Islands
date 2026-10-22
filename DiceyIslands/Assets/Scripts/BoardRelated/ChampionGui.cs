@@ -115,6 +115,7 @@ public class ChampionGui : MinigameWinnerGUI
         fadeOutEffect.OnComplete(() => {Time.timeScale = 1;});
     }
 
+    #if UNITY_EDITOR
     protected override void Testing()
     {
         if (!Input.GetKeyDown(KeyCode.Backspace)) return;
@@ -122,6 +123,7 @@ public class ChampionGui : MinigameWinnerGUI
         List<int> places= new() {2, 1, 3, 4};
         Toggle(true, places);
     }
+    #endif
 
     #region ButtonsFunction
     public void Retry()
