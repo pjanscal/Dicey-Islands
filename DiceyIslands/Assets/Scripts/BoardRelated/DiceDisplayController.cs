@@ -34,9 +34,6 @@ public class DiceDisplayController : MonoBehaviour
     [Range(0f, 1f)]
     [SerializeField] private float numberMergeVolume = 1f;
 
-    [Header("Idle Animation")]
-    [SerializeField] private float idleRotationSpeed = 120f;
-
     [Header("Roll Animation")]
     [SerializeField] private float finalFrameHoldTime = 0.75f;
     [SerializeField] private float animationTimeout = 8f;
@@ -65,9 +62,6 @@ public class DiceDisplayController : MonoBehaviour
     [SerializeField] private float layoutMoveSpeed = 8f;
 
     public Action OnResultShown;
-
-    private bool idleSpinning;
-    private bool rolling;
 
     private bool movementCounterVisible;
     private TMP_Text movementCounterText;
@@ -230,12 +224,6 @@ public class DiceDisplayController : MonoBehaviour
         layoutCoroutine = null;
     }
 
-    // Spin the animated die directly, as in the original working setup.
-    private void LateUpdate()
-    {
-        if (idleSpinning && !rolling) SpinIdleDice();
-    }
-
     // =====================================================
     // SHOW DICE AT START OF TURN
     // =====================================================
@@ -245,8 +233,6 @@ public class DiceDisplayController : MonoBehaviour
         StopAllCoroutines();
         layoutCoroutine = null;
 
-        rolling = false;
-        idleSpinning = true;
         movementCounterVisible = false;
         CacheTextPositions();
         if (rollNumberRect != null) rollNumberRect.anchoredPosition = initialMainTextPosition;
@@ -295,25 +281,6 @@ public class DiceDisplayController : MonoBehaviour
     }
 
     // =====================================================
-    // IDLE SPIN
-    // =====================================================
-
-    private void SpinIdleDice()
-    {
-        // Constant, smooth angular motion. No pivot and no sudden direction changes.
-        Vector3 rotation = new Vector3(0.55f, 1f, 0.3f).normalized
-                           * idleRotationSpeed * Time.unscaledDeltaTime;
-
-        if (mainDice != null && mainDiceViewport != null &&
-            mainDiceViewport.activeInHierarchy)
-            mainDice.Rotate(rotation, Space.Self);
-
-        if (bonusDice != null && bonusDiceViewport != null &&
-            bonusDiceViewport.activeInHierarchy)
-            bonusDice.Rotate(rotation, Space.Self);
-    }
-
-    // =====================================================
     // PLAY ROLL
     // =====================================================
 
@@ -322,8 +289,6 @@ public class DiceDisplayController : MonoBehaviour
         bool hasBonusDice,
         int bonusResult)
     {
-        rolling = true;
-        idleSpinning = false;
 
         if (mainDice != null) mainDice.localRotation = Quaternion.identity;
 
@@ -382,7 +347,6 @@ public class DiceDisplayController : MonoBehaviour
 
         yield return new WaitForSecondsRealtime(finalFrameHoldTime);
 
-        rolling = false;
     }
 
     // Called by BoardManager after PlayRoll, before board movement.
@@ -455,7 +419,6 @@ public class DiceDisplayController : MonoBehaviour
 
     private void HideDiceOnly()
     {
-        idleSpinning = false;
         PauseAnimator(mainDiceAnimator);
         PauseAnimator(bonusDiceAnimator);
         if (mainDiceDisplay != null) mainDiceDisplay.gameObject.SetActive(false);
@@ -616,8 +579,6 @@ public class DiceDisplayController : MonoBehaviour
         StopAllCoroutines();
         layoutCoroutine = null;
 
-        rolling = false;
-        idleSpinning = false;
         movementCounterVisible = false;
         movementCounterText = null;
         if (totalRollText != null) totalRollText.gameObject.SetActive(false);
@@ -650,8 +611,6 @@ public class DiceDisplayController : MonoBehaviour
 
     private void HideImmediately()
     {
-        idleSpinning = false;
-        rolling = false;
         if (totalRollText != null) totalRollText.gameObject.SetActive(false);
 
         if (rollNumberText != null)
