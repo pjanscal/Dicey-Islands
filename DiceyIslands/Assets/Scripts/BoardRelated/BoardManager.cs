@@ -38,6 +38,7 @@ public class BoardManager : MonoBehaviour
 
     [Header("Movement")]
     [SerializeField] private float moveSpeed = 4f;
+    [SerializeField] const float waitTime = .5f; //time before next char go 
 
     [Tooltip("Tiny pause after reaching each waypoint.")]
     [SerializeField] private float pauseBetweenSpaces = 0.08f;
@@ -1083,6 +1084,7 @@ public class BoardManager : MonoBehaviour
 
         //stop the animation
         animatorController.SetAnimationBool(AnimationBoolEvent.IsRunning, false);
+        yield return new WaitForSeconds(waitTime);
     }
 
 
