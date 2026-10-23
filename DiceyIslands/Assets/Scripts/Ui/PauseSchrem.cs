@@ -10,7 +10,8 @@ using UnityEngine.UI;
 public class PauseSchrem: UiBasic
 {
     [Header("setup")]
-    [SerializeField] GameObject beginButton; //the button where the navigation begin on
+    [SerializeField] private GameObject beginButton; //the button where the navigation begin on
+    [SerializeField] private AudioSource pauseSfx;
 
     private Canvas canvas;
     private GameObject currentSelected; //current selected navigation object so if it null i can pick this one
@@ -68,6 +69,7 @@ public class PauseSchrem: UiBasic
         {
             eventSystem.sendNavigationEvents = false; //make it so i controll it
             eventSystem.SetSelectedGameObject(beginButton); //set the begin button in so it begin there
+            pauseSfx.Play();
         }
         else 
         {
