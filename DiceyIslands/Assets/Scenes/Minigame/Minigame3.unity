@@ -8469,7 +8469,7 @@ MonoBehaviour:
   musicAudioSource: {fileID: 1023318077}
   daggerThrowSound: {fileID: 8300000, guid: 68887057025ae134c8d62064cf078917, type: 3}
   playerEliminatedSound: {fileID: 8300000, guid: 2068a727509473f4083093ffc948fd6f, type: 3}
-  backgroundMusic: {fileID: 8300000, guid: fddd164d5c832a348810f4b3fb0d2391, type: 3}
+  backgroundMusic: {fileID: 8300000, guid: 6e796abd89e78014ba1621002caffdbf, type: 3}
 --- !u!4 &1220972172
 Transform:
   m_ObjectHideFlags: 0
