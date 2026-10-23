@@ -61,6 +61,7 @@ public class BoardManager : MonoBehaviour
 
     [SerializeField] private AudioClip moveForwardTileSound;
     [SerializeField] private AudioClip moveBackTileSound;
+    [SerializeField] private AudioClip swapTileSound;
 
     [Header("Dice")]
     [SerializeField] private float diceAnimationDuration = 0.6f;
@@ -818,7 +819,7 @@ public class BoardManager : MonoBehaviour
 
             // The hold at the final frame has now finished.
             // Hide the dice exactly before board movement starts.
-            diceDisplay.HideForMovement();
+            yield return StartCoroutine(diceDisplay.PrepareMovementCounter(totalRoll, hasBonusDice));
         }
         else
         {
@@ -852,6 +853,9 @@ public class BoardManager : MonoBehaviour
             waypoints.Count - 1
         );
 
+        // Countdown uses actual travelled board spaces, including any tile effects.
+        movementStepsRemaining = Mathf.Abs(targetIndex - player.currentWaypointIndex);
+        movementCounterActive = true;
         yield return MovePlayerToWaypoint(
             player,
             targetIndex
@@ -870,6 +874,9 @@ public class BoardManager : MonoBehaviour
             EndGame(player);
             yield break;
         }
+
+        movementCounterActive = false;
+        if (diceDisplay != null) diceDisplay.HideForMovement();
 
         // Keep input locked while the player views their landing tile.
         if (finalTileTurnDelay > 0f)
@@ -899,6 +906,9 @@ public class BoardManager : MonoBehaviour
     // =========================================================
     // MOVEMENT
     // =========================================================
+
+    private int movementStepsRemaining;
+    private bool movementCounterActive;
 
     private IEnumerator MovePlayerToWaypoint(
         PlayerPiece player,
@@ -1046,6 +1056,13 @@ public class BoardManager : MonoBehaviour
             player.currentWaypointIndex =
                 nextIndex;
 
+            if (movementCounterActive)
+            {
+                movementStepsRemaining = Mathf.Max(0, movementStepsRemaining - 1);
+                if (diceDisplay != null)
+                    diceDisplay.SetMovementStepsRemaining(movementStepsRemaining);
+            }
+
             // One step sound per actual board tile.
             // Sub-waypoints do NOT count as steps.
             PlayTileStepSound();
@@ -1139,6 +1156,14 @@ public class BoardManager : MonoBehaviour
         movementAudioSource.PlayOneShot(
             moveForwardTileSound
         );
+    }
+
+    private void PlaySwapTileSound()
+    {
+        if (movementAudioSource == null || swapTileSound == null)
+            return;
+
+        movementAudioSource.PlayOneShot(swapTileSound);
     }
 
     private void PlayMoveBackTileSound()
@@ -1420,6 +1445,9 @@ public class BoardManager : MonoBehaviour
             " is swapping with Player " +
             otherPlayer.PlayerNumber
         );
+
+        // The roulette has stopped and the selected player is revealed.
+        PlaySwapTileSound();
 
         yield return new WaitForSecondsRealtime(
             swapResultDisplayTime

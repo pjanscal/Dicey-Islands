@@ -21,9 +21,21 @@ public class DiceDisplayController : MonoBehaviour
     [SerializeField] private RawImage bonusDiceDisplay;
     [SerializeField] private TMP_Text bonusRollNumberText;
 
+    [Header("Combined Roll UI")]
+    [SerializeField] private TMP_Text totalRollText;
+    [SerializeField] private RectTransform totalRollRect;
+    [SerializeField] private Vector2 combinedNumberPosition = new Vector2(0f, 0f);
+    [SerializeField] private float combineDuration = 0.35f;
+    [SerializeField] private float bonusStartDelay = 0.2f;
+
+    [Header("Number Merge Sound")]
+    [SerializeField] private AudioSource numberMergeAudioSource;
+    [SerializeField] private AudioClip numberMergeSound;
+    [Range(0f, 1f)]
+    [SerializeField] private float numberMergeVolume = 1f;
+
     [Header("Idle Animation")]
     [SerializeField] private float idleRotationSpeed = 120f;
-    [SerializeField] private float directionChangeInterval = 0.35f;
 
     [Header("Roll Animation")]
     [SerializeField] private float finalFrameHoldTime = 0.75f;
@@ -57,11 +69,22 @@ public class DiceDisplayController : MonoBehaviour
     private bool idleSpinning;
     private bool rolling;
 
-    private Vector3 mainSpinDirection;
-    private Vector3 bonusSpinDirection;
+    private bool movementCounterVisible;
+    private TMP_Text movementCounterText;
+    private Vector2 initialMainTextPosition;
+    private Vector2 initialBonusTextPosition;
+    private bool textPositionsCached;
 
-    private float mainDirectionTimer;
-    private float bonusDirectionTimer;
+    private void CacheTextPositions()
+    {
+        if (textPositionsCached) return;
+        if (rollNumberRect == null && rollNumberText != null) rollNumberRect = rollNumberText.rectTransform;
+        if (bonusRollNumberRect == null && bonusRollNumberText != null) bonusRollNumberRect = bonusRollNumberText.rectTransform;
+        if (totalRollRect == null && totalRollText != null) totalRollRect = totalRollText.rectTransform;
+        if (rollNumberRect != null) initialMainTextPosition = rollNumberRect.anchoredPosition;
+        if (bonusRollNumberRect != null) initialBonusTextPosition = bonusRollNumberRect.anchoredPosition;
+        textPositionsCached = true;
+    }
 
 
 
@@ -69,10 +92,11 @@ public class DiceDisplayController : MonoBehaviour
     {
         // Do not deactivate this controller GameObject.
         // Only the dice viewports/displays are hidden.
+        CacheTextPositions();
         HideImmediately();
 
-        ConfigureAnimator(mainDiceAnimator);
-        ConfigureAnimator(bonusDiceAnimator);
+        PauseAnimator(mainDiceAnimator);
+        PauseAnimator(bonusDiceAnimator);
     }
 
     private void Start()
@@ -135,7 +159,7 @@ public class DiceDisplayController : MonoBehaviour
                     Vector2.Lerp(
                         mainDiceDisplayRect.anchoredPosition,
                         mainTarget,
-                        layoutMoveSpeed * Time.unscaledDeltaTime
+                        Mathf.Clamp01(layoutMoveSpeed * Time.unscaledDeltaTime)
                     );
 
                 if (Vector2.Distance(
@@ -152,7 +176,7 @@ public class DiceDisplayController : MonoBehaviour
                     Vector2.Lerp(
                         bonusDiceDisplayRect.anchoredPosition,
                         bonusTarget,
-                        layoutMoveSpeed * Time.unscaledDeltaTime
+                        Mathf.Clamp01(layoutMoveSpeed * Time.unscaledDeltaTime)
                     );
 
                 if (Vector2.Distance(
@@ -169,7 +193,7 @@ public class DiceDisplayController : MonoBehaviour
                     Vector2.Lerp(
                         rollNumberRect.anchoredPosition,
                         mainTarget,
-                        layoutMoveSpeed * Time.unscaledDeltaTime
+                        Mathf.Clamp01(layoutMoveSpeed * Time.unscaledDeltaTime)
                     );
 
                 if (Vector2.Distance(
@@ -186,7 +210,7 @@ public class DiceDisplayController : MonoBehaviour
                     Vector2.Lerp(
                         bonusRollNumberRect.anchoredPosition,
                         bonusTarget,
-                        layoutMoveSpeed * Time.unscaledDeltaTime
+                        Mathf.Clamp01(layoutMoveSpeed * Time.unscaledDeltaTime)
                     );
 
                 if (Vector2.Distance(
@@ -206,23 +230,10 @@ public class DiceDisplayController : MonoBehaviour
         layoutCoroutine = null;
     }
 
-    private void Update()
+    // Spin the animated die directly, as in the original working setup.
+    private void LateUpdate()
     {
-        if (!idleSpinning || rolling)
-            return;
-
-        SpinIdleDice();
-    }
-
-    private void ConfigureAnimator(Animator animator)
-    {
-        if (animator == null)
-            return;
-
-        animator.enabled = true;
-        animator.updateMode = AnimatorUpdateMode.UnscaledTime;
-        animator.cullingMode = AnimatorCullingMode.AlwaysAnimate;
-        animator.speed = 0f;
+        if (idleSpinning && !rolling) SpinIdleDice();
     }
 
     // =====================================================
@@ -232,9 +243,15 @@ public class DiceDisplayController : MonoBehaviour
     public void ShowForTurn(bool hasBonusDice)
     {
         StopAllCoroutines();
+        layoutCoroutine = null;
 
         rolling = false;
         idleSpinning = true;
+        movementCounterVisible = false;
+        CacheTextPositions();
+        if (rollNumberRect != null) rollNumberRect.anchoredPosition = initialMainTextPosition;
+        if (bonusRollNumberRect != null) bonusRollNumberRect.anchoredPosition = initialBonusTextPosition;
+        if (totalRollText != null) totalRollText.gameObject.SetActive(false);
         UpdateDiceLayout(hasBonusDice);
 
         if (mainDiceViewport != null)
@@ -257,12 +274,6 @@ public class DiceDisplayController : MonoBehaviour
 
         PauseAnimator(mainDiceAnimator);
         PauseAnimator(bonusDiceAnimator);
-
-        mainSpinDirection = GetRandomDirection();
-        bonusSpinDirection = GetRandomDirection();
-
-        mainDirectionTimer = directionChangeInterval;
-        bonusDirectionTimer = directionChangeInterval;
 
         Debug.Log(
             "DICE: ShowForTurn called. Bonus = " + hasBonusDice +
@@ -289,57 +300,17 @@ public class DiceDisplayController : MonoBehaviour
 
     private void SpinIdleDice()
     {
-        float delta = Time.unscaledDeltaTime;
+        // Constant, smooth angular motion. No pivot and no sudden direction changes.
+        Vector3 rotation = new Vector3(0.55f, 1f, 0.3f).normalized
+                           * idleRotationSpeed * Time.unscaledDeltaTime;
 
-        if (mainDice != null &&
-            mainDiceViewport != null &&
+        if (mainDice != null && mainDiceViewport != null &&
             mainDiceViewport.activeInHierarchy)
-        {
-            mainDirectionTimer -= delta;
+            mainDice.Rotate(rotation, Space.Self);
 
-            if (mainDirectionTimer <= 0f)
-            {
-                mainSpinDirection = GetRandomDirection();
-                mainDirectionTimer = directionChangeInterval;
-            }
-
-            mainDice.Rotate(
-                mainSpinDirection * idleRotationSpeed * delta,
-                Space.Self
-            );
-        }
-
-        if (bonusDice != null &&
-            bonusDiceViewport != null &&
+        if (bonusDice != null && bonusDiceViewport != null &&
             bonusDiceViewport.activeInHierarchy)
-        {
-            bonusDirectionTimer -= delta;
-
-            if (bonusDirectionTimer <= 0f)
-            {
-                bonusSpinDirection = GetRandomDirection();
-                bonusDirectionTimer = directionChangeInterval;
-            }
-
-            bonusDice.Rotate(
-                bonusSpinDirection * idleRotationSpeed * delta,
-                Space.Self
-            );
-        }
-    }
-
-    private Vector3 GetRandomDirection()
-    {
-        Vector3 direction = new Vector3(
-            UnityEngine.Random.Range(-1f, 1f),
-            UnityEngine.Random.Range(-1f, 1f),
-            UnityEngine.Random.Range(-1f, 1f)
-        );
-
-        if (direction.sqrMagnitude < 0.001f)
-            direction = Vector3.one;
-
-        return direction.normalized;
+            bonusDice.Rotate(rotation, Space.Self);
     }
 
     // =====================================================
@@ -354,18 +325,18 @@ public class DiceDisplayController : MonoBehaviour
         rolling = true;
         idleSpinning = false;
 
-        if (mainDice != null)
-            mainDice.localRotation = Quaternion.identity;
+        if (mainDice != null) mainDice.localRotation = Quaternion.identity;
 
-        if (bonusDice != null)
-            bonusDice.localRotation = Quaternion.identity;
+        if (bonusDice != null) bonusDice.localRotation = Quaternion.identity;
 
         StartDiceAnimation(mainDiceAnimator, mainResult, "MAIN");
 
+        // Main animation is already playing while we wait to start the bonus.
         if (hasBonusDice)
+        {
+            yield return new WaitForSecondsRealtime(bonusStartDelay);
             StartDiceAnimation(bonusDiceAnimator, bonusResult, "BONUS");
-
-        // Allow the Animator to advance.
+        }
         yield return null;
 
         Coroutine mainWait = null;
@@ -412,6 +383,85 @@ public class DiceDisplayController : MonoBehaviour
         yield return new WaitForSecondsRealtime(finalFrameHoldTime);
 
         rolling = false;
+    }
+
+    // Called by BoardManager after PlayRoll, before board movement.
+    // The two numbers merge into a new total text. For one die, the
+    // main result itself becomes the movement counter.
+    public IEnumerator PrepareMovementCounter(int total, bool hasBonusDice)
+    {
+        CacheTextPositions();
+        movementCounterVisible = true;
+        movementCounterText = hasBonusDice && totalRollText != null
+            ? totalRollText : rollNumberText;
+
+        // Hide only the 3D dice viewports. Keep result texts for merging.
+        HideDiceOnly();
+
+        if (hasBonusDice && totalRollText != null &&
+            rollNumberRect != null && bonusRollNumberRect != null)
+        {
+            Vector2 a = rollNumberRect.anchoredPosition;
+            Vector2 b = bonusRollNumberRect.anchoredPosition;
+            float elapsed = 0f;
+            float duration = Mathf.Max(0.01f, combineDuration);
+            while (elapsed < duration)
+            {
+                elapsed += Time.unscaledDeltaTime;
+                float t = Mathf.SmoothStep(0f, 1f, Mathf.Clamp01(elapsed / duration));
+                rollNumberRect.anchoredPosition = Vector2.Lerp(a, combinedNumberPosition, t);
+                bonusRollNumberRect.anchoredPosition = Vector2.Lerp(b, combinedNumberPosition, t);
+                yield return null;
+            }
+            rollNumberText.gameObject.SetActive(false);
+            bonusRollNumberText.gameObject.SetActive(false);
+            if (totalRollRect != null) totalRollRect.anchoredPosition = combinedNumberPosition;
+            totalRollText.text = total.ToString();
+            totalRollText.gameObject.SetActive(true);
+
+            // Play once, exactly when the two values become the total.
+            if (numberMergeAudioSource != null && numberMergeSound != null)
+                numberMergeAudioSource.PlayOneShot(numberMergeSound, numberMergeVolume);
+            RectTransform popRect = totalRollText.rectTransform;
+            Vector3 originalScale = popRect.localScale;
+            popRect.localScale = originalScale * 0.65f;
+            float popElapsed = 0f;
+            while (popElapsed < 0.16f)
+            {
+                popElapsed += Time.unscaledDeltaTime;
+                float t = Mathf.Clamp01(popElapsed / 0.16f);
+                popRect.localScale = Vector3.Lerp(originalScale * 0.65f, originalScale, t);
+                yield return null;
+            }
+            popRect.localScale = originalScale;
+        }
+        else
+        {
+            if (bonusRollNumberText != null) bonusRollNumberText.gameObject.SetActive(false);
+            if (totalRollText != null) totalRollText.gameObject.SetActive(false);
+            if (rollNumberText != null)
+            {
+                rollNumberText.text = total.ToString();
+                rollNumberText.gameObject.SetActive(true);
+            }
+        }
+    }
+
+    public void SetMovementStepsRemaining(int steps)
+    {
+        if (!movementCounterVisible || movementCounterText == null) return;
+        movementCounterText.text = Mathf.Max(0, steps).ToString();
+    }
+
+    private void HideDiceOnly()
+    {
+        idleSpinning = false;
+        PauseAnimator(mainDiceAnimator);
+        PauseAnimator(bonusDiceAnimator);
+        if (mainDiceDisplay != null) mainDiceDisplay.gameObject.SetActive(false);
+        if (bonusDiceDisplay != null) bonusDiceDisplay.gameObject.SetActive(false);
+        if (mainDiceViewport != null) mainDiceViewport.SetActive(false);
+        if (bonusDiceViewport != null) bonusDiceViewport.SetActive(false);
     }
 
     // =====================================================
@@ -564,9 +614,13 @@ public class DiceDisplayController : MonoBehaviour
     public void HideForMovement()
     {
         StopAllCoroutines();
+        layoutCoroutine = null;
 
         rolling = false;
         idleSpinning = false;
+        movementCounterVisible = false;
+        movementCounterText = null;
+        if (totalRollText != null) totalRollText.gameObject.SetActive(false);
 
         PauseAnimator(mainDiceAnimator);
         PauseAnimator(bonusDiceAnimator);
@@ -598,6 +652,7 @@ public class DiceDisplayController : MonoBehaviour
     {
         idleSpinning = false;
         rolling = false;
+        if (totalRollText != null) totalRollText.gameObject.SetActive(false);
 
         if (rollNumberText != null)
             rollNumberText.gameObject.SetActive(false);
