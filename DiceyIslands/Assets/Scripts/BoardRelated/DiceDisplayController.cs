@@ -28,6 +28,11 @@ public class DiceDisplayController : MonoBehaviour
     [SerializeField] private float combineDuration = 0.35f;
     [SerializeField] private float bonusStartDelay = 0.2f;
 
+    [Header("Movement Counter Position")]
+    [SerializeField] private float centerHoldDuration = 1f;
+    [SerializeField] private Vector2 movementCounterTopPosition = new Vector2(0f, 350f);
+    [SerializeField] private float moveToTopDuration = 0.45f;
+
     [Header("Number Merge Sound")]
     [SerializeField] private AudioSource numberMergeAudioSource;
     [SerializeField] private AudioClip numberMergeSound;
@@ -238,6 +243,7 @@ public class DiceDisplayController : MonoBehaviour
         if (rollNumberRect != null) rollNumberRect.anchoredPosition = initialMainTextPosition;
         if (bonusRollNumberRect != null) bonusRollNumberRect.anchoredPosition = initialBonusTextPosition;
         if (totalRollText != null) totalRollText.gameObject.SetActive(false);
+        if (totalRollRect != null) totalRollRect.anchoredPosition = combinedNumberPosition;
         UpdateDiceLayout(hasBonusDice);
 
         if (mainDiceViewport != null)
@@ -408,6 +414,24 @@ public class DiceDisplayController : MonoBehaviour
                 rollNumberText.text = total.ToString();
                 rollNumberText.gameObject.SetActive(true);
             }
+        }
+
+        // Hold the result in the center before moving it to the top.
+        if (movementCounterText != null)
+        {
+            RectTransform counterRect = movementCounterText.rectTransform;
+            yield return new WaitForSecondsRealtime(Mathf.Max(0f, centerHoldDuration));
+            Vector2 start = counterRect.anchoredPosition;
+            float elapsed = 0f;
+            float duration = Mathf.Max(0.001f, moveToTopDuration);
+            while (elapsed < duration)
+            {
+                elapsed += Time.unscaledDeltaTime;
+                float t = Mathf.SmoothStep(0f, 1f, Mathf.Clamp01(elapsed / duration));
+                counterRect.anchoredPosition = Vector2.Lerp(start, movementCounterTopPosition, t);
+                yield return null;
+            }
+            counterRect.anchoredPosition = movementCounterTopPosition;
         }
     }
 

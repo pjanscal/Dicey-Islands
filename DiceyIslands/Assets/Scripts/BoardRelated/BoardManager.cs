@@ -64,6 +64,19 @@ public class BoardManager : MonoBehaviour
     [SerializeField] private AudioClip moveBackTileSound;
     [SerializeField] private AudioClip swapTileSound;
 
+    [Header("Tile VFX Prefabs")]
+    [Tooltip("BackTile prefab: effect for MoveBack tiles.")]
+    [SerializeField] private GameObject backTileVfxPrefab;
+    [Tooltip("FrontTile prefab: effect for MoveForward tiles.")]
+    [SerializeField] private GameObject frontTileVfxPrefab;
+    [Tooltip("Warp prefab: effect for SwapWithRandomPlayer tiles.")]
+    [SerializeField] private GameObject warpVfxPrefab;
+    [SerializeField] private float movementTileVfxDuration = 1f;
+    [SerializeField] private float warpVfxDuration = 1.5f;
+    [SerializeField] private float swapAfterWarpDelay = 1f;
+    [Tooltip("Local offset from the landed tile center for each effect.")]
+    [SerializeField] private Vector3 tileVfxOffset = new Vector3(0f, 0.1f, 0f);
+
     [Header("Dice")]
     [SerializeField] private float diceAnimationDuration = 0.6f;
     [SerializeField] private float diceNumberChangeSpeed = 0.06f;
@@ -1256,6 +1269,41 @@ public class BoardManager : MonoBehaviour
         );
     }
 
+    // Spawn at the landed waypoint with the landing player's world rotation; stop emitting after the
+    // requested duration. Existing particles may finish their natural lifetime.
+    private IEnumerator PlayTileVfx(GameObject prefab, Waypoint waypoint, PlayerPiece player, float duration)
+    {
+        if (prefab == null || waypoint == null || player == null)
+            yield break;
+
+        GameObject instance = Instantiate(
+            prefab,
+            waypoint.transform.position + tileVfxOffset,
+            player.transform.rotation
+        );
+
+        instance.SetActive(true);
+        ParticleSystem[] emitters = instance.GetComponentsInChildren<ParticleSystem>(true);
+        foreach (ParticleSystem emitter in emitters)
+        {
+            if (emitter == null) continue;
+            emitter.gameObject.SetActive(true);
+            emitter.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
+            emitter.Play(true);
+        }
+
+        yield return new WaitForSecondsRealtime(Mathf.Max(0f, duration));
+
+        foreach (ParticleSystem emitter in emitters)
+        {
+            if (emitter != null)
+                emitter.Stop(true, ParticleSystemStopBehavior.StopEmitting);
+        }
+
+        // Give already emitted particles time to disappear before cleanup.
+        Destroy(instance, 5f);
+    }
+
     // =========================================================
     // TILE EFFECTS
     // =========================================================
@@ -1328,10 +1376,14 @@ public class BoardManager : MonoBehaviour
             if (landedWaypoint.tileType == TileType.MoveForward)
             {
                 PlayMoveForwardTileSound();
+                yield return StartCoroutine(PlayTileVfx(
+                    frontTileVfxPrefab, landedWaypoint, player, movementTileVfxDuration));
             }
             else if (landedWaypoint.tileType == TileType.MoveBack)
             {
                 PlayMoveBackTileSound();
+                yield return StartCoroutine(PlayTileVfx(
+                    backTileVfxPrefab, landedWaypoint, player, movementTileVfxDuration));
             }
 
 
@@ -1449,11 +1501,11 @@ public class BoardManager : MonoBehaviour
         );
 
         // The roulette has stopped and the selected player is revealed.
+        // Warp runs for 1.5 seconds; the actual swap occurs 1 second into it.
         PlaySwapTileSound();
-
-        yield return new WaitForSecondsRealtime(
-            swapResultDisplayTime
-        );
+        Waypoint swapWaypoint = waypoints[currentPlayer.currentWaypointIndex];
+        StartCoroutine(PlayTileVfx(warpVfxPrefab, swapWaypoint, currentPlayer, warpVfxDuration));
+        yield return new WaitForSecondsRealtime(Mathf.Max(0f, swapAfterWarpDelay));
 
         int currentPlayerOldIndex =
             currentPlayer.currentWaypointIndex;
