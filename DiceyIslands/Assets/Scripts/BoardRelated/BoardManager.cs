@@ -34,6 +34,8 @@ public class BoardManager : MonoBehaviour
 
     private int currentTurnIndex = 0;
     private bool extraRollGranted = false;
+    [SerializeField] private List<TurnOrderSlot> turnOrderSlots;
+    [SerializeField] private TMP_Text turnOrderRound;
 
 
     [Header("Movement")]
@@ -65,13 +67,8 @@ public class BoardManager : MonoBehaviour
     [SerializeField] private AudioClip swapTileSound;
 
     [Header("Tile VFX Prefabs")]
-    [Tooltip("BackTile prefab: effect for MoveBack tiles.")]
-    [SerializeField] private GameObject backTileVfxPrefab;
-    [Tooltip("FrontTile prefab: effect for MoveForward tiles.")]
-    [SerializeField] private GameObject frontTileVfxPrefab;
     [Tooltip("Warp prefab: effect for SwapWithRandomPlayer tiles.")]
     [SerializeField] private GameObject warpVfxPrefab;
-    [SerializeField] private float movementTileVfxDuration = 1f;
     [SerializeField] private float warpVfxDuration = 1.5f;
     [SerializeField] private float swapAfterWarpDelay = 1f;
     [Tooltip("Local offset from the landed tile center for each effect.")]
@@ -91,7 +88,6 @@ public class BoardManager : MonoBehaviour
     [SerializeField] private float swapResultDisplayTime = 0.8f;
 
     [Header("UI")]
-    [SerializeField] private Button rollButton;
     [SerializeField] private TMP_Text tilesLeftText;
     [SerializeField] private GameObject tilesLeftDisplay; // Background image
     [SerializeField] private TMP_Text rollNumberText;
@@ -99,7 +95,7 @@ public class BoardManager : MonoBehaviour
     [SerializeField] private TMP_Text roundText;
     [SerializeField] private TMP_Text swapText;
     [SerializeField] private TMP_Text skippedText;
-    [SerializeField] private TMP_Text turnOrderText;
+    [SerializeField] private GameObject turnOrderUi;
 
 
     [Header("Skip Turn")]
@@ -199,9 +195,6 @@ public class BoardManager : MonoBehaviour
                 "to the Player Slots list."
             );
 
-            if (rollButton != null)
-                rollButton.interactable = false;
-
             return;
         }
 
@@ -210,9 +203,6 @@ public class BoardManager : MonoBehaviour
             Debug.LogWarning(
                 "No waypoints were found."
             );
-
-            if (rollButton != null)
-                rollButton.interactable = false;
 
             return;
         }
@@ -250,9 +240,6 @@ public class BoardManager : MonoBehaviour
         }
 
         PlacePlayersOnStartingWaypoint();
-
-        if (rollButton != null)
-            rollButton.interactable = false;
 
         // Every round, including Round 1, announces the round
         // and then launches a minigame before board turns begin.
@@ -611,12 +598,6 @@ public class BoardManager : MonoBehaviour
         }
 
         PlayTurnStartSound();
-
-        if (rollButton != null)
-        {
-            rollButton.gameObject.SetActive(true);
-            rollButton.interactable = true;
-        }
     }
 
     private void FinishCurrentTurn()
@@ -753,9 +734,6 @@ public class BoardManager : MonoBehaviour
             return;
 
         turnInProgress = true;
-
-        if (rollButton != null)
-            rollButton.interactable = false;
 
         PlayerPiece rollingPlayer =
             CurrentPlayer;
@@ -1279,7 +1257,7 @@ public class BoardManager : MonoBehaviour
         GameObject instance = Instantiate(
             prefab,
             waypoint.transform.position + tileVfxOffset,
-            player.transform.rotation
+            Quaternion.Euler(-90, 0, 0) //hardcoded btew by DDD
         );
 
         instance.SetActive(true);
@@ -1376,14 +1354,10 @@ public class BoardManager : MonoBehaviour
             if (landedWaypoint.tileType == TileType.MoveForward)
             {
                 PlayMoveForwardTileSound();
-                yield return StartCoroutine(PlayTileVfx(
-                    frontTileVfxPrefab, landedWaypoint, player, movementTileVfxDuration));
             }
             else if (landedWaypoint.tileType == TileType.MoveBack)
             {
                 PlayMoveBackTileSound();
-                yield return StartCoroutine(PlayTileVfx(
-                    backTileVfxPrefab, landedWaypoint, player, movementTileVfxDuration));
             }
 
 
@@ -1504,7 +1478,7 @@ public class BoardManager : MonoBehaviour
         // Warp runs for 1.5 seconds; the actual swap occurs 1 second into it.
         PlaySwapTileSound();
         Waypoint swapWaypoint = waypoints[currentPlayer.currentWaypointIndex];
-        StartCoroutine(PlayTileVfx(warpVfxPrefab, swapWaypoint, currentPlayer, warpVfxDuration));
+        yield return StartCoroutine(PlayTileVfx(warpVfxPrefab, swapWaypoint, currentPlayer, warpVfxDuration));
         yield return new WaitForSecondsRealtime(Mathf.Max(0f, swapAfterWarpDelay));
 
         int currentPlayerOldIndex =
@@ -1592,11 +1566,6 @@ public class BoardManager : MonoBehaviour
     {
         turnInProgress = true;
 
-        if (rollButton != null)
-        {
-            rollButton.interactable = false;
-            rollButton.gameObject.SetActive(false);
-        }
         PlayTurnSkippedSound();
 
         if (diceDisplay != null)
@@ -1680,21 +1649,23 @@ public class BoardManager : MonoBehaviour
             "Left: " +
             tilesLeft;
     }
+
     private void UpdateTurnOrderText()
     {
-        if (turnOrderText == null)
+        if (turnOrderUi == null)
             return;
 
         if (turnOrder.Count == 0)
         {
-            turnOrderText.text = "";
             return;
         }
 
+        turnOrderUi.SetActive(true);
         string text =
             "ROUND " +
-            currentRound +
-            " TURN ORDER\n\n";
+            currentRound;
+        
+        turnOrderRound.text = text;
 
         for (int i = 0;
              i < turnOrder.Count;
@@ -1703,43 +1674,8 @@ public class BoardManager : MonoBehaviour
             PlayerPiece player =
                 turnOrder[i];
 
-            if (player == null)
-                continue;
-
-            if (i == currentTurnIndex)
-                text += "▶ ";
-            else
-                text += "   ";
-
-            text +=
-                (i + 1) +
-                ". Player " +
-                player.PlayerNumber;
-
-            switch (i)
-            {
-                case 0:
-                    text += "   +D6";
-                    break;
-
-                case 1:
-                    text += "   +D3";
-                    break;
-
-                case 2:
-                    text += "   +D2";
-                    break;
-            }
-
-            if (i <
-                turnOrder.Count - 1)
-            {
-                text += "\n";
-            }
+            turnOrderSlots[i].GenarateSlot(player.PlayerNumber);
         }
-
-        turnOrderText.text =
-            text;
     }
 
     // =========================================================
@@ -1757,12 +1693,6 @@ public class BoardManager : MonoBehaviour
 
         if (diceDisplay != null)
             diceDisplay.HideForMovement();
-
-        if (rollButton != null)
-        {
-            rollButton.interactable = false;
-            rollButton.gameObject.SetActive(false);
-        }
 
         if (rollNumberText != null)
             rollNumberText.gameObject.SetActive(false);
@@ -1878,12 +1808,6 @@ public class BoardManager : MonoBehaviour
             " IS THE WINNER!"
         );
 
-        if (rollButton != null)
-        {
-            rollButton.interactable = false;
-            rollButton.gameObject.SetActive(false);
-        }
-
         if (rollNumberText != null)
             rollNumberText.gameObject.SetActive(false);
 
@@ -1902,8 +1826,8 @@ public class BoardManager : MonoBehaviour
         if (skippedText != null)
             skippedText.gameObject.SetActive(false);
 
-        if (turnOrderText != null)
-            turnOrderText.gameObject.SetActive(false);
+        if (turnOrderUi != null)
+            turnOrderUi.SetActive(false);
 
         RecordFinalPositions();
 
@@ -2157,12 +2081,6 @@ public class BoardManager : MonoBehaviour
 
         if (diceDisplay != null)
             diceDisplay.HideForMovement();
-
-        if (rollButton != null)
-        {
-            rollButton.interactable = false;
-            rollButton.gameObject.SetActive(false);
-        }
 
         if (rollNumberText != null)
             rollNumberText.gameObject.SetActive(false);
